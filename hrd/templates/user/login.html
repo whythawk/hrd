@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% import '/macro/form.html' as form %}
+
+{% block title %}{{ _('Login') }}{% endblock %}
+
+
+{% block content %}
+<h1>{{ _('Login') }}</h1>
+  <form role="form" method="POST">
+    {{ form.input('name', label=_('Username'), value=username) }}
+    {{ form.input('password', label=_('Password')) }}
+    {{ form.submit(label=_('Log in')) }}
+  </form>
+{% endblock %}

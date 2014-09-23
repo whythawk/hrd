@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% import '/macro/form.html' as form %}
+
+{% block title %}{{ _('Edit profile') }}{% endblock %}
+
+
+{% block content %}
+<h1>{{ _('Edit profile') }}</h1>
+  <form role="form" method="POST">
+    {{ form.input('name', label=_('Username'), value=user.name) }}
+    {% for perm, name in perms %}
+    {{ form.checkbox(perm, label=_(name), value=perm in user_perms) }}
+    {% endfor %}
+    {{ form.submit(label=_('Save')) }}
+  </form>
+{% endblock %}
