@@ -1,0 +1,21 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Organisation{% endblock %}
+
+{% block content %}
+    <form method="POST" role="form">
+      {{ form.input('name', label='Name', value=org.name, trans=trans) }}
+      {{ form.textarea('description', label='Description', value=org.description, trans=trans) }}
+    {% if not trans %}
+      {{ form.checkbox('active', label='Active', value=org.active) }}
+      {% for cat in codes if cat.active %}
+        <h3>{{ cat.title }}</h3>
+        {% for code in cat.codes if code.active %}
+          {{ form.checkbox(code.code, label=code.title, value=code.code in current) }}
+        {% endfor %}
+      {% endfor %}
+    {% endif %}
+      {{ form.submit(label='Save') }}
+    </form>
+  {{ form.code_list(all) }}
+{% endblock %}

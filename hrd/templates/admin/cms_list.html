@@ -1,0 +1,41 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}CMS{% endblock %}
+
+{% block content %}
+  {% if lang =='en' %}
+    {{ form.action('New page', url_for('cms_new'), class='btn-primary') }}
+  {% endif %}
+  {% for page in pages %}
+    <div>
+      {% if page.published %}
+        <a href="{{ url_for_admin('cms_page', id=page.page_id) }}">current</a>
+      {% endif %}
+      {{ page.title }}
+      {{ page.status }}
+      {% if page.status == 'edit' %}
+        {{ form.action_link('edit', url_for_admin('cms_edit', id=page.page_id)) }}
+        {{ form.action_link('preview', url_for_admin('cms_preview', id=page.page_id)) }}
+      {% elif page.status == 'publish' %}
+          {{ form.action('Edit', url_for_admin('cms_reedit', id=page.page_id)) }}
+      {% elif page.status == 'approve' %}
+        {{ form.action_link('approve', url_for_admin('cms_preview', id=page.page_id)) }}
+        {{ form.action_link('preview', url_for_admin('cms_preview', id=page.page_id)) }}
+      {% elif page.status == 'approved' %}
+        {{ form.action_link('publish', url_for_admin('cms_preview', id=page.page_id)) }}
+        {{ form.action_link('preview', url_for_admin('cms_preview', id=page.page_id)) }}
+      {% endif %}
+      {% if lang =='en' %}
+        {{ form.action('Delete', url_for('cms_delete', id=page.page_id), class='btn-danger', onsubmit='return confirm("Are you sure you want to delete this page?\\n\\nThis action cannot be undone")') }}
+      {% endif %}
+    </div>
+  {% endfor %}
+
+  {% for page in missing %}
+    <div>
+      {{ page.title }}
+      <span class="bg-danger">Missing</span>
+      {{ form.action('Create', url_for_admin('cms_trans', id=page.page_id)) }}
+    </div>
+  {% endfor %}
+{% endblock %}

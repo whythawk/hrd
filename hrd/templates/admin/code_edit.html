@@ -1,0 +1,18 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Codes{% endblock %}
+
+
+{% block content %}
+  <h1>Codes</h1>
+  <form role="form" method="POST">
+    {{ form.input('title', label='Title', value=code.title, trans=trans) }}
+    {{ form.textarea('description', label='description', value=code.description, trans=trans) }}
+    {% if not trans %}
+      {{ form.input('order', label='Order', value=code.order) }}
+      {{ form.checkbox('active', label='Active', value=code.active) }}
+    {% endif %}
+
+    {{ form.submit(label='Save') }}
+  </form>
+{% endblock %}

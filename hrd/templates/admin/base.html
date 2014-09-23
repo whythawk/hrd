@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% import '/macro/form.html' as form %}
+
+{% block menu %}
+  <a href="{{ url_for_admin('cms_list') }}">Pages</a>
+  <a href="{{ url_for_admin('category_list', cat_type='org') }}">Organisation categories</a>
+  <a href="{{ url_for_admin('category_list', cat_type='res') }}">Resource categories</a>
+  <a href="{{ url_for_admin('org_list') }}">Organisations</a>
+  <br>
+  {% if has_perm('translator') %}
+    {% if get_admin_lang() != 'en' %}
+    <h1>Translations: {{ current_admin_lang() }}</h1>
+    {% endif %}
+    <ul class="list-inline">Translations:
+    {% for code, lang, dir in lang_list() %}
+      {% if code != 'en' %}
+        <li><a href="?lang={{ code }}" lang="{{ code }}" dir="{{ dir }}">{{ lang }}</a></li>
+      {% endif %}
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endblock %}
