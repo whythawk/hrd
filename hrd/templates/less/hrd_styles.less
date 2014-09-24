@@ -1,0 +1,88 @@
+/* HRD Custom Styles */
+ 
+/* ===================================================================
+Import Bootstrap LESS and Site Specific LESS
+=================================================================== */
+ 
+@import '/bootstrap/bootstrap.less'; /* Compiled in Codekit - referenced here as a Framework */
+@import 'responsive.less'; /* Load Responsive media queries  */
+@import '../less/variables.less'; /* Your site specific LESS variables - these override BS defaults  */
+
+//
+// Header - eg content and footer
+// --------------------------------------------------
+
+.header {
+    background-color: #fff;   
+}
+
+
+//
+// Jumbotron heading
+// --------------------------------------------------
+
+.jumbotron {
+ 
+    h1,
+    .h1 {
+      font-size: (@font-size-base * 2.6);
+    }
+  }
+
+//
+// Main structural block - border options
+// --------------------------------------------------
+
+.red-left-border {
+    border-left: 8px solid @brand-primary;
+}
+
+.blue-left-border {
+    border-left: 8px solid @brand-secondary;
+}
+
+.grey-bottom-border {
+    border-bottom: 8px solid @gray-light2;
+}
+
+
+//
+// Menu and button - border options
+// --------------------------------------------------
+
+.navbar-nav > li.active > a {
+    border-top: 8px solid @brand-secondary;
+    padding: @padding-large-vertical;
+    top: -4px;
+}
+
+//
+// Panels - eg content and footer
+// --------------------------------------------------
+
+.header {
+    height: 140px;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.navbar .container {
+    border-top: 2px solid @brand-secondary;
+    background-color: #fff;
+    padding: 0 30px 50px 30px;
+}
+
+.container { 
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.panel {
+    padding: @jumbotron-padding;
+    border: 0;
+}
+
+.footer .panel {
+    padding-bottom: 0;   
+}
+
