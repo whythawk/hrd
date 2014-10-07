@@ -55,6 +55,7 @@ def has_perm(permission):
     return False
 
 
+
 hrd.app.jinja_env.globals.update(
     url_for_admin=hrd.url_for_admin,
     url_for=hrd.url_for,
@@ -67,4 +68,5 @@ hrd.app.jinja_env.globals.update(
     current_admin_lang=hrd.current_admin_lang,
     _=_,
     has_perm=has_perm,
+    debug=hrd.DEBUG,
 )
