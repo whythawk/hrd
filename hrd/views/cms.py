@@ -131,7 +131,7 @@ def cms_page(id):
     page = Cms.query.filter_by(page_id=id, lang=lang, status='publish').first()
     if not page:
         abort(404)
-    return render_template('admin/cms_preview.html', page=page)
+    return render_template('page.html', page=page)
 
 
 @app.route('/admin/cms_preview/<id>')
