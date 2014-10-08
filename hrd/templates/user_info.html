@@ -1,0 +1,8 @@
+      {% set user = get_username() %}
+      {% if user %}
+        {{ user }}
+        <li><a href="{{ url_for('logout') }}">{{ _('Log out') }}</a></li>
+        <li><a href="{{ url_for('user_edit', id=request.user.id) }}">{{ _('Edit profile') }}</a></li>
+      {% else %}
+          <li><a href="{{ url_for('login') }}">{{ _('Log in') }}</a></li>
+      {% endif %}

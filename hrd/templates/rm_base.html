@@ -83,7 +83,11 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li class="#messageboard"><a href="./">Message board</a></li>
-            <li><a href="#login">Log in</a></li>
+
+{% block user_info %}
+  {% include 'user_info.html' %}
+{% endblock %}
+
           </ul>
         </div><!--/.nav-collapse -->
       </div>
