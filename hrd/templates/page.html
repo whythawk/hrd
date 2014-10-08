@@ -3,22 +3,9 @@
 {% import '/macro/form.html' as form %}
 
 {% block title %}{{ page.title }}{% endblock %}
+
 {% block heading %}{{ page.title }}{% endblock %}
 
 {% block content %}
       {{ page.content|safe }}
-      <div>
-      {% if page.status == 'publish' %}
-          {{ form.action('Edit', url_for_admin('cms_reedit', id=page.page_id)) }}
-      {% else %}
-          {{ form.action_link('Edit', url_for_admin('cms_edit', id=page.page_id)) }}
-      {% endif %}
-      {% if page.status == 'edit' %}
-          {{ form.action('Send for approval', url_for_admin('cms_state', state='approve', id=page.page_id)) }}
-      {% elif page.status == 'approve' %}
-          {{ form.action('Approve', url_for_admin('cms_state', state='approved', id=page.page_id)) }}
-      {% elif page.status == 'approved' %}
-          {{ form.action('Publish', url_for_admin('cms_state', state='publish', id=page.page_id)) }}
-      {% endif %}
-      </div>
 {% endblock %}
