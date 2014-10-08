@@ -130,7 +130,9 @@ def cms_page(id):
     lang = request.environ['LANG']
     page = Cms.query.filter_by(page_id=id, lang=lang, status='publish').first()
     if not page:
-        abort(404)
+        page = Cms.query.filter_by(page_id=id, lang='en', status='publish').first()
+        if not page:
+            abort(404)
     return render_template('page.html', page=page)
 
 
