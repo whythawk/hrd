@@ -28,8 +28,15 @@ language_list = [
     ('zh', u'中文', 'ltr'),
 ]
 
-lang_dir = {code: dir_ for code, name, dir_ in language_list}
-lang_name = {code: name for code, name, dir_ in language_list}
+lang_dir = {}
+for code, name, dir_ in language_list:
+    lang_dir[code] = dir_
+
+
+lang_name = {}
+for code, name, dir_ in language_list:
+    lang_name[code] = name
+
 
 
 permission_list = [
