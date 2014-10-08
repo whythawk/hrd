@@ -3,6 +3,7 @@
 {% import '/macro/form.html' as form %}
 
 {% block title %}{{ page.title }}{% endblock %}
+{% block heading %}{{ page.title }}{% endblock %}
 
 {% block content %}
       {{ page.content|safe }}

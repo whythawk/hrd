@@ -100,8 +100,10 @@
 </ol>
           <div class="row">
   <div class="col-xs-6 col-md-8">
-  {% block content %}
+    <h1>{% block heading %}
     <h1>Welcome to the European Union Human Rights Defenders support organizations’ program.<br /><br /></h1>
+    {% endblock %}</h1>
+  {% block content %}
         <p>Our role is to help organizations active in assisting human rights defenders to meet each other, share knowledge, expertise and ideas, and to foster coordination between them.</p>
         <p>Our member organizations assist human rights defenders worldwide. They provide assistance programs and can offer advice and support to human rights defenders who are preparing to relocate, are living away from their home country, or who are preparing to return home.</p>
         {% endblock %}
