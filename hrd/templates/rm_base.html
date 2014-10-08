@@ -81,6 +81,12 @@
               </ul>
             </li>
             <li><a href="#contact">About</a></li>
+      {% if has_perm('content_manage') %}
+      <li><a href="{{ url_for('content') }}">{{ _('Content') }}</a></li>
+      {% endif %}
+      {% if has_perm('translator') %}
+      <li><a href="{{ url_for('translation') }}">{{ _('Translations') }}</a></li>
+      {% endif %}
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li class="#messageboard"><a href="./">Message board</a></li>
