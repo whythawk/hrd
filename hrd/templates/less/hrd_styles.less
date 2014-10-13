@@ -1,3 +1,4 @@
+// out: ../../static/css/hrd_styles.css
 /* HRD Custom Styles */
  
 /* ===================================================================
@@ -30,19 +31,30 @@ Import Bootstrap LESS and Site Specific LESS
   }
 
 //
-// Main structural block - border options
+// Main structural block - border and background options
 // --------------------------------------------------
 
 .red-left-border {
     border-left: 8px solid @brand-primary;
+    border-top: 1px solid  lighten(@brand-secondary, 40%);
 }
 
 .blue-left-border {
     border-left: 8px solid @brand-secondary;
+    border-top: 1px solid  lighten(@brand-secondary, 40%);
 }
 
 .grey-bottom-border {
     border-bottom: 8px solid @gray-light2;
+}
+
+.red-panel-bkg { 
+    background: @brand-primary;
+    color: #fff;
+}
+
+.grey-panel-bkg { 
+    background: @gray-lighter;
 }
 
 
@@ -50,26 +62,150 @@ Import Bootstrap LESS and Site Specific LESS
 // Menu and button - border options
 // --------------------------------------------------
 
+.navbar-nav > li.active{
+}
+
 .navbar-nav > li.active > a {
     border-top: 8px solid @brand-secondary;
-    padding: @padding-large-vertical;
-    top: -4px;
+    top: -8px;
+   
 }
+
+.navbar-nav > li.active > a:hover {
+    color: @brand-secondary !important;
+}
+
+//
+// Nav mega menu
+// --------------------------------------------------
+.menu-wrapper {
+    
+}
+
+/* Reset */
+.nav-mega,
+.nav-mega a,
+.nav-mega ul,
+.nav-mega li,
+.nav-mega div,
+.nav-mega form,
+.nav-mega input {
+	margin: 0;
+	padding: 0;
+	border: none;
+	outline: none;
+}
+
+.nav-mega a { text-decoration: none; }
+
+.nav-mega li { list-style: none; }
+
+/* Menu Container */
+.nav-mega {
+	display: inline-block;
+	position: relative;
+	cursor: default;
+	z-index: 500;
+    width: 100%;
+    top: 50%;
+    border-top: 2px solid @brand-secondary;
+}
+
+/* Menu List */
+.nav-mega > li {
+	display: block;
+	float: left;
+}
+
+/* Menu Links */
+.nav-mega > li > a {
+	position: relative;
+	display: block;
+	z-index: 510;
+	height: 54px;
+	padding: 0 20px;
+	line-height: 54px;
+    overflow: visible;
+
+	background: #fff;
+
+	-webkit-transition: all .3s ease;
+	-moz-transition: all .3s ease;
+	-o-transition: all .3s ease;
+	-ms-transition: all .3s ease;
+	transition: all .3s ease;
+}
+
+.nav-mega > li:hover > a { background: @brand-info; color: #fff !important; }
+
+.nav-mega > li:first-child > a {
+}
+
+/* Menu Dropdown */
+.nav-mega > li > div {
+	position: absolute;
+	display: block;
+	top: 55px;
+	left: 0;
+    width: 100%;
+    height: 50px;
+    background: @brand-info;
+    padding: @padding-large-vertical;
+
+	opacity: 1;
+	visibility: hidden;
+	overflow: hidden;
+
+	-webkit-transition: all .3s ease .15s;
+	-moz-transition: all .3s ease .15s;
+	-o-transition: all .3s ease .15s;
+	-ms-transition: all .3s ease .15s;
+	transition: all .3s ease .15s;
+}
+
+.nav-mega > li:hover > div {
+	opacity: 1;
+	visibility: visible;
+	overflow: visible;
+}
+
+/* Menu Content Styles */
+.nav-mega .nav-mega-column {
+	float: left;
+	width: 20%;
+	padding: 2.5%;
+}
+
+.nav-mega .nav-mega-column h3 {
+	margin: 20px 0 10px 0;
+	line-height: 18px;
+}
+
+.nav-mega .nav-mega-column h3.orange { color: #ff722b; }
+
+.nav-mega .nav-mega-column li a {
+	display: block;
+	line-height: 26px;
+}
+
+.nav-mega .nav-mega-column li a:hover { color: #fff; }
+
 
 //
 // Panels - eg content and footer
 // --------------------------------------------------
 
 .header {
-    height: 140px;
+    height: 255px;
     padding-left: 0;
     padding-right: 0;
+    margin-bottom: 25px;
 }
 
-.navbar .container {
+.menu-wrapper .container {
     border-top: 2px solid @brand-secondary;
-    background-color: #fff;
-    padding: 0 30px 50px 30px;
+    background: #fff;
+    padding: 0 30px 50px 30px; 
 }
 
 .container { 
@@ -86,3 +222,138 @@ Import Bootstrap LESS and Site Specific LESS
     padding-bottom: 0;   
 }
 
+.footer-menu > ul {
+    color: lighten(@brand-secondary, 40%);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-indent: 0;    
+}
+
+.footer-menu > ul  a {
+    color: lighten(@brand-secondary, 40%);
+}
+
+.footer-language-switch{
+    margin-bottom: 20px;
+}
+
+.footer-language-switch li{
+    background: lighten(@brand-secondary, 70%);
+    padding: 3px 6px;
+}
+
+.footer-language-switch li.last{
+    border-right: none;
+}
+
+.footer-language-switch li.active{
+    border-top: 4px solid @brand-secondary;
+}
+
+.footer-language-switch li:hover{
+    background: lighten(@brand-secondary, 40%);
+}
+
+.footer-language-switch li a:hover{
+    color: #fff;
+}
+
+.footer-partners img {
+    max-width: 120px;
+    height: auto;
+}
+
+
+
+//
+// Search page items
+// --------------------------------------------------
+
+.search-filter-col {
+    padding-right: 2px;
+}
+
+.column-label {
+    position: absolute;
+    margin-left: 0;
+    z-index: 2;
+    background: #fff;
+    padding: 5px;
+    color: @brand-secondary;
+    left: 0;
+    top: 0;
+    text-align: center;
+}
+
+.search-filter-col h3, .search-filter-col a {
+    color: #fff;
+}
+
+.search-filter-col label {
+    display: block;
+    margin-left: 0;
+}
+
+.search-filter-col details {
+    display: block;
+    border-bottom: 1px solid #fff;
+}
+
+.search-filter-col details.first {
+    border-bottom: none;
+}
+
+.search-filter-col h3 {
+    margin-top: 40px;
+}
+
+.search-filter-title {
+    //outline: 1px #fff dotted;
+    font: @font-family-sans-serif;
+    font-size: @font-size-h4;
+    margin-bottom: 10px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.search-filter-col input[type='checkbox'] {
+    margin-right: 7px;
+}
+
+.search-filter-col input[type='submit'] {
+    background: #fff;
+    color: @brand-secondary;
+    border: none;
+    border-left: 8px solid @brand-secondary;
+    margin: 10px 20px 0 0;
+    font-size: @font-size-h4;
+}
+
+.search-results-col h2 {
+    color: lighten(@brand-secondary, 40%);
+}
+
+.no-of-records {
+    color: lighten(@brand-secondary, 40%);
+}
+
+.org-logo-col {
+    margin-bottom: 20px;
+}
+
+//
+// Custom padding 
+// --------------------------------------------------
+
+.hrd-padded-10 {
+    padding: 10px;
+}
+
+.hrd-padded-15 {
+    padding: 15px;
+}
+
+.hrd-padded-20 {
+    padding: 20px;
+}
