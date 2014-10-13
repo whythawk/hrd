@@ -403,6 +403,8 @@
 <!-- /Organization content body ends ===================================== -->
 
 <!-- Footer begins ========================================== -->
+{% block footer %}
+
 <div class=" container footer">
     <div class="panel panel-default">
         <div class="panel-body grey-bottom-border">
@@ -420,16 +422,23 @@
                 <p>{% block seoBlurb %}SEO blurb. Pieniam, simoluptas porrum is eturita turist et magnihilit ut et facererferum quuntur, consero blautae autem. Id eos eos non et ma perest aliqui doles{% endblock %}</p>
             </div>
             <div class="footer-third-col col-xs-12 col-md-7">
+                
+                {% block langSwitch %}
+                
                 <div class="footer-language-switch">
                     <ul class="list-inline">     
-                        <h4>Language</h4>
-                        <li class="first active"><a href="" alt="">English</a></li>
-                        <li><a href="" alt="">French</a></li>
-                        <li><a href="" alt="">German</a></li>
-                        <li><a href="" alt="">Arabic</a></li>
-                        <li class="last"><a href="">Chinese</a></li>
+                        <h4>{{ _('Languages') }}</h4>
+                        {# FIXME rewrite to include first and last classes #}
+                        {% for code, lang, dir in lang_list() %}
+                            <li class="first active"><a href="{{ lang_pick(code) }}" lang="{{ code }}" dir="{{ dir }}">{{ lang }}</a></li>
+                            <li><a href="{{ lang_pick(code) }}" lang="{{ code }}" dir="{{ dir }}">{{ lang }}</a></li>
+                            <li class="last"><a href="{{ lang_pick(code) }}" lang="{{ code }}" dir="{{ dir }}">{{ lang }}</a></li>
+                        {% endfor %}
                     </ul>
                 </div>
+                
+                {% endblock %}
+                
                 <div class="footer-partners">
                     <ul class="list-inline">     
                         <h4>Partners</h4>
@@ -443,7 +452,10 @@
             </div>
         </div>
     </div>
-</div> <!-- /container -->
+</div><!-- /container -->
+
+{% endblock %} 
+
 <!-- /Footer ends ========================================== -->
 
 <!-- Bootstrap core JavaScript
