@@ -1,0 +1,153 @@
+{% extends 'html_base.html' %}
+
+
+{% block page %}
+<!-- Header begins =============================================== -->
+<div class="header container red-left-border">
+    <div class="row">
+        <div class="hrd_logo col-xs-5 col-sm-3 col-md-3">
+            <a href=""><img width="auto" height="130" src="../static/images/hrd_logo_163x130.jpg" alt=""></a>
+        </div>
+        <div class="col-xs-7 col-sm-6 col-md-6">
+            <h3 class="sitetitle">{{ _('EU Human Rights Defenders') }}<br /><small class="sitesubtitle">{{ _('Support organizations’ program') }}</small></h3>
+        </div>
+        <div class="eu_logo hidden-xs col-sm-3 col-md-3">
+            <a href="#"><img width="auto" height="130" src="../static/images/EC_logo_173x130.jpg" alt=""></a>
+        </div>
+    </div>
+<!-- Nav begins =============================================== -->
+    <div class="navbar-header container">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+        </button>
+        <a class="navbar-brand hidden-sm hidden-md hidden-lg" href="#">Menu</a>
+    </div>
+    <div class="navbar-collapse collapse">
+        <div class="navbar navbar-default navbar-static-top col-md-12 container" role="navigation">
+            <div id="menu-wrapper container">
+
+                {% block menu %}
+
+                <ul class="navbar-nav nav-mega">
+                    <li class="active">
+                        <a href="{{ '#' }}">Home</a>
+                    </li>
+                    <li><a href="{{ '#' }}">Resources <span class="caret"></span></a>
+                        <div>
+                            <div class="nav-column col-md-2">
+                                <a href="{{ '#' }}" class="dropdown-toggle" data-toggle="dropdown">2nd level</a>
+                                <ul class="hidden">
+                                    <li><a href="#">3rd</a></li>
+                                </ul>
+                            </div>
+                            <div class="nav-column col-md-2">
+                                <a href="{{ '#' }}">2nd level link</a>
+                                <ul class="hidden">
+                                    <li><a href="#">3rd</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="{{ '#' }}">Organizations <span class="caret"></span></a>
+                        <div>
+                            <div class="nav-column col-md-2">
+                                <a href="{{ '#' }}">2nd level link</a>
+                                <ul class="hidden">
+                                    <li><a href="#">3rd</a></li>
+                                </ul>
+                            </div>
+                            <div class="nav-column col-md-2">
+                                <a href="{{ '#' }}">2nd level link</a>
+                                <ul class="hidden">
+                                    <li><a href="#">3rd</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li><a href="#">News</a></li>
+                    <li><a href="#">About</a></li>
+
+      {% set user = get_username() %}
+      {% if user %}
+      <li class="navbar-right"><a href="#">{{ user }}<span class="caret"></span></a>
+        <div>
+            <div class="nav-column col-md-2 navbar-right">
+                <a href="#">2nd level link</a>
+                <ul class="hidden">
+                    <li class="navbar-right"><a href="#">3rd</a></li>
+                </ul>
+            </div>
+            <div class="nav-column col-md-2 navbar-right">
+                <a href="#">2nd level link</a>
+                <ul class="hidden">
+                    <li><a href="#">3rd</a></li>
+                </ul>
+            </div>
+        </div>
+        </li>
+        <li class="navbar-right"><a href="#">{{ _('Message board') }}</a></li>
+      {% else %}
+      <li class="navbar-right"><a href="#">{{ _('Log out') }}</a></li>
+      {% endif %}
+                </ul>
+
+                {% endblock %}
+
+            </div></div></div>
+<!-- /Nav ends =============================================== -->
+</div>
+<!-- /Header ends =============================================== -->
+
+{% block content %}
+{% endblock %}
+
+<!-- Footer begins ========================================== -->
+<div class=" container footer">
+    <div class="panel panel-default">
+        <div class="panel-body grey-bottom-border">
+            <div class="footer-menu col-xs-12 col-md-2">
+                <ul>
+                    <h4>Site</h4>
+                    <li class="first"><a href="" alt="">XX</a></li>
+                    <li><a href="" alt="">XX</a></li>
+                    <li><a href="" alt="">XX</a></li>
+                    <li lass="last"><a href="" alt="">XX</a></li>
+                </ul>
+            </div>
+            <div class="footer-seo-blurb col-xs-12 col-md-3">
+                <h4>SEO blurb</h4>
+                <p>{% block seoBlurb %}SEO blurb. Pieniam, simoluptas porrum is eturita turist et magnihilit ut et facererferum quuntur, consero blautae autem. Id eos eos non et ma perest aliqui doles{% endblock %}</p>
+            </div>
+            <div class="footer-third-col col-xs-12 col-md-7">
+
+                {% block langSwitch %}
+                <div class="footer-language-switch">
+                    <ul class="list-inline">
+                        <h4>{{ _('Languages') }}</h4>
+                        {% for code, lang, dir in lang_list() %}
+                        <li class="{% if loop.index == 1 %}first{% elif loop.index == loop.length %}last{% endif %}{% if code==current_lang() %} active{% endif %}"><a href="{{ lang_pick(code) }}" lang="{{ code }}" dir="{{ dir }}">{{ lang }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endblock %}
+
+                <div class="footer-partners">
+                    <ul class="list-inline">
+                      <h4>{{ _('Partners') }}</h4>
+                        <li><a href="" alt=""><img src="/static/images/logo.png" class="img-responsive" alt="Logo" /></a></li>
+                        <li><a href="" alt=""><img src="/static/images/logo.png" class="img-responsive" alt="Logo" /></a></li>
+                        <li><a href="" alt=""><img src="/static/images/logo.png" class="img-responsive" alt="Logo" /></a></li>
+                        <li><a href="" alt=""><img src="/static/images/logo.png" class="img-responsive" alt="Logo" /></a></li>
+                        <li><a href="" alt=""><img src="/static/images/logo.png" class="img-responsive" alt="Logo" /></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- /container -->
+
+<!-- /Footer ends ========================================== -->
+
+
+{% endblock %}
