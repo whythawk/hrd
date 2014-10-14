@@ -66,6 +66,9 @@ def lang_list():
 
 
 def current_lang():
+    return request.environ['LANG']
+
+def current_lang_name():
     return lang_name[request.environ['LANG']]
 
 

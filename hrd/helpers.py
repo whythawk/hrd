@@ -65,6 +65,7 @@ hrd.app.jinja_env.globals.update(
     get_username=username,
     lang_list=hrd.lang_list,
     current_lang=hrd.current_lang,
+    current_lang_name=hrd.current_lang_name,
     current_admin_lang=hrd.current_admin_lang,
     _=_,
     has_perm=has_perm,
