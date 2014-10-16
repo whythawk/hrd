@@ -6291,12 +6291,23 @@ button.close {
   visibility: visible;
   overflow: visible;
 }
-.nav-mega > li > div a {
-  display: inline-block;
-  padding: 7px;
+.nav-mega .nav-column {
+  position: relative;
+}
+.nav-mega .nav-column a {
+  margin: 0 auto;
+  display: block;
+  padding: 6px;
   color: #fff !important;
   text-align: center;
   font-weight: 700;
+}
+.nav-mega .nav-column a:hover {
+  background: none;
+}
+.nav-mega .nav-column:hover {
+  color: #fff !important;
+  background: #d9aa00;
 }
 /* Menu Content Styles */
 .nav-mega .nav-mega-column {
@@ -6323,6 +6334,9 @@ button.close {
   padding-left: 0;
   padding-right: 0;
   margin-bottom: 25px;
+}
+.hrd_logo {
+  margin-left: 30px;
 }
 .sitetitle {
   margin-top: 40px;
@@ -6431,6 +6445,14 @@ button.close {
 .search-results-col h2 {
   color: #6699ff;
 }
+.search-result {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #cccccc;
+}
+.search-result.last {
+  padding-bottom: 20px;
+  border-bottom: none;
+}
 .no-of-records {
   color: #6699ff;
 }
@@ -6450,10 +6472,17 @@ button.close {
   margin-bottom: 4px;
 }
 .pagination-top {
-  border-top: 1px solid #003399;
+  border-bottom: 2px solid #cccccc;
+  margin-bottom: 20px;
 }
 .pagination-bottom {
-  border-bottom: 1px solid #003399;
+  border-top: 2px solid #cccccc;
+  margin-top: 20px;
+}
+.pagination-top ul,
+.pagination-bottom ul {
+  margin-bottom: -3px;
+  margin-top: 0px;
 }
 .pagination-top li a,
 .pagination-bottom li a {
@@ -6466,7 +6495,7 @@ button.close {
 .pagination-top li.active a,
 .pagination-bottom li.active a {
   border: 0;
-  border-top: 4px solid #003399;
+  border-top: 4px solid #ffcc00;
   background: none;
   color: #003399;
   top: -4px;

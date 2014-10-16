@@ -179,12 +179,26 @@ Import Bootstrap LESS and Site Specific LESS
 	overflow: visible;
 }
 
-.nav-mega > li > div a {
-    display: inline-block; 
-    padding: 7px;
+.nav-mega .nav-column {
+    position: relative;
+}
+
+.nav-mega .nav-column a {
+    margin: 0 auto;
+    display: block; 
+    padding: 6px;
     color: #fff !important;
     text-align: center;
     font-weight: 700;
+}
+
+.nav-mega .nav-column a:hover {
+    background: none;
+}
+
+.nav-mega .nav-column:hover {
+    color: #fff !important;
+    background: lighten(@brand-info, 5%);
 }
 
 /* Menu Content Styles */
@@ -218,6 +232,9 @@ Import Bootstrap LESS and Site Specific LESS
     padding-left: 0;
     padding-right: 0;
     margin-bottom: 25px;
+}
+.hrd_logo {
+    margin-left: 30px;
 }
 
 .sitetitle {
@@ -391,11 +408,18 @@ Import Bootstrap LESS and Site Specific LESS
 }
 
 .pagination-top {
-    border-top: 1px solid @brand-secondary;
+    border-bottom: 2px solid @gray-light2;
+    margin-bottom: 20px;
 }
 
 .pagination-bottom {
-    border-bottom: 1px solid @brand-secondary;
+    border-top: 2px solid @gray-light2;
+    margin-top: 20px;
+}
+
+.pagination-top ul, .pagination-bottom ul {
+    margin-bottom: -3px;
+    margin-top: 0px;
 }
 
 .pagination-top li a, .pagination-bottom li a {
@@ -409,7 +433,7 @@ Import Bootstrap LESS and Site Specific LESS
 
 .pagination-top li.active a, .pagination-bottom li.active a {
     border: 0;
-    border-top: 4px solid @brand-secondary;
+    border-top: 4px solid @brand-primary;
     background: none;
     color: @brand-secondary;
     top: -4px;
