@@ -138,7 +138,21 @@ Import Bootstrap LESS and Site Specific LESS
 	transition: all .3s ease;
 }
 
-.nav-mega > li > a:hover { background-color: lighten(@brand-secondary, 30%) !important; color: #fff !important; }
+.nav-mega > li.active > a {
+    height: 62px;
+    color: @brand-secondary; 
+}
+
+.nav-mega li a:hover{ 
+    background-color: @brand-info; 
+    color: #fff !important; 
+}
+
+.nav-mega > li > a:hover, .nav-mega > li.active > a:hover { 
+    background-color: @brand-info; 
+    color: @brand-secondary; 
+}
+
 
 /* Menu Dropdown */
 .nav-mega > li > div {
@@ -148,7 +162,7 @@ Import Bootstrap LESS and Site Specific LESS
 	left: 0;
     width: 100%;
     height: 50px;
-    background: lighten(@brand-secondary, 30%);
+    background: @brand-info;
     padding: @padding-large-vertical;
 
 	opacity: 1;
@@ -166,6 +180,14 @@ Import Bootstrap LESS and Site Specific LESS
 	opacity: 1;
 	visibility: visible;
 	overflow: visible;
+}
+
+.nav-mega > li > div a {
+    display: inline-block; 
+    padding: 7px;
+    color: #fff !important;
+    text-align: center;
+    font-weight: 700;
 }
 
 /* Menu Content Styles */
@@ -199,6 +221,12 @@ Import Bootstrap LESS and Site Specific LESS
     padding-left: 0;
     padding-right: 0;
     margin-bottom: 25px;
+}
+
+.sitetitle {
+    margin-top: 40px;
+    margin-left: -20px;
+    font-weight: 500;
 }
 
 .menu-wrapper .container {
@@ -337,8 +365,69 @@ Import Bootstrap LESS and Site Specific LESS
     color: lighten(@brand-secondary, 40%);
 }
 
+.view-detail {
+    border-left: 4px solid @brand-secondary;
+    padding: 0 5px 0 10px;
+    font-weight: 700;
+}
+
+.view-detail a {
+    color: @brand-secondary;
+}
+
+.search-meta li a {
+    display: inline-block;
+    background: @gray-lighter;
+    padding: 1px 6px;
+    color: @gray-light;
+    margin-bottom: 4px
+}
+
+.pagination-top {
+    border-top: 1px solid @brand-secondary;
+}
+
+.pagination-bottom {
+    border-bottom: 1px solid @brand-secondary;
+}
+
+.pagination-top li a, .pagination-bottom li a {
+    border: 0;
+}
+
+.pagination .active > a:hover {
+    background: @gray-lighter;
+    color: @brand-secondary;
+}
+
+.pagination-top li.active a, .pagination-bottom li.active a {
+    border: 0;
+    border-top: 4px solid @brand-secondary;
+    background: none;
+    color: @brand-secondary;
+    top: -4px;
+}
+
 .org-logo-col {
     margin-bottom: 20px;
+}
+
+
+//
+// Log in page items
+// --------------------------------------------------
+
+
+.login-form .btn {
+    background: @brand-secondary;
+    color: #fff;
+    border: none;
+    border-left: 8px solid #fff;
+    font-weight: 700;
+}
+
+.login-form .btn:hover {
+    background: lighten(@brand-secondary, 20%);
 }
 
 //

@@ -6254,9 +6254,18 @@ button.close {
   -ms-transition: all .3s ease;
   transition: all .3s ease;
 }
-.nav-mega > li:hover > a {
-  background: #8aa0c9;
+.nav-mega > li.active > a {
+  height: 62px;
+  color: #163f92;
+}
+.nav-mega li a:hover {
+  background-color: #8aa0c9;
   color: #fff !important;
+}
+.nav-mega > li > a:hover,
+.nav-mega > li.active > a:hover {
+  background-color: #8aa0c9;
+  color: #163f92;
 }
 /* Menu Dropdown */
 .nav-mega > li > div {
@@ -6281,6 +6290,13 @@ button.close {
   opacity: 1;
   visibility: visible;
   overflow: visible;
+}
+.nav-mega > li > div a {
+  display: inline-block;
+  padding: 7px;
+  color: #fff !important;
+  text-align: center;
+  font-weight: 700;
 }
 /* Menu Content Styles */
 .nav-mega .nav-mega-column {
@@ -6307,6 +6323,11 @@ button.close {
   padding-left: 0;
   padding-right: 0;
   margin-bottom: 25px;
+}
+.sitetitle {
+  margin-top: 40px;
+  margin-left: -20px;
+  font-weight: 500;
 }
 .menu-wrapper .container {
   border-top: 2px solid #163f92;
@@ -6410,11 +6431,66 @@ button.close {
 .search-results-col h2 {
   color: #87a9ed;
 }
+.search-result {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #cccccc;
+}
+.search-result.last {
+  padding-bottom: 20px;
+  border-bottom: none;
+}
 .no-of-records {
   color: #87a9ed;
 }
+.view-detail {
+  border-left: 4px solid #163f92;
+  padding: 0 5px 0 10px;
+  font-weight: 700;
+}
+.view-detail a {
+  color: #163f92;
+}
+.search-meta li a {
+  display: inline-block;
+  background: #eeeeee;
+  padding: 1px 6px;
+  color: #777777;
+  margin-bottom: 4px;
+}
+.pagination-top {
+  border-top: 1px solid #163f92;
+}
+.pagination-bottom {
+  border-bottom: 1px solid #163f92;
+}
+.pagination-top li a,
+.pagination-bottom li a {
+  border: 0;
+}
+.pagination .active > a:hover {
+  background: #eeeeee;
+  color: #163f92;
+}
+.pagination-top li.active a,
+.pagination-bottom li.active a {
+  border: 0;
+  border-top: 4px solid #163f92;
+  background: none;
+  color: #163f92;
+  top: -4px;
+}
 .org-logo-col {
   margin-bottom: 20px;
+}
+.login-form .btn {
+  background: #163f92;
+  color: #fff;
+  border: none;
+  border-left: 8px solid #fff;
+  font-weight: 700;
+}
+.login-form .btn:hover {
+  background: #2e69e0;
 }
 .hrd-padded-10 {
   padding: 10px;
