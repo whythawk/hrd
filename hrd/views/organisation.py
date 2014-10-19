@@ -164,8 +164,14 @@ def org(id):
     lang = request.environ['LANG']
     org = Organisation.query.filter_by(org_id=id, lang=lang, status='publish').first()
     if not org:
-        abort(404)
-    return render_template('admin/org_preview.html', org=org)
+        org = Organisation.query.filter_by(org_id=id, lang='en', status='publish').first()
+        if not org:
+            abort(404)
+    codes = all_codes(lang, 'org')
+    current = [
+        c.code for c in OrgCodes.query.filter_by(org_id=id).all()
+    ]
+    return render_template('admin/org.html', org=org, codes=codes, current=current)
 
 
 @app.route('/admin/org_preview/<id>')
