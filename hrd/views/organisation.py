@@ -70,7 +70,6 @@ def org_edit(id):
         current = [
             c.code for c in OrgCodes.query.filter_by(org_id=id).all()
         ]
-        print current
     else:
         codes = []
         current = []
