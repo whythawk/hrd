@@ -16,7 +16,7 @@ app.secret_key = secret_key
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 db = SQLAlchemy(app)
 
-DEBUG = True
+DEBUG = False
 
 default_url_for = app.jinja_env.globals['url_for']
 
