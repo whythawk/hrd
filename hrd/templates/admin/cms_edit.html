@@ -11,6 +11,7 @@
       {{ form.input('title', label='Title', value=page.title, placeholder='Title', trans=trans) }}
       {{ form.textarea('content', label='Content', value=page.content) }}
     {% if not trans %}
+      {{ form.input('url', label='Url', value=page.url, placeholder='Custom url') }}
       {{ form.checkbox('active', label='Active', value=page.active) }}
     {% endif %}
       {{ form.submit(label='Save') }}

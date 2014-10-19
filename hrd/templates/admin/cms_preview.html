@@ -5,6 +5,7 @@
 {% block title %}{{ page.title }}{% endblock %}
 
 {% block content %}
+    <h1>{{ page.title }}<br /><br /></h1>
       {{ page.content|safe }}
       <div>
       {% if page.status == 'publish' %}

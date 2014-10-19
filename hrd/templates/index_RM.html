@@ -199,6 +199,7 @@
                 <h3 class="">Filter list...</h3>
                 <div class="filter-reset col-xs-8 pull-right text-right"><a href="">Select all</a> | <a href="">Select none</a></div>
                 <form action="" method="">
+                  {% for cat in cats %}
                     <div class="row">
                         <details class="first" open>
                             <summary class="search-filter-title col-xs-12">Type of organisation</summary>
@@ -222,6 +223,7 @@
                             </label>
                         </details>
                     </div>
+                {% endfor %}
                     <div class="row">
                         <details open>
                             <summary class="search-filter-title col-xs-12">Type of HRD</summary>

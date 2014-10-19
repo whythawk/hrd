@@ -1,18 +1,19 @@
 {% extends 'html_base.html' %}
+{% set user = get_username() %}
 
 
 {% block page %}
 <!-- Header begins =============================================== -->
 <div class="header container red-left-border">
     <div class="row">
-        <div class="hrd_logo col-xs-5 col-sm-3 col-md-3">
-            <a href=""><img width="auto" height="130" src="../static/images/hrd_logo_163x130.jpg" alt=""></a>
+        <div class="hrd_logo col-xs-5 col-sm-3 col-md-2">
+            <a href=""><img width="auto" height="130" src="/static/images/hrd_logo_163x130_Alt_RedBlue.png" alt=""></a>
         </div>
         <div class="col-xs-7 col-sm-6 col-md-6">
             <h3 class="sitetitle">{{ _('EU Human Rights Defenders') }}<br /><small class="sitesubtitle">{{ _('Support organizations’ program') }}</small></h3>
         </div>
-        <div class="eu_logo hidden-xs col-sm-3 col-md-3">
-            <a href="#"><img width="auto" height="130" src="../static/images/EC_logo_173x130.jpg" alt=""></a>
+        <div class="eu_logo hidden-xs col-sm-3 col-md-3 pull-right">
+            <a href="#"><img width="auto" height="130" src="/static/images/EC_logo_173x130.jpg" alt=""></a>
         </div>
     </div>
 <!-- Nav begins =============================================== -->
@@ -30,8 +31,11 @@
 
                 <ul class="navbar-nav nav-mega">
                     <li class="active">
-                        <a href="{{ '#' }}">Home</a>
+                        <a href="{{ url_for('cms_page2') }}">Home</a>
                     </li>
+                    {% if user %}
+                    <li><a href="#">{{ _('Resources') }}</a>
+                    {#
                     <li><a href="{{ '#' }}">Resources <span class="caret"></span></a>
                         <div>
                             <div class="nav-column col-md-2">
@@ -47,51 +51,34 @@
                                 </ul>
                             </div>
                         </div>
-                    </li>
+                        </li>
+                        #}
                     <li>
-                        <a href="{{ '#' }}">Organizations <span class="caret"></span></a>
-                        <div>
-                            <div class="nav-column col-md-2">
-                                <a href="{{ '#' }}">2nd level link</a>
-                                <ul class="hidden">
-                                    <li><a href="#">3rd</a></li>
-                                </ul>
-                            </div>
-                            <div class="nav-column col-md-2">
-                                <a href="{{ '#' }}">2nd level link</a>
-                                <ul class="hidden">
-                                    <li><a href="#">3rd</a></li>
-                                </ul>
-                            </div>
-                        </div>
+                        <a href="{{ url_for('org_search') }}">Organizations </a>
                     </li>
-                    <li><a href="#">News</a></li>
-                    <li><a href="#">About</a></li>
+                    {% endif %}
+                    <li><a href="{{ url_for('cms_page2', id='news') }}">News</a></li>
+                    <li><a href="{{ url_for('cms_page2', id='about') }}">About</a></li>
 
-      {% set user = get_username() %}
+    {% block user_bar %}
       {% if user %}
       <li class="navbar-right"><a href="#">{{ user }}<span class="caret"></span></a>
         <div>
             <div class="nav-column col-md-2 navbar-right">
-                <a href="#">2nd level link</a>
-                <ul class="hidden">
-                    <li class="navbar-right"><a href="#">3rd</a></li>
-                </ul>
+                <a href="{{ url_for('logout') }}">{{ _('log out') }}</a>
             </div>
-            <div class="nav-column col-md-2 navbar-right">
+       <!--     <div class="nav-column col-md-2 navbar-right">
                 <a href="#">2nd level link</a>
-                <ul class="hidden">
-                    <li><a href="#">3rd</a></li>
-                </ul>
-            </div>
+            </div>  -->
         </div>
         </li>
         <li class="navbar-right"><a href="#">{{ _('Message board') }}</a></li>
       {% else %}
-      <li class="navbar-right"><a href="#">{{ _('Log out') }}</a></li>
+      <li class="navbar-right"><a href="{{ url_for('login') }}">{{ _('Log in') }}</a></li>
       {% endif %}
                 </ul>
 
+    {% endblock %}
                 {% endblock %}
 
             </div></div></div>
@@ -109,10 +96,9 @@
             <div class="footer-menu col-xs-12 col-md-2">
                 <ul>
                     <h4>Site</h4>
-                    <li class="first"><a href="" alt="">XX</a></li>
-                    <li><a href="" alt="">XX</a></li>
-                    <li><a href="" alt="">XX</a></li>
-                    <li lass="last"><a href="" alt="">XX</a></li>
+                    <li class="first"><a href="{{ url_for('cms_page2') }}">Home</a></li>
+                    <li><a href="{{ url_for('cms_page2', id='news') }}">News</a></li>
+                    <li class="last"><a href="{{ url_for('cms_page2', id='about') }}">About</a></li>
                 </ul>
             </div>
             <div class="footer-seo-blurb col-xs-12 col-md-3">

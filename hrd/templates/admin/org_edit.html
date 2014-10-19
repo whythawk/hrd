@@ -7,6 +7,14 @@
       {{ form.input('name', label='Name', value=org.name, trans=trans) }}
       {{ form.textarea('description', label='Description', value=org.description, trans=trans) }}
     {% if not trans %}
+
+      {{ form.textarea('address', label='Address', value=org.address, trans=trans) }}
+      {{ form.input('contact', label='Contact', value=org.contact, trans=trans) }}
+      {{ form.input('phone', label='Phone', value=org.phone, trans=trans) }}
+      {{ form.input('email', label='Email', value=org.email, trans=trans) }}
+      {{ form.textarea('pgp_key', label='Pgp key', value=org.pgp_key, trans=trans) }}
+      {{ form.input('website', label='Website', value=org.website, trans=trans) }}
+
       {{ form.checkbox('active', label='Active', value=org.active) }}
       {% for cat in codes if cat.active %}
         <h3>{{ cat.title }}</h3>
