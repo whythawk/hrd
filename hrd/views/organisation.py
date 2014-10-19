@@ -18,6 +18,14 @@ def org_edit(id):
     if request.method == 'POST':
         org.name = get_str('name')
         org.description = get_str('description')
+
+        org.address = get_str('address')
+        org.contact = get_str('contact')
+        org.phone = get_str('phone')
+        org.email = get_str('email')
+        org.pgp_key = get_str('pgp_key')
+        org.website = get_str('website')
+
         org.status = 'edit'
         db.session.add(org)
         if lang == 'en':
@@ -84,7 +92,15 @@ def org_reedit(id):
         description=org.description,
         name=org.name,
         status='edit',
-        published=True
+        published=True,
+
+        address = org.address,
+        contact = org.contact,
+        phone = org.phone,
+        email = org.email,
+        pgp_key = org.pgp_key,
+        website = org.website,
+
     )
     db.session.add(new_org)
     org.current = False

@@ -40,6 +40,7 @@ def cms_edit(id):
         if lang == 'en':
             locked = {
                 'active': get_bool('active'),
+                'url': get_str('url'),
             }
             Cms.query.filter_by(page_id=page.page_id).update(locked)
         db.session.commit()
@@ -65,6 +66,7 @@ def cms_reedit(id):
         page_id=page.page_id,
         content=page.content,
         title=page.title,
+        url=page.url,
         status='edit',
         published=True
     )
@@ -172,6 +174,8 @@ def cms_trans(id):
     trans = Cms(lang=lang)
     trans.status = 'edit'
     trans.page_id = page.page_id
+    trans.active = page.active
+    trans.url = page.url
     db.session.add(trans)
     db.session.commit()
     return redirect(url_for_admin('cms_edit', id=trans.page_id))
