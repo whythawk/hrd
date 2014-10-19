@@ -9,6 +9,7 @@ def make_uuid():
 class Cms(db.Model):
     id = db.Column(db.String(50), primary_key=True, default=make_uuid)
     page_id = db.Column(db.String(50), default=make_uuid)
+    url = db.Column(db.String(250))
     title = db.Column(db.String(250))
     content = db.Column(db.Text())
     lang = db.Column(db.String(2), primary_key=True)
@@ -17,7 +18,7 @@ class Cms(db.Model):
     published = db.Column(db.Boolean(), default=False)
     active = db.Column(db.Boolean(), default=True)
     needs_trans = db.Column(db.Boolean(), default=False)
-    image = db.Column(db.String(50))
+    image = db.Column(db.String(250))
 
     def __repr__(self):
         return "<Cms %s>" % self.title
