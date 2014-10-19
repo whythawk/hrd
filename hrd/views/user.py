@@ -40,7 +40,7 @@ def login():
             user = User.query.filter_by(name=username).first()
             if user and password_verify(password, user.password):
                 session['user'] = user.id
-                return redirect(url_for('index'))
+                return redirect(url_for('cms_page2'))
 
     return render_template('user/login.html', username=username)
 
@@ -50,7 +50,7 @@ def logout():
     # remove the username from the session if it's there
     session.pop('user', None)
     session.clear()
-    return redirect(url_for('index'))
+    return redirect(url_for('cms_page2'))
 
 
 @app.route('/user/edit/<id>', methods=['GET', 'POST'])

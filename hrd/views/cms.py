@@ -5,7 +5,7 @@ from hrd import (app, db, url_for_admin, get_admin_lang, get_bool,
 from hrd.models import Cms
 
 
-@app.route('/')
+@app.route('/admin')
 def index():
     return render_template('index.html')
 
@@ -131,6 +131,19 @@ def cms_page(id):
     page = Cms.query.filter_by(page_id=id, lang=lang, status='publish').first()
     if not page:
         page = Cms.query.filter_by(page_id=id, lang='en', status='publish').first()
+        if not page:
+            abort(404)
+    return render_template('page.html', page=page)
+
+@app.route('/<id>')
+@app.route('/')
+def cms_page2(id=''):
+    id = '/%s' % id
+    lang = get_admin_lang()
+    lang = request.environ.get('LANG', 'en')
+    page = Cms.query.filter_by(url=id, lang=lang, status='publish').first()
+    if not page:
+        page = Cms.query.filter_by(url=id, lang='en', status='publish').first()
         if not page:
             abort(404)
     return render_template('page.html', page=page)

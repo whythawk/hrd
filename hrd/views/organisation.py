@@ -199,3 +199,11 @@ def org_list():
         missing = missing.filter(db.not_(Organisation.org_id.in_(trans)))
     return render_template('admin/org_list.html', orgs=orgs, lang=lang,
                            missing=missing, trans=trans)
+
+@app.route('/orgs')
+def org_search():
+    lang = request.environ['LANG']
+    cats = all_codes(lang, 'org')
+    org = Organisation.query.filter_by(lang=lang, status='publish').first()
+    orgs = [org, org, org]
+    return render_template('org_search.html',cats=cats, orgs=orgs)
