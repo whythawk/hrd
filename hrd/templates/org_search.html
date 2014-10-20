@@ -1,0 +1,91 @@
+{% extends 'body_base.html' %}
+
+{% import '/macro/form.html' as form %}
+
+
+{% block content %}
+<div class="container search-content">
+    <div class="panel col-xs-12">
+        <h1>{{ _('Search: Member organizations') }}<br /><br /></h1>
+        <div class="row">
+            <!-- Search filter column begins ============================= -->
+            <div class="search-filter-col blue-left-border red-panel-bkg col-xs-12 col-sm-6 col-md-4 hrd-padded-20">
+                <div class="column-label col-xs-4">Organizations</div>
+                <h3 class="">Filter list...</h3>
+                <div class="filter-reset col-xs-8 pull-right text-right"><a href="">Select all</a> | <a href="">Select none</a></div>
+                <form action="" method="">
+
+{% for cat in cats if cat.active %}
+                    <div class="row">
+                        <details class="{% if loop.index == 1 %}first{% elif loop.index == loop.length %}last{% endif %}" open>
+                        <summary class="search-filter-title col-xs-12">{{ cat.title }}</summary>
+        {% for code in cat.codes if code.active %}
+                            <label class="col-xs-5">
+                                <input type="checkbox" id="{{ code.code }}" value="true">{{ code.title }}
+                            </label>
+        {% endfor %}
+                        </details>
+                    </div>
+{% endfor %}
+                    <div class="row pull-right"><input class="hrd-padded-10" type="submit" value="Filter" name="Filter"></div>
+                </form>
+            </div>
+            <!-- /Search filter column ends ============================= -->
+            <!-- Search results column begins ============================= -->
+            <div class="search-results-col col-xs-12 col-sm-6 col-md-8 pull-right">
+                <h2>Search results<br /><br /></h2>
+                <div class="no-of-records">XX records</div>
+                <!-- Top pagination begins ============================= -->
+                <div class="col-xs-12 pagination-top"><ul class="pagination pull-right">
+                    <li class="active"><a href="" alt="">1</a></li>
+                    <li><a href="" alt="">2</a></li>
+                    <li><a href="" alt="">3</a></li>
+                    </ul></div>
+                <!-- /Top pagination ends ============================= -->
+                {% for org in orgs %}
+                <!-- Search result row begins ============================= -->
+                <article class="search-result{% if loop.index == 1 %} first{% elif loop.index == loop.length %} last{% endif %}">
+                    <div class="excerpt">
+                        <h3 class="search-result-title"><a href="{{ url_for('org', id=org.org_id) }}" title="">{{ org.name }}</a></h3>
+                        <p class="search-result-body">{{ org.description }}</p>
+
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-md-3">
+                        <!-- Search logo --><a href="{{ url_for('org', id=org.org_id) }}" title="Logo" class="logo"><img src="/static/images/logo.png" alt="Logo" /></a>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-8 pull-right">
+                        <!-- Search meta tags begins ============================= -->
+                        <ul class="search-meta list-inline">
+                            <li><a href="" alt="">tag here</a></li>
+                            <li><a href="" alt="">tag here</a></li>
+                            <li><a href="" alt="">tag here</a></li>
+                            <li><a href="" alt="">tag here</a></li>
+                            <li><a href="" alt="">tag here</a></li>
+                            <li><a href="" alt="">tag here</a></li>
+                            <li><a href="" alt="">tag here</a></li>
+                            <li><a href="" alt="">tag here</a></li>
+                            <li><a href="" alt="">tag here</a></li>
+                        </ul>
+                        <!-- /Search meta tags ends ============================= -->
+                    </div>
+                    <span class="clearfix borda"></span>
+                    <div class="col-md-2 view-detail pull-right"><a href="{{ url_for('org', id=org.org_id) }}" title="View detail">View detail</a></div>
+                    <span class="clearfix borda"></span>
+                </article>
+                <!-- /Search result row ends ============================= -->
+                {% endfor %}
+                <!-- Bottom pagination begins ============================= -->
+                <div class="col-xs-12 pagination-bottom">
+                    <ul class="pagination pull-right">
+                        <li class="active"><a href="" alt="">1</a></li>
+                        <li><a href="" alt="">2</a></li>
+                        <li><a href="" alt="">3</a></li>
+                    </ul>
+                </div>
+                <!-- /Bottom pagination ends ============================= -->
+            </div>
+            <!-- Search results column ends ============================= -->
+        </div> <!-- /row -->
+    </div> <!-- /panel -->
+</div> <!-- /container -->
+{% endblock %}
