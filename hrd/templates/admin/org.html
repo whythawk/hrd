@@ -18,7 +18,7 @@
                 <div class="contact-details-col blue-left-border grey-panel-bkg hrd-padded-20">
                     <h3 class=""><a href="#" title="">{{ _('Contacts') }}</a></h3>
                     <p class=""><strong>{{ _('Address of organisation') }}</strong><br />
-                        {{ org.address }}
+                        <span style="white-space: pre-line">{{ org.address }}</span>
                         </p>
                     <p class=""><strong>{{ _('Contact person') }}</strong><br />
                         {{ org.contact }}
@@ -41,7 +41,7 @@
             <!-- Organization description column begins ============================= -->
             <div class="org-description-col col-xs-12 col-sm-6 col-md-4">
                 <h2>{{ _('Description') }}<br /><br /></h2>
-                <span  style="white-space: pre-line">{{ org.description }}</span>
+                <span style="white-space: pre-line">{{ org.description }}</span>
             </div>
             <!-- /Organization description column ends ============================= -->
             <!-- Organization detail column begins ============================= -->
