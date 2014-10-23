@@ -6202,7 +6202,7 @@ button.close {
   top: -8px;
 }
 .navbar-nav > li.active > a:hover {
-  color: #163f92 !important;
+  color: #163f92;
 }
 /* Reset */
 .nav-mega,
@@ -6260,7 +6260,7 @@ button.close {
 }
 .nav-mega li a:hover {
   background-color: #8aa0c9;
-  color: #fff !important;
+  color: #fff;
 }
 .nav-mega > li > a:hover,
 .nav-mega > li.active > a:hover {
@@ -6298,7 +6298,7 @@ button.close {
   margin: 0 auto;
   display: block;
   padding: 6px;
-  color: #fff !important;
+  color: #fff;
   text-align: center;
   font-weight: 700;
 }
@@ -6306,7 +6306,7 @@ button.close {
   background: none;
 }
 .nav-mega .nav-column:hover {
-  color: #fff !important;
+  color: #fff;
   background: #9baed1;
 }
 /* Menu Content Styles */
@@ -6521,4 +6521,27 @@ button.close {
 }
 .hrd-padded-20 {
   padding: 20px;
+}
+body.admin {
+  background-color: #838383;
+}
+body.admin .navbar-nav > li.active > a {
+  border-top: 8px solid #222222;
+}
+body.admin .nav-mega {
+  border-top: 2px solid #222222;
+}
+body.admin .nav-mega li a:hover,
+body.admin .nav-mega li.active a:hover {
+  background-color: #eeeeee;
+  color: #333333;
+}
+body.admin .nav-mega li div {
+  background: #eeeeee;
+}
+body.admin .nav-mega li div a {
+  color: #333333 !important;
+}
+body.admin .nav-mega li div a:hover {
+  background: #d5d5d5;
 }

@@ -72,7 +72,7 @@ Import Bootstrap LESS and Site Specific LESS
 }
 
 .navbar-nav > li.active > a:hover {
-    color: @brand-secondary !important;
+    color: @brand-secondary;
 }
 
 //
@@ -143,7 +143,7 @@ Import Bootstrap LESS and Site Specific LESS
 
 .nav-mega li a:hover{ 
     background-color: @brand-info; 
-    color: #fff !important; 
+    color: #fff; 
 }
 
 .nav-mega > li > a:hover, .nav-mega > li.active > a:hover { 
@@ -187,7 +187,7 @@ Import Bootstrap LESS and Site Specific LESS
     margin: 0 auto;
     display: block; 
     padding: 6px;
-    color: #fff !important;
+    color: #fff;
     text-align: center;
     font-weight: 700;
 }
@@ -197,7 +197,7 @@ Import Bootstrap LESS and Site Specific LESS
 }
 
 .nav-mega .nav-column:hover {
-    color: #fff !important;
+    color: #fff;
     background: lighten(@brand-info, 5%);
 }
 
@@ -476,3 +476,53 @@ Import Bootstrap LESS and Site Specific LESS
 .hrd-padded-20 {
     padding: 20px;
 }
+
+
+//
+// ADMIN pages coloring 
+// --------------------------------------------------
+
+// Adjustments for admin pages
+body.admin{
+    background-color: darken(@body-bg, 40%);
+    
+    // Menu adjustments
+    
+    .navbar-nav > li.active > a {
+        border-top: 8px solid @gray-darker;   
+    }
+    
+    .nav-mega {
+        border-top: 2px solid @gray-darker;
+    }
+
+    .nav-mega li a:hover, .nav-mega li.active a:hover { 
+        background-color: @gray-lighter;
+        color: @gray-dark;
+    }
+    
+    .nav-mega li div {
+	    background: @gray-lighter;
+    }
+    
+    .nav-mega li div a{
+        color: @gray-dark !important;
+    }
+    
+    .nav-mega li div a:hover {
+        background: darken(@gray-lighter, 10%);
+
+    }
+    
+    
+    // Heading adjustments
+    h1 {
+        //color: @gray-darker;
+    }
+
+}
+
+//
+// ADMIN pages forms and warnings 
+// --------------------------------------------------
+
