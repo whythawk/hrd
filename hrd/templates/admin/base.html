@@ -1,12 +1,14 @@
-{% extends 'base.html' %}
+{% extends 'body_base.html' %}
 
 {% import '/macro/form.html' as form %}
 
 {% block menu %}
-  <a href="{{ url_for_admin('cms_list') }}">Pages</a>
-  <a href="{{ url_for_admin('category_list', cat_type='org') }}">Organisation categories</a>
-  <a href="{{ url_for_admin('category_list', cat_type='res') }}">Resource categories</a>
-  <a href="{{ url_for_admin('org_list') }}">Organisations</a>
+    <ul class="navbar-nav nav-mega">
+        {{ menu_item(_('Pages'), url_for_admin('cms_list')) }}
+        {{ menu_item(_('Organisations'), url_for_admin('org_list')) }}
+        {{ menu_item(_('Organisation categories'), url_for_admin('category_list', cat_type='org')) }}
+        {{ menu_item(_('Resource categories'), url_for_admin('category_list', cat_type='res')) }}
+    </ul>
   <br>
   {% if has_perm('translator') %}
     {% if get_admin_lang() != 'en' %}
