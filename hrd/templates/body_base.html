@@ -1,7 +1,6 @@
 {% extends 'html_base.html' %}
 {% set user = get_username() %}
 
-
 {% block page %}
 <!-- Header begins =============================================== -->
 <div class="header container red-left-border">
@@ -27,61 +26,36 @@
         <div class="navbar navbar-default navbar-static-top col-md-12 container" role="navigation">
             <div id="menu-wrapper container">
 
-                {% block menu %}
+{% block menu %}
 
-                <ul class="navbar-nav nav-mega">
-                    <li class="active">
-                        <a href="{{ url_for('cms_page2') }}">Home</a>
-                    </li>
-                    {% if user %}
-                    <li><a href="#">{{ _('Resources') }}</a>
-                    {#
-                    <li><a href="{{ '#' }}">Resources <span class="caret"></span></a>
-                        <div>
-                            <div class="nav-column col-md-2">
-                                <a href="{{ '#' }}" class="dropdown-toggle" data-toggle="dropdown">2nd level</a>
-                                <ul class="hidden">
-                                    <li><a href="#">3rd</a></li>
-                                </ul>
-                            </div>
-                            <div class="nav-column col-md-2">
-                                <a href="{{ '#' }}">2nd level link</a>
-                                <ul class="hidden">
-                                    <li><a href="#">3rd</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        </li>
-                        #}
-                    <li>
-                        <a href="{{ url_for('org_search') }}">Organizations </a>
-                    </li>
-                    {% endif %}
-                    <li><a href="{{ url_for('cms_page2', id='news') }}">News</a></li>
-                    <li><a href="{{ url_for('cms_page2', id='about') }}">About</a></li>
+    <ul class="navbar-nav nav-mega">
+        {{ menu_item(_('Home'), url_for('cms_page2')) }}
+        {% if user %}
+            {{ menu_item(_('Resources'), '#') }}
+            {{ menu_item(_('Organizations'), url_for('org_search')) }}
+        {% endif %}
+        {{ menu_item(_('News'), url_for('cms_page2', id='news')) }}
+        {{ menu_item(_('About'), url_for('cms_page2', id='about')) }}
 
     {% block user_bar %}
+
       {% if user %}
-      <li class="navbar-right"><a href="#">{{ user }}<span class="caret"></span></a>
-        <div>
-            <div class="nav-column col-md-2 navbar-right">
-                <a href="{{ url_for('logout') }}">{{ _('log out') }}</a>
-            </div>
-       <!--     <div class="nav-column col-md-2 navbar-right">
-                <a href="#">2nd level link</a>
-            </div>  -->
-        </div>
-        </li>
-        <li class="navbar-right"><a href="#">{{ _('Message board') }}</a></li>
+        {% set my_content = '<div>' +
+          sub_menu_item(_('Log out'), url_for('logout'), force_right=true) +
+          sub_menu_item(_('My details'), url_for('user_edit', id=get_user_id()), force_right=true) +
+          '</div>' %}
+        {{ menu_item(user, '#', force_right=true, content=my_content) }}
+        {{ menu_item(_('Message board'), '#', force_right=true) }}
       {% else %}
-      <li class="navbar-right"><a href="{{ url_for('login') }}">{{ _('Log in') }}</a></li>
+        {{ menu_item(_('Log in'), url_for('login'), force_right=true) }}
       {% endif %}
                 </ul>
 
     {% endblock %}
-                {% endblock %}
 
-            </div></div></div>
+{% endblock %}
+
+</div></div>
 <!-- /Nav ends =============================================== -->
 </div>
 <!-- /Header ends =============================================== -->
