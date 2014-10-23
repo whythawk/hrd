@@ -47,6 +47,13 @@ def username():
     return False
 
 
+def user_id():
+    user = request.user
+    if user:
+        return user.id
+    return False
+
+
 def has_perm(permission):
     if permission in request.permissions:
         return True
@@ -54,6 +61,22 @@ def has_perm(permission):
         return True
     return False
 
+def menu_class(href, force_right):
+    cls = []
+    if force_right:
+        cls.append('navbar-right')
+    if href[3:] == request.environ['PATH_INFO']:
+        cls.append('active')
+    if not cls:
+        return ''
+    return ' class="%s"' % ' '.join(cls)
+
+
+def sub_menu_item(text, href, force_right=False):
+    cls = 'nav-column col-md-2'
+    if force_right:
+        cls += ' navbar-right'
+    return '<div class="%s"><a href="%s">%s</a></div>' % (cls, href, text)
 
 
 hrd.app.jinja_env.globals.update(
@@ -63,11 +86,14 @@ hrd.app.jinja_env.globals.update(
     lang_html=hrd.lang_html,
     lang_pick=hrd.lang_pick,
     get_username=username,
+    get_user_id=user_id,
     lang_list=hrd.lang_list,
     current_lang=hrd.current_lang,
     current_lang_name=hrd.current_lang_name,
     current_admin_lang=hrd.current_admin_lang,
     _=_,
     has_perm=has_perm,
+    menu_class=menu_class,
+    sub_menu_item=sub_menu_item,
     debug=hrd.DEBUG,
 )

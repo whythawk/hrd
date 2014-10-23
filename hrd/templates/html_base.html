@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+
+{%- macro menu_item(text, href, force_right=false, content='') %}
+  <li{{ menu_class(href, force_right)|safe }}>
+  <a href="{{ href }}">{{ text }}{% if content %}<span class="caret"></span>{% endif %}</a>
+  {{ content|safe }}</li>
+{%- endmacro -%}
+
 <html {{ lang_html()|safe }}>
   <head>
     <meta charset="utf-8">
