@@ -17,6 +17,18 @@
       {{ form.submit(label='Save') }}
     </form>
  <script type="text/javascript">
+     CKEDITOR.config.toolbar = [
+	{ name: 'document', groups: [ 'mode', 'document', 'doctools' ], items: [  'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates' ] },
+	{ name: 'clipboard', groups: [ 'clipboard', 'undo' ], items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+	{ name: 'editing', groups: [ 'find', 'selection' ], items: [ 'Find', 'Replace', '-', 'SelectAll'] },
+	{ name: 'forms', items: [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField' ] },
+	{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
+	{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language' ] },
+	{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
+	{ name: 'insert', items: [ 'Table', 'HorizontalRule', 'SpecialChar' ] },
+	{ name: 'styles', items: [ 'Format'] },
+	{ name: 'tools', items: [ 'Source', '-','Maximize'] }
+];
      CKEDITOR.replace( 'content', {height: '400px'} );
 </script>
 {% endblock %}
