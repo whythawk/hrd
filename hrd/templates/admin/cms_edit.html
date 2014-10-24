@@ -6,7 +6,7 @@
 <script type="text/javascript" src="/static/ckeditor/ckeditor.js"></script>
 <div>
   {{ trans.content|safe }}
-<div>
+</div>
     <form method="POST" role="form">
       {{ form.input('title', label='Title', value=page.title, placeholder='Title', trans=trans) }}
       {{ form.textarea('content', label='Content', value=page.content) }}
