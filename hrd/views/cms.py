@@ -6,7 +6,7 @@ from hrd.models import Cms
 
 
 @app.route('/admin')
-def index():
+def admin():
     return render_template('index.html')
 
 
