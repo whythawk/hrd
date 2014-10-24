@@ -35,8 +35,8 @@
         {% endif %}
         {{ menu_item(_('News'), url_for('cms_page2', id='news')) }}
         {{ menu_item(_('About Us'), url_for('cms_page2', id='about')) }}
-        {{ menu_item(_('HRDs'), url_for('cms_page2', id='about')) }}
-        {{ menu_item(_('Get involved'), url_for('cms_page2', id='about')) }}
+        {{ menu_item(_('HRDs'), url_for('cms_page2', id='hrds')) }}
+        {{ menu_item(_('Get involved'), url_for('cms_page2', id='get_involved')) }}
 
     {% block user_bar %}
         {{ user_menu() }}
