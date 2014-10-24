@@ -9,8 +9,8 @@
 {#
           sub_menu_item(_('My details'), url_for('user_edit', id=get_user_id()), force_right=true) +
 #}
-{%- macro user_menu(show_extras=true) %}
       {% set user = get_username() %}
+{%- macro user_menu(show_extras=true) %}
       {% if user %}
         {% set my_content = '<div>' +
           sub_menu_item(_('Log out'), url_for('logout'), force_right=true) +
