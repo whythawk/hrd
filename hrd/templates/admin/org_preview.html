@@ -5,8 +5,67 @@
 {% block name %}{{ org.title }}{% endblock %}
 
 {% block content %}
-<h1>{{ org.name }}</h1>
-<p>{{ org.description }}</p>
+        <h1>{{ org.name }}<br /><br /></h1>
+        <div class="row">
+            <!-- Organization logo block begins ============================= -->
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="org-logo-col blue-left-border hrd-padded-20">
+                    <img src="/static/images/logo.png" class="img-responsive" alt="Logo" />
+                </div>
+                <!-- /Organization logo block ends ============================= -->
+                <!-- Organization contacts column begins ============================= -->
+                <div class="contact-details-col blue-left-border grey-panel-bkg hrd-padded-20">
+                    <h3 class=""><a href="#" title="">{{ _('Contacts') }}</a></h3>
+                    <p class=""><strong>{{ _('Address of organisation') }}</strong><br />
+                        <span style="white-space: pre-line">{{ org.address }}</span>
+                        </p>
+                    <p class=""><strong>{{ _('Contact person') }}</strong><br />
+                        {{ org.contact }}
+                        </p>
+                    <p class=""><strong>{{ _('Telephone number') }}</strong><br />
+                        {{ org.phone }}
+                        </p>
+                    <p class=""><strong>{{ _('E-mail address') }}</strong><br />
+                        {{ org.email }}
+                        </p>
+                    <p class="" style="word-wrap: break-word;"><strong>{{ _('PGP key') }}</strong><br />
+                        {{ org.pgp_key }}
+                        </p>
+                    <p class=""><strong>{{ _('Website and log of the organisation') }}</strong><br />
+                        {{ org.website }}
+                        </p>
+                </div>
+                <!-- /Organization contacts column ends ============================= -->
+            </div>
+            <!-- Organization description column begins ============================= -->
+            <div class="org-description-col col-xs-12 col-sm-6 col-md-4">
+                <h2>{{ _('Description') }}<br /><br /></h2>
+                <span style="white-space: pre-line">{{ org.description }}</span>
+            </div>
+            <!-- /Organization description column ends ============================= -->
+            <!-- Organization detail column begins ============================= -->
+            <div class="org-detail-col col-xs-12 col-sm-6 col-md-4">
+                <h2>{{ _('Detail') }}<br /><br /></h2>
+                <p><strong>Type of organisation</strong><br />
+                    {% block orgType %}Professional Association{% endblock %}</p>
+                <p><strong>Location of HRDs</strong><br />
+                    {% block orgLoc %}South America, Central America &amp; Mexico, Caribbean, North America, Southern Africa, North Africa, East/Horn of Africa, West Africa, Central Africa, Europe, Central Asia, South Asia Southeast Asia, Hong Kong, East Asia, Middle East, Oceania{% endblock %}</p>
+                <p><strong>Location of relocation programme</strong><br />
+                    {% block progLoc %}Europe, USA{% endblock %}</p>
+                <p><strong>Types of HRDs</strong><br />
+                    {% block hrdType %}Journalists, Scholars, Writers{% endblock %}</p>
+                <p><strong>Language of programme</strong><br />
+                    {% block progLang %}English, French{% endblock %}</p>
+                <p><strong>Family members</strong><br />
+                    {% block familyMembs %}Yes{% endblock %}</p>
+                <p><strong>Duration of relocation</strong><br />
+                    {% block progDuration %}6 to 12 months{% endblock %}</p>
+                <p><strong>Emergency assistance</strong><br />
+                    {% block emergencyAssist %}No{% endblock %}</p>
+            </div>
+            <!-- /Organization detail column ends ============================= -->
+        </div> <!-- /row -->
+
       <div>
       {% if org.status == 'publish' %}
           {{ form.action('Edit', url_for_admin('org_reedit', id=org.org_id)) }}
