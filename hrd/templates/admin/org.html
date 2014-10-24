@@ -2,10 +2,9 @@
 
 {% block title %}org.title{% endblock %}
 
+{% block container_class %}org-content{% endblock %}
+
 {% block content %}
-<!-- Organization content body begins ============================= -->
-<div class="container org-content">
-    <div class="panel col-xs-12">
         <h1>{{ org.name }}<br /><br /></h1>
         <div class="row">
             <!-- Organization logo block begins ============================= -->
@@ -66,7 +65,5 @@
             </div>
             <!-- /Organization detail column ends ============================= -->
         </div> <!-- /row -->
-    </div> <!-- /panel -->
-</div> <!-- /container -->
 <!-- /Organization content body ends ===================================== -->
 {% endblock %}

@@ -49,8 +49,12 @@
 </div>
 <!-- /Header ends =============================================== -->
 
-{% block content %}
-{% endblock %}
+<div class="container {% block container_class %}{% endblock %}">
+    <div class="panel col-xs-12">
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
 
 <!-- Footer begins ========================================== -->
 <div class=" container footer">

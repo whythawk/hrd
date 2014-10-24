@@ -2,10 +2,9 @@
 
 {% import '/macro/form.html' as form %}
 
+{% block container_class %}search-content{% endblock %}
 
 {% block content %}
-<div class="container search-content">
-    <div class="panel col-xs-12">
         <h1>{{ _('Search: Member organizations') }}<br /><br /></h1>
         <div class="row">
             <!-- Search filter column begins ============================= -->
@@ -86,6 +85,4 @@
             </div>
             <!-- Search results column ends ============================= -->
         </div> <!-- /row -->
-    </div> <!-- /panel -->
-</div> <!-- /container -->
 {% endblock %}
