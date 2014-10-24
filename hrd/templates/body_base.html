@@ -1,5 +1,4 @@
 {% extends 'html_base.html' %}
-{% set user = get_username() %}
 
 {% block page %}
 <!-- Header begins =============================================== -->
@@ -38,20 +37,9 @@
         {{ menu_item(_('About Us'), url_for('cms_page2', id='about')) }}
         {{ menu_item(_('HRDs'), url_for('cms_page2', id='about')) }}
         {{ menu_item(_('Get involved'), url_for('cms_page2', id='about')) }}
+
     {% block user_bar %}
-
-      {% if user %}
-        {% set my_content = '<div>' +
-          sub_menu_item(_('Log out'), url_for('logout'), force_right=true) +
-          sub_menu_item(_('My details'), url_for('user_edit', id=get_user_id()), force_right=true) +
-          '</div>' %}
-        {{ menu_item(user, '#', force_right=true, content=my_content) }}
-        {{ menu_item(_('Message board'), '#', force_right=true) }}
-      {% else %}
-        {{ menu_item(_('Log in'), url_for('login'), force_right=true) }}
-      {% endif %}
-                </ul>
-
+        {{ user_menu() }}
     {% endblock %}
 
 {% endblock %}

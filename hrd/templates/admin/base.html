@@ -7,8 +7,14 @@
         {{ menu_item(_('Pages'), url_for_admin('cms_list')) }}
         {{ menu_item(_('Organisations'), url_for_admin('org_list')) }}
         {{ menu_item(_('Organisation categories'), url_for_admin('category_list', cat_type='org')) }}
-        {{ menu_item(_('Resource categories'), url_for_admin('category_list', cat_type='res')) }}
+        {#  {{ menu_item(_('Resource categories'), url_for_admin('category_list', cat_type='res')) }}
+        #}
+    {% block user_bar %}
+        {{ user_menu(show_extras=false) }}
+    {% endblock %}
+
     </ul>
+    {#
   <br>
   {% if has_perm('translator') %}
     {% if get_admin_lang() != 'en' %}
@@ -19,7 +25,8 @@
       {% if code != 'en' %}
         <li><a href="?lang={{ code }}" lang="{{ code }}" dir="{{ dir }}">{{ lang }}</a></li>
       {% endif %}
-    {% endfor %}
+      {% endfor %}
     </ul>
   {% endif %}
+      #}
 {% endblock %}
