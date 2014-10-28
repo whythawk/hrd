@@ -3626,7 +3626,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav-tabs > li.active > a:hover,
 .nav-tabs > li.active > a:focus {
   color: #555555;
-  background-color: #e9e9e9;
+  background-color: #ffffff;
   border: 1px solid #dddddd;
   border-bottom-color: transparent;
   cursor: default;
@@ -3672,7 +3672,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   .nav-tabs.nav-justified > .active > a,
   .nav-tabs.nav-justified > .active > a:hover,
   .nav-tabs.nav-justified > .active > a:focus {
-    border-bottom-color: #be1939;
+    border-bottom-color: transparent;
   }
 }
 .nav-pills > li {
@@ -3740,7 +3740,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   .nav-tabs-justified > .active > a,
   .nav-tabs-justified > .active > a:hover,
   .nav-tabs-justified > .active > a:focus {
-    border-bottom-color: #be1939;
+    border-bottom-color: transparent;
   }
 }
 .tab-content > .tab-pane {
@@ -6544,4 +6544,15 @@ body.admin .nav-mega li div a {
 }
 body.admin .nav-mega li div a:hover {
   background: #d5d5d5;
+}
+.nav-tabs li a:hover,
+.nav-tabs li.active a:hover {
+  background-color: #fff;
+  color: #333333;
+}
+.nav-tabs {
+  margin-bottom: 20px;
+}
+.no-translation a {
+  color: #cccccc;
 }
