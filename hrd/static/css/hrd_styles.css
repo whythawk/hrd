@@ -6339,7 +6339,7 @@ button.close {
   margin-left: 30px;
 }
 .sitetitle {
-  margin-top: 40px;
+  margin-top: 20px;
   margin-left: -20px;
   font-weight: 500;
 }
@@ -6555,4 +6555,26 @@ body.admin .nav-mega li div a:hover {
 }
 .no-translation a {
   color: #cccccc;
+}
+.org-cat-list > ul {
+  padding: 0;
+  margin: 0;
+}
+.org-cat-top-level {
+  list-style-type: none;
+  margin: 0 0 20px 0 !important;
+}
+.org-cat-top-level ul {
+  display: block;
+  padding: 0;
+}
+.org-cat-top-level ul li {
+  list-style-type: none;
+  background: -5px 24px no-repeat url(../../static/images/org-list-heirarchy.png );
+  padding: 0 0 7px 40px;
+  border-bottom: 1px #eeeeee solid;
+}
+.org-cat-top-level ul li:last-child {
+  background: -5px 24px no-repeat url(../../static/images/org-list-heirarchy-last.png );
+  border-bottom: none;
 }
