@@ -7,9 +7,9 @@
 
 {% block user_bar %}{% endblock %}
 
+{% block container_class %}login-content{% endblock %}
+
 {% block content %}
-<div class="container login-content">
-    <div class="panel col-xs-12">
         <h1>{{ _('Log in') }}<br /><br /></h1>
         <div class="row col-xs-12 col-md-4 col-md-offset-4 blue-left-border hrd-padded-20 red-panel-bkg login-form"><form role="form" method="POST">
             <div class="form-group">
@@ -21,6 +21,4 @@
             {{ form.submit(label=_('Log in')) }}
             </form>
         </div>
-    </div>
-</div>
 {% endblock %}
