@@ -6412,14 +6412,27 @@ button.close {
 }
 .search-filter-col label {
   display: block;
-  margin-left: 0;
+  margin: 2px 0;
+  border-bottom: 1px dotted #e3274c;
+  font-size: 12px;
+  position: relative;
+}
+.search-filter-item {
+  display: block;
+  margin: 0 30px 0 0;
+}
+.search-filter-col input[type=checkbox] {
+  position: absolute;
+  top: -2px;
+  right: 0;
+}
+.search-filter-col label.last {
+  border-bottom: none;
 }
 .search-filter-col details {
   display: block;
   border-bottom: 1px solid #fff;
-}
-.search-filter-col details.first {
-  border-bottom: none;
+  margin: 0 15px;
 }
 .search-filter-col h3 {
   margin-top: 40px;
@@ -6427,8 +6440,7 @@ button.close {
 .search-filter-title {
   font: "Museo Sans", Helvetica, Arial, sans-serif;
   font-size: 18px;
-  margin-bottom: 10px;
-  margin-top: 5px;
+  margin: 7px 0 10px 0;
   cursor: pointer;
 }
 .search-filter-col input[type='checkbox'] {
