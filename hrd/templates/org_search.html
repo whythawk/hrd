@@ -6,21 +6,24 @@
 
 {% block content %}
         <h1>{{ _('Search: Member organizations') }}<br /><br /></h1>
-        <div class="row">
+        <div class="row col-xs-12">
             <!-- Search filter column begins ============================= -->
             <div class="search-filter-col blue-left-border red-panel-bkg col-xs-12 col-sm-6 col-md-4 hrd-padded-20">
-                <div class="column-label col-xs-4">Organizations</div>
+                <div class="column-label">Organizations</div>
                 <h3 class="">Filter list...</h3>
-                <div class="filter-reset col-xs-8 pull-right text-right"><a href="">Select all</a> | <a href="">Select none</a></div>
+                <div class="clearfix">
+                <div class="filter-reset pull-right text-right"><a href="">Select all</a> | <a href="">Select none</a></div>
+                </div>
                 <form action="" method="">
 
 {% for cat in cats if cat.active %}
                     <div class="row">
-                        <details class="{% if loop.index == 1 %}first{% elif loop.index == loop.length %}last{% endif %}" open>
-                        <summary class="search-filter-title col-xs-12">{{ cat.title }}</summary>
+                        <details class="{% if loop.index == 1 %}first{% elif loop.index == loop.length %}last{% endif %}" open="open">
+                        <summary class="search-filter-title">{{ cat.title }}</summary>
         {% for code in cat.codes if code.active %}
-                            <label class="col-xs-5">
-                                <input type="checkbox" id="{{ code.code }}" value="true">{{ code.title }}
+                            <label>
+                                <input class="" type="checkbox" id="{{ code.code }}" value="true">
+                                <div class="search-filter-item">{{ code.title }}</div>
                             </label>
         {% endfor %}
                         </details>
@@ -68,7 +71,7 @@
                         <!-- /Search meta tags ends ============================= -->
                     </div>
                     <span class="clearfix borda"></span>
-                    <div class="col-md-2 view-detail pull-right"><a href="{{ url_for('org', id=org.org_id) }}" title="View detail">{{ _("Go to organisation's page") }}</a></div>
+                    <div class="col-md-5 view-detail pull-right"><a href="{{ url_for('org', id=org.org_id) }}" title="View detail">{{ _("Go to organisation's page") }}</a></div>
                     <span class="clearfix borda"></span>
                 </article>
                 <!-- /Search result row ends ============================= -->
