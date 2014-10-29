@@ -6419,12 +6419,12 @@ button.close {
 }
 .search-filter-item {
   display: block;
-  margin: 0 30px 0 0;
+  margin: 0 0 0 30px;
 }
 .search-filter-col input[type=checkbox] {
   position: absolute;
   top: -2px;
-  right: 0;
+  left: 0;
 }
 .search-filter-col label.last {
   border-bottom: none;
