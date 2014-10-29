@@ -5,16 +5,9 @@
 {% block title %}{{ page.title }}{% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-sm-12 col-md-8">
-            <h1>{{ page.title }}<br /><br /></h1>
-              {{ page.content|safe }}
-        </div>
-        <div class="col-sm-12 col-md-4">
-            <img src="/static/images/panos_00186767_283x271px.jpg" width="100%" height="auto" class="homepage_image blue-left-border" alt="homepage_image">
-        </div>
-    </div>
-      <div>
+      <div class="well clearfix">
+          <h3 class="preview-title">Page preview</h3>
+      <div class="pull-right">
       {% if page.status == 'publish' %}
           {{ form.action('Edit', url_for_admin('cms_reedit', id=page.page_id)) }}
       {% else %}
@@ -28,4 +21,14 @@
           {{ form.action('Publish', url_for_admin('cms_state', state='publish', id=page.page_id)) }}
       {% endif %}
       </div>
+      </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-8">
+            <h1>{{ page.title }}<br /><br /></h1>
+              {{ page.content|safe }}
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <img src="/static/images/panos_00186767_283x271px.jpg" width="100%" height="auto" class="homepage_image blue-left-border" alt="homepage_image">
+        </div>
+    </div>
 {% endblock %}
