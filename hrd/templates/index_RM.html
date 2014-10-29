@@ -192,81 +192,83 @@
             <li class="last"><a href="#">Here</a></li>
         </ol>
         <!-- /Breadcrumbs end ============================= -->
-        <div class="row">
+        <div class="row col-xs-12">
             <!-- Search filter column begins ============================= -->
             <div class="search-filter-col blue-left-border red-panel-bkg col-xs-12 col-sm-6 col-md-4 hrd-padded-20">    
-                <div class="column-label col-xs-4">Organizations</div>
+                <div class="column-label">Organizations</div>
                 <h3 class="">Filter list...</h3>
-                <div class="filter-reset col-xs-8 pull-right text-right"><a href="">Select all</a> | <a href="">Select none</a></div>
+                <div class="filter-reset pull-right text-right"><a href="">Select all</a> | <a href="">Select none</a></div>
                 <form action="" method="">
+                    
                   {% for cat in cats %}
                     <div class="row">
                         <details class="first" open>
-                            <summary class="search-filter-title col-xs-12">Type of organisation</summary>
-                            <label class="col-xs-5">
-                                <input type="checkbox" id="Checkbox1" checked value="option1">Option 1
+                            <summary class="search-filter-title">Type of organisation</summary>
+                            <label class="">
+                                <div class="search-filter-item">Long Option 1 over 3 lines. Long Option 1 over 3 lines. Long Option 1 over 3 lines. Long Option 1 over 3 lines. Long Option 1 over 3 lines.</div> 
+                            <input type="checkbox" class="pull-right" id="Checkbox1" checked value="option1"></label>
+                            <label class="">
+                                <div class="search-filter-item">Long Option 2 over 2 lines. Long Option 2 over 2 lines. Long Option 2 over 2 lines.</div> <input type="checkbox" class="pull-right" id="Checkbox2" checked value="option2">
                             </label>
-                            <label class="col-xs-5">
-                                <input type="checkbox" id="Checkbox2" checked value="option2">Option 2
+                            <label class="">
+                                <div class="search-filter-item">Option 3</div> <input type="checkbox" class="pull-right" id="Checkbox3" checked value="option3">
                             </label>
-                            <label class="col-xs-5">
-                                <input type="checkbox" id="Checkbox3" checked value="option3">Option 3
+                            <label class="">
+                                <div class="search-filter-item">Option 4</div> <input type="checkbox" class="pull-right" id="Checkbox4" checked value="option4">
                             </label>
-                            <label class="col-xs-5">
-                                <input type="checkbox" id="Checkbox4" checked value="option4">Option 4
+                            <label class="">
+                                <div class="search-filter-item">Option 5</div> <input type="checkbox" class="pull-right" id="Checkbox5" checked value="option5">
                             </label>
-                            <label class="col-xs-5">
-                                <input type="checkbox" id="Checkbox5" checked value="option5">Option 5
-                            </label>
-                            <label class="col-xs-5">
-                                <input type="checkbox" id="Checkbox6" checked value="option3">Option 6
+                            <label class="last">
+                                <div class="search-filter-item">Option 6</div> <input type="checkbox" class="pull-right" id="Checkbox6" checked value="option6">
                             </label>
                         </details>
                     </div>
                 {% endfor %}
+                    
                     <div class="row">
                         <details open>
-                            <summary class="search-filter-title col-xs-12">Type of HRD</summary>
-                            <label class="col-xs-5">
-                                <input type="checkbox" id="Checkbox1" checked value="option1">Option 1
+                            <summary class="search-filter-title">Type of HRD</summary>
+                            <label>
+                                Option 1 <input type="checkbox" class="pull-right" id="Checkbox1" checked value="option1">
                             </label>
-                            <label class="col-xs-5">
-                                <input type="checkbox" id="Checkbox2" checked value="option2">Option 2
+                            <label>
+                                Option 2 <input type="checkbox" class="pull-right" id="Checkbox2" checked value="option2">
                             </label>
-                            <label class="col-xs-5">
-                                <input type="checkbox" id="Checkbox3" checked value="option3">Option 3
+                            <label>
+                                Option 3 <input type="checkbox" class="pull-right" id="Checkbox3" checked value="option3">
                             </label>
-                            <label class="col-xs-5">
-                                <input type="checkbox" id="Checkbox4" checked value="option4">Option 4
+                            <label>
+                                Option 4 <input type="checkbox" class="pull-right" id="Checkbox4" checked value="option4">
                             </label>
-                            <label class="col-xs-5">
-                                <input type="checkbox" id="Checkbox5" checked value="option5">Option 5
+                            <label>
+                                Option 5 <input type="checkbox" class="pull-right" id="Checkbox5" checked value="option5">
                             </label>
-                            <label class="col-xs-5">
-                                <input type="checkbox" id="Checkbox6" checked value="option3">Option 6
+                            <label class="last">
+                                Option 6 <input type="checkbox" class="pull-right" id="Checkbox6" checked value="option3">
                             </label>
                         </details>
                     </div>
                     <div class="row">
                         <details class="last" open>
-                            <summary class="search-filter-title col-xs-12">Location of programme</summary>
-                            <label class="col-xs-5">
-                                <input type="checkbox" id="Checkbox1" checked value="option1">Option 1
+                            <summary class="search-filter-title">Location of programme</summary>
+                            <label>
+                                Option 1 <input type="checkbox" class="pull-right" id="Checkbox1" checked value="option1">
                             </label>
-                            <label class="col-xs-5">
-                                <input type="checkbox" id="Checkbox2" checked value="option2">Option 2
+                            <label>
+                                Option 2 <input type="checkbox" class="pull-right" id="Checkbox2" checked value="option2">
                             </label>
-                            <label class="col-xs-5">
-                                <input type="checkbox" id="Checkbox3" checked value="option3">Option 3
+                            <label>
+                                Option 3 <input type="checkbox" class="pull-right" id="Checkbox3" checked value="option3">
                             </label>
-                            <label class="col-xs-5">
-                                <input type="checkbox" id="Checkbox4" checked value="option4">Option 4
+                            <label>
+                                Option 4 <input type="checkbox" class="pull-right" id="Checkbox4" checked value="option4">
                             </label>
-                            <label class="col-xs-5">
-                                <input type="checkbox" id="Checkbox5" checked value="option5">Option 5
+                            <label>
+                                Option 5 <input type="checkbox" class="pull-right" id="Checkbox5" checked value="option5">
                             </label>
-                            <label class="col-xs-5">
-                                <input type="checkbox" id="Checkbox6" checked value="option3">Option 6
+                            <label class="last">
+                                Option 6 <input type="checkbox" class="pull-right" id="Checkbox6" checked value="option3">
                             </label>
                         </details>
                     </div>
