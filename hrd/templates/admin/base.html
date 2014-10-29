@@ -2,6 +2,14 @@
 
 {% import '/macro/form.html' as form %}
 
+{% block body_class %} class="admin"{% endblock %}
+
+{% block eu_logo %}
+    <div class="hidden-xs col-sm-3 col-md-3 pull-right">
+        <h3>Admin Area</h3>
+    </div>
+{% endblock %}
+
 {% block menu %}
     <ul class="navbar-nav nav-mega">
         {{ menu_item(_('Pages'), url_for_admin('cms_list')) }}
