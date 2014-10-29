@@ -6204,6 +6204,10 @@ button.close {
 .navbar-nav > li.active > a:hover {
   color: #163f92;
 }
+.btn-secondary {
+  background: #163f92;
+  color: #fff;
+}
 /* Reset */
 .nav-mega,
 .nav-mega a,
