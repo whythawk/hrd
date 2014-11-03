@@ -11,10 +11,10 @@
 <h4>{{ _('Create a new page') }}</h4>
       {{ form.action('New page', url_for('cms_new'), class='btn-primary btn-success pull-right') }}
         </div>
-
+    <h2>Edit existing content<br /></h2>
   {% for page in pages %}
     <div class="well col-xs-12" id="pages">
-        <h4>{{ page.title }} <small>{{ _('Publication status') }}</small></h4>
+        <h4>{{ page.title }} <small>{{ page.status }}</small></h4>
         <a class="btn btn-default btn-sm" role="button" href="#"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
         <a class="btn btn-default btn-sm " role="button" href="#"><span class="glyphicon glyphicon-eye-open"></span> Preview</a>
         <a class="btn btn-default btn-sm btn-secondary" role="button" href="#">Live content</a>
