@@ -3,6 +3,7 @@
 {% block title %}Categories{% endblock %}
 
 {% block content %}
+<<<<<<< HEAD
 
 <!-- Tab content pane begins =============================================== -->
 <div id="cats">
@@ -73,11 +74,28 @@
     {% for cat in all %}
     <li>
         {{ cat.title }}
+=======
+  {% if lang =='en' %}
+  <div class="well new-page col-xs-12">
+<h4>{{ _('Create a new category') }}</h4>
+    {{ form.action('New category', url_for('category_new', cat_type=cat_type), class='btn-primary btn-success pull-right') }}
+        </div>
+
+  {% endif %}
+
+    {% for cat in all %}
+
+    <div class="well col-xs-12" id="pages">
+        <h4>{{ cat.title }}
+>>>>>>> b258e6cfd89a661150be4c5aa7c4f631ca0abc3d
         {% if not cat.active %}
         <span class="bg-warning">Inactive</span>
         {% endif %}
-        {{ form.action_link('edit', url_for_admin('category_edit', id=cat.id, cat_type=cat_type)) }}
+        </h4>
+
+        {{ form.action_link('Edit', url_for_admin('category_edit', id=cat.id, cat_type=cat_type), icon='pencil') }}
         {% if lang =='en' %}
+<<<<<<< HEAD
         {{ form.action('New code', url_for('code_new', category_id=cat.category_id, cat_type=cat_type), class='btn-primary') }}
         {% endif %}
         {% if lang =='en' %}
@@ -95,6 +113,29 @@
             {{ form.action('Delete', url_for('code_delete', code_id=code.code, cat_type=cat_type), class='btn-danger', onsubmit='return confirm("Are you sure you want to delete this code?\\n\\nThis action cannot be undone")') }}
             {% endif %}
         </li>
+=======
+          {{ form.action('New code', url_for('code_new', category_id=cat.category_id, cat_type=cat_type), class='btn-primary btn-success') }}
+        {% endif %}
+          {% if lang =='en' %}
+            {{ form.action('Delete', url_for('category_delete', category_id=cat.category_id, cat_type=cat_type), class='btn-danger pull-right pull-right pull-right pull-right pull-right pull-right pull-right pull-right pull-right', onsubmit='return confirm("Are you sure you want to delete this category?\\n\\nThis action cannot be undone")') }}
+          {% endif %}
+
+    </div>
+
+        {% for code in cat.codes %}
+
+    <div class="well col-xs-12 col-md-11 pull-right" id="pages">
+        <h4>{{ code.title }}
+        {% if not code.active %}
+          <span class="bg-warning">Inactive</span>
+        {% endif %}
+        </h4>
+            {{ form.action_link('edit', url_for_admin('code_edit', id=code.id, cat_type=cat_type), icon='pencil') }}
+            {% if lang =='en' %}
+              {{ form.action('Delete', url_for('code_delete', code_id=code.code, cat_type=cat_type), class='btn-danger pull-right', onsubmit='return confirm("Are you sure you want to delete this code?\\n\\nThis action cannot be undone")') }}
+            {% endif %}
+          </div>
+>>>>>>> b258e6cfd89a661150be4c5aa7c4f631ca0abc3d
         {% endfor %}
 
         {% for code in m_codes[cat.category_id] %}
@@ -106,10 +147,17 @@
             {{ form.action('Create', url_for_admin('code_trans', id=code.id, cat_type=cat_type)) }}
         </li>
         {% endfor %}
+<<<<<<< HEAD
     </ul>
     {% endfor %}
 
     {% for cat in missing_cat %}
+=======
+  {% endfor %}
+
+  <ul>
+  {% for cat in missing_cat %}
+>>>>>>> b258e6cfd89a661150be4c5aa7c4f631ca0abc3d
     <li>
         {{ cat.title }}
         <span class="bg-danger">Missing</span>
