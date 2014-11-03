@@ -3,14 +3,20 @@
 {% block title %}Categories{% endblock %}
 
 {% block content %}
-  <h1>Categories</h1>
+  <h1>Edit: Category<br /><br /></h1>
   <form role="form" method="POST">
-    {{ form.input('title', label='Title', value=category.title, placeholder='Title', trans=trans) }}
-    {{ form.textarea('description', label='Description', value=category.description, trans=trans) }}
-    {% if not trans %}
-      {{ form.input('order', label='Order', value=category.order) }}
-      {{ form.checkbox('active', label='Active', value=category.active) }}
-    {% endif %}
-    {{ form.submit(label='Save') }}
+    {# FIXME Needs lang and dir coding in #}
+    <div class="col-xs-12 col-md-9" lang="en" dir="ltr">
+        {{ form.input('title', label='Title', value=category.title, placeholder='Title', trans=trans) }}
+        {{ form.textarea('description', label='Description', value=category.description, trans=trans) }}
+        {% if not trans %}
+            {{ form.input('order', label='Order', value=category.order) }}
+            {{ form.checkbox('active', label='Active', value=category.active) }}
+        {% endif %}
+    </div>
+    {# FIXME Needs lang and dir coding in #}
+    <div class="col-xs-12 col-md-3" lang="en" dir="ltr">
+          {{ form.submit(label='Save') }}
+    </div>
   </form>
 {% endblock %}
