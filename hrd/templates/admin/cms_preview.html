@@ -5,7 +5,8 @@
 {% block title %}{{ page.title }}{% endblock %}
 
 {% block content %}
-      <div class="well clearfix">
+ {{ form.translations_bar(translations) }}
+      <div class="well col-xs-12">
           <h3 class="preview-title">Page preview</h3>
           <a href="{{ url_for_admin('cms_list') }}">Pages list</a>
       <div class="pull-right">

@@ -55,7 +55,9 @@ def cms_edit(id):
                                     current=True).first()
     else:
         trans = {}
-    return render_template('admin/cms_edit.html', page=page, trans=trans)
+    translations = get_trans(id)
+    return render_template('admin/cms_edit.html', page=page, trans=trans,
+                          translations=translations)
 
 
 @app.route('/admin/cms_reedit/<id>', methods=['POST'])
@@ -211,3 +213,7 @@ def cms_list():
         missing = missing.filter(db.not_(Cms.page_id.in_(trans)))
     return render_template('admin/cms_list.html', pages=pages, lang=lang,
                            missing=missing, trans=trans)
+
+def get_trans(id):
+    rows = db.session.query(Cms.lang).filter_by(page_id=id)
+    return [row.lang for row in rows]
