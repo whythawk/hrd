@@ -12,7 +12,7 @@
   {% endif %}
 
   {% for page in pages %}
-    <div class="well col-xs-12" id="pages">
+    <div class="well col-xs-12">
         <h4>{{ page.title }} <small>{{ page.status }}</small></h4>
       {% if page.status == 'edit' %}
         {{ form.action_link('Edit', url_for_admin('cms_edit', id=page.page_id, icon='pencil')) }}
