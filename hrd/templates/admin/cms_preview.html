@@ -7,6 +7,7 @@
 {% block content %}
       <div class="well clearfix">
           <h3 class="preview-title">Page preview</h3>
+          <a href="{{ url_for_admin('cms_list') }}">Pages list</a>
       <div class="pull-right">
       {% if page.status == 'publish' %}
           {{ form.action('Edit', url_for_admin('cms_reedit', id=page.page_id)) }}
@@ -22,6 +23,7 @@
       {% endif %}
       </div>
       </div>
+
     <div class="row">
         <div class="col-sm-12 col-md-8">
             <h1>{{ page.title }}<br /><br /></h1>
