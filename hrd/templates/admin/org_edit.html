@@ -1,17 +1,24 @@
 {% extends 'admin/base.html' %}
 
-{% block title %}Organisation{% endblock %}
+{% block title %}Organization{% endblock %}
 
 {% block content %}
+    <h1>Edit: Organization<br /><br /></h1>
     <form method="POST" role="form">
-      {{ form.input('name', label='Name', value=org.name, trans=trans) }}
+    {# FIXME Needs lang and dir coding in #}
+      <div class="col-xs-12 col-md-9" lang="en" dir="ltr">
+          {{ form.input('name', label='Name', value=org.name, trans=trans) }}
+          
+          {# FIXME Add rows attribute to textareas eg. <textarea rows="10"></textarea> #}
+          {# FIXME make description textarea 10 rows #}
       {{ form.textarea('description', label='Description', value=org.description, trans=trans) }}
     {% if not trans %}
-
+          {# FIXME make address textarea 5 rows #}
       {{ form.textarea('address', label='Address', value=org.address, trans=trans) }}
       {{ form.input('contact', label='Contact', value=org.contact, trans=trans) }}
       {{ form.input('phone', label='Phone', value=org.phone, trans=trans) }}
       {{ form.input('email', label='Email', value=org.email, trans=trans) }}
+          {# FIXME make PGP key textarea 5 rows #}
       {{ form.textarea('pgp_key', label='Pgp key', value=org.pgp_key, trans=trans) }}
       {{ form.input('website', label='Website', value=org.website, trans=trans) }}
 
@@ -22,8 +29,12 @@
           {{ form.checkbox(code.code, label=code.title, value=code.code in current) }}
         {% endfor %}
       {% endfor %}
-    {% endif %}
-      {{ form.submit(label='Save') }}
+          {% endif %}
+        </div>
+        <div class="col-xs-12 col-md-3" lang="en" dir="ltr">
+        {# FIXME Insert button classes: btn btn-primary pull-right #}
+          {{ form.submit(label='Save ') }}
+        </div>
     </form>
   {{ form.code_list(all) }}
 {% endblock %}
