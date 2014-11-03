@@ -56,8 +56,10 @@
 {% endmacro %}
 
 
-{% macro action_link(label='', url='') %}
-  <a class="btn btn-default btn-sm " role="button" href="{{ url }}">{{ label }}</a>
+{% macro action_link(label='', url='', icon='') %}
+<a class="btn btn-default btn-sm " role="button" href="{{ url }}">
+  {% if icon %}<span class="glyphicon glyphicon-{{ icon }}"></span> {% endif %}
+  {{ label }}</a>
 {% endmacro %}
 
 {% macro trans_disp(trans, field) %}
