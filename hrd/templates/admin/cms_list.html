@@ -34,9 +34,8 @@
   {% endfor %}
 
   {% for page in missing %}
-    <div>
-      {{ page.title }}
-      <span class="bg-danger">Missing</span>
+    <div class="alert col-xs-12 alert-danger">
+        <h4>{{ page.title }} <small>Missing</small></h4>
       {{ form.action('Create', url_for_admin('cms_trans', id=page.page_id)) }}
     </div>
   {% endfor %}
