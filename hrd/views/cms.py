@@ -27,11 +27,16 @@ def cms_edit(id):
     lang = get_admin_lang()
     permission_content(lang)
     page = Cms.query.filter_by(page_id=id, lang=lang, current=True)
-    page = page.filter(Cms.status != 'publish').first()
+    page = page.first()
+    if not page and lang != 'en':
+        page = Cms.query.filter_by(page_id=id, lang='en', current=True)
+        if not page:
+            abort(404)
+        return cms_trans(id=id)
     if not page:
         abort(404)
     if page.status == 'publish':
-        return redirect(url_for_admin('cms_reedit', id=id), code=307)
+        return cms_reedit(id=id)
     if request.method == 'POST':
         page.title = get_str('title')
         page.content = get_str('content')
@@ -68,6 +73,7 @@ def cms_reedit(id):
         title=page.title,
         url=page.url,
         status='edit',
+        current=True,
         published=True
     )
     db.session.add(new_page)
@@ -157,20 +163,24 @@ def cms_preview(id):
     permission_content(lang)
     page = Cms.query.filter_by(page_id=id, lang=lang, current=True).first()
     if not page:
-        abort(404)
-    return render_template('admin/cms_preview.html', page=page)
+        page = Cms.query.filter_by(page_id=id, lang='en', current=True).first()
+        if not page:
+            abort(404)
+        page = None
+    translations = get_trans(id)
+    return render_template('admin/cms_preview.html', page=page, translations=translations)
 
 
 @app.route('/admin/cms_trans/<id>', methods=['POST'])
 def cms_trans(id):
     lang = get_admin_lang()
     permission_content(lang)
-    page = Cms.query.filter_by(page_id=id, lang='en').first()
+    page = Cms.query.filter_by(page_id=id, lang='en', current=True).first()
     if not page:
         abort(404)
-    exists = Cms.query.filter_by(page_id=page.page_id, lang=lang).first()
+    exists = Cms.query.filter_by(page_id=page.page_id, lang=lang, current=True).first()
     if exists:
-        abort(403)
+        return redirect(url_for_admin('cms_edit', id=page.page_id))
     trans = Cms(lang=lang)
     trans.status = 'edit'
     trans.page_id = page.page_id
