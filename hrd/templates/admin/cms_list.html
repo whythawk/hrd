@@ -3,11 +3,13 @@
 {% block title %}CMS{% endblock %}
 
 {% block content %}
+ {{ form.translations_bar() }}
   {% if lang =='en' %}
-  <div class="well new-page col-xs-12">
+    <div class="well new-page col-xs-12">
 <h4>{{ _('Create a new page') }}</h4>
       {{ form.action('New page', url_for('cms_new'), class='btn-primary btn-success pull-right') }}
         </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
     <h2>Edit existing content<br /></h2>
   {% for page in pages %}
@@ -31,10 +33,12 @@
       {{ page.status }}
 =======
 
+=======
+>>>>>>> 8cffe06ead802ebd55af3b8db2ac478c0a8b02e2
   {% endif %}
 
   {% for page in pages %}
-    <div class="well col-xs-12" id="pages">
+    <div class="well col-xs-12">
         <h4>{{ page.title }} <small>{{ page.status }}</small></h4>
 >>>>>>> b258e6cfd89a661150be4c5aa7c4f631ca0abc3d
       {% if page.status == 'edit' %}
@@ -57,9 +61,8 @@
   {% endfor %}
 
   {% for page in missing %}
-    <div>
-      {{ page.title }}
-      <span class="bg-danger">Missing</span>
+    <div class="alert col-xs-12 alert-danger">
+        <h4>{{ page.title }} <small>Missing</small></h4>
       {{ form.action('Create', url_for_admin('cms_trans', id=page.page_id)) }}
     </div>
   {% endfor %}
