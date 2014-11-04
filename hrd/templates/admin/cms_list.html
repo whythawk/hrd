@@ -28,7 +28,7 @@
       {% endif %}
         {{ form.action_link('Preview', url_for_admin('cms_preview', id=page.page_id), icon='eye-open') }}
       {% if page.published %}
-        <a class="btn btn-default btn-sm btn-secondary" role="button" href="{{ url_for_admin('cms_page', id=page.page_id) }}">Live content</a>
+        {{ form.action_link('Live content', url_for_admin('cms_page', id=page.page_id), icon='flash', class='btn-secondary') }}
       {% endif %}
       {% if lang =='en' %}
         {{ form.action('Delete', url_for('cms_delete', id=page.page_id), class='btn-danger pull-right', onsubmit='return confirm("Are you sure you want to delete this page?\\n\\nThis action cannot be undone")') }}
