@@ -3,37 +3,6 @@
 {% block title %}Organisations{% endblock %}
 
 {% block content %}
-<<<<<<< HEAD
-<div class="well new-org col-xs-12">
-    <h4>{{ _('Create a new organization') }}</h4>
-    {{ form.action('New organization', url_for('org_new'), class='btn-primary btn-success pull-right') }}
-</div>
-<h1>Edit existing organization<br /></h1>
-{% for org in orgs %}
-<div class="well col-xs-12" id="orgs">
-    <h4>{{ org.name }} <small>{{ org.status }}</small></h4>
-    {% if org.status == 'edit' %}
-    <a href="{{ url_for_admin('org_edit', id=org.org_id) }}" class="btn btn-default btn-sm " role="button"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
-    <a href="{{ url_for_admin('org_preview', id=org.org_id) }}" class="btn btn-default btn-sm btn-secondary" role="button"><span class="glyphicon glyphicon-eye-open"></span> Preview</a>
-    {% elif org.status == 'publish' %}
-    <a href="{{ url_for_admin('org_reedit', id=org.org_id) }}" class="btn btn-default btn-sm" role="button"><span class="glyphicon glyphicon-pencil"> Edit</a></span>
-    {% elif org.status == 'approve' %}
-    <a href="{{ url_for_admin('org_preview', id=org.org_id) }}" class="btn btn-default btn-sm" role="button">Approve</a>
-    <a href="{{ url_for_admin('org_preview', id=org.org_id) }}" class="btn btn-default btn-sm btn-secondary" role="button"><span class="glyphicon glyphicon-eye-open"></span> Preview</a>
-    {% elif org.status == 'approved' %}
-    <a href="{{ url_for_admin('org_preview', id=org.org_id) }}" class="btn btn-default btn-sm btn-secondary" role="button">Publish</a>
-    <a href="{{ url_for_admin('org_preview', id=org.org_id) }}" class="btn btn-default btn-sm btn-secondary" role="button"><span class="glyphicon glyphicon-eye-open"></span> Preview</a>
-    {% endif %}
-    {% if org.published %}
-    <a href="{{ url_for_admin('org', id=org.org_id) }}" class="btn btn-default btn-sm btn-secondary" role="button">Live content</a>
-    {% endif %}
-    {% if lang =='en' %}
-    {{ form.action('Delete', url_for('org_delete', id=org.org_id), class='btn btn-default btn-sm btn-danger pull-right', onsubmit='return confirm("Are you sure you want to delete this organisation?\\n\\nThis action cannot be undone")') }}
-    {% endif %}
-</div>
-{% endfor %}
-{% for org in orgs %}
-=======
   {% if lang =='en' %}
   <div class="well new-page col-xs-12">
 <h4>{{ _('Create a new organisation') }}</h4>
@@ -66,32 +35,8 @@
     </div>
 
   {% endfor %}
->>>>>>> b258e6cfd89a661150be4c5aa7c4f631ca0abc3d
 
 
-<div>
-    {% if org.published %}
-    <a href="{{ url_for_admin('org', id=org.org_id) }}">current</a>
-    {% endif %}
-    {{ org.name }}
-    {{ org.status }}
-    {% if org.status == 'edit' %}
-    {{ form.action_link('edit', url_for_admin('org_edit', id=org.org_id)) }}
-    {{ form.action_link('preview', url_for_admin('org_preview', id=org.org_id)) }}
-    {% elif org.status == 'publish' %}
-    {{ form.action('Edit', url_for_admin('org_reedit', id=org.org_id)) }}
-    {% elif org.status == 'approve' %}
-    {{ form.action_link('approve', url_for_admin('org_preview', id=org.org_id)) }}
-    {{ form.action_link('preview', url_for_admin('org_preview', id=org.org_id)) }}
-    {% elif org.status == 'approved' %}
-    {{ form.action_link('publish', url_for_admin('org_preview', id=org.org_id)) }}
-    {{ form.action_link('preview', url_for_admin('org_preview', id=org.org_id)) }}
-    {% endif %}
-    {% if lang =='en' %}
-    {{ form.action('Delete', url_for('org_delete', id=org.org_id), class='btn-danger', onsubmit='return confirm("Are you sure you want to delete this organisation?\\n\\nThis action cannot be undone")') }}
-    {% endif %}
-</div>
-{% endfor %}
 
 {% for org in missing %}
 <div>
