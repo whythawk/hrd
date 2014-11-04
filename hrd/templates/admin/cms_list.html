@@ -15,9 +15,9 @@
     <div class="well col-xs-12">
         <h4>{{ page.title }} <small>{{ page.status }}</small></h4>
       {% if page.status == 'edit' %}
-        {{ form.action_link('Edit', url_for_admin('cms_edit', id=page.page_id, icon='pencil')) }}
+        {{ form.action_link('Edit', url_for_admin('cms_edit', id=page.page_id), icon='pencil') }}
       {% elif page.status == 'publish' %}
-          {{ form.action('Edit', url_for_admin('cms_reedit', id=page.page_id, icon='pencil')) }}
+          {{ form.action('Edit', url_for_admin('cms_reedit', id=page.page_id), icon='pencil') }}
       {% elif page.status == 'approve' %}
         {{ form.action_link('Approve', url_for_admin('cms_preview', id=page.page_id)) }}
       {% elif page.status == 'approved' %}
