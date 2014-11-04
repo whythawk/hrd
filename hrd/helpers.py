@@ -83,7 +83,7 @@ def get_trans_state(value):
     if value.get('missing'):
         return 'no-translation'
     if value.get('unpublished'):
-        return 'unpublished'
+        return 'old-translation'
     return ''
 
 

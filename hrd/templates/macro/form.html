@@ -104,10 +104,10 @@
         <a href="?lang={{ code }}" {% if active %} data-toggle="tab"{% endif %}>
           {% if state == '' %}
             <span class="glyphicon glyphicon-ok"></span>
-          {% elif state == 'unpublished' %}
+          {% elif state == 'old-translation' %}
             <span class="glyphicon glyphicon-refresh"></span>
           {% else %}
-            <span class="glyphicon glyphicon-remove"></span>
+            <span class="glyphicon glyphicon-ban-circle"></span>
           {% endif %}
           <span lang="{{ code }}" dir="{{ dir }}">{{ lang }}</span></a>
         </li>
