@@ -7,7 +7,10 @@
   {% if lang =='en' %}
     <div class="well new-page col-xs-12">
 <h4>{{ _('Create a new page') }}</h4>
-      {{ form.action('New page', url_for('cms_new'), class='btn-primary btn-success pull-right') }}
+    {{ form.action('New page', url_for('cms_new'),
+      class='btn-primary btn-success pull-right',
+      icon='plus'
+    ) }}
         </div>
   {% endif %}
 
