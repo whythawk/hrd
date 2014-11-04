@@ -6564,13 +6564,16 @@ body.admin .nav-mega li div a:hover {
 .nav-tabs li a:hover,
 .nav-tabs li.active a:hover {
   background-color: #fff;
-  color: #333333;
+  color: #163f92;
 }
 .nav-tabs {
   margin-bottom: 20px;
 }
 .no-translation a {
-  color: #cccccc;
+  color: #be1939;
+}
+.old-translation a {
+  color: #8aa0c9;
 }
 .org-cat-list > ul {
   padding: 0;
