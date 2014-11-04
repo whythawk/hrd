@@ -3,6 +3,9 @@
 {% block title %}Categories{% endblock %}
 
 {% block content %}
+
+  {# cat listing #}
+ <div class="alert col-xs-12 org-cat-list">
 {# new cat #}
   {% if lang =='en' %}
   <div class="alert col-xs-12 org-cat-list alert-info">
@@ -11,9 +14,6 @@
         </div>
 
   {% endif %}
-
-  {# cat listing #}
- <div class="alert col-xs-12 org-cat-list">
   <ul>
     {% for cat in all %}
     {# category start #}
