@@ -6605,3 +6605,13 @@ body.admin .nav-mega li div a:hover {
   margin-top: 30px;
   padding: 7px 50px;
 }
+.org-choose-list {
+  margin-top: 10px;
+  border-bottom: 1px #cccccc solid;
+}
+.org-choose-list label {
+  font-size: 12px;
+}
+.org-choose-list input input[type=checkbox] {
+  top: -2px;
+}
