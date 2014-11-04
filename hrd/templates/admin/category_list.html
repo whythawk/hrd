@@ -5,7 +5,7 @@
 {% block content %}
 {# new cat #}
   {% if lang =='en' %}
-  <div class="well new-page col-xs-12">
+  <div class="alert cols-xs-12 org-cat-list alert-info">
 <h4>{{ _('Create a new category') }}</h4>
     {{ form.action('New category', url_for('category_new', cat_type=cat_type), class='btn-primary btn-success pull-right', icon='plus') }}
         </div>
