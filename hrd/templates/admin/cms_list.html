@@ -5,7 +5,7 @@
 {% block content %}
  {{ form.translations_bar() }}
   {% if lang =='en' %}
-    <div class="well new-page col-xs-12">
+    <div class="alert new-page col-xs-12 alert-info">
 <h4>{{ _('Create a new page') }}</h4>
     {{ form.action('New page', url_for('cms_new'),
       class='btn-primary btn-success pull-right',
@@ -15,7 +15,7 @@
   {% endif %}
 
   {% for page in pages %}
-    <div class="well col-xs-12">
+  <div class="alert col-xs-12 alert-{% if page.status != 'publish' %}warning{% else %}info{% endif %}">
         <h4>{{ page.title }} <small>{{ page.status }}</small></h4>
       {% if page.status == 'edit' %}
         {{ form.action_link('Edit', url_for_admin('cms_edit', id=page.page_id), icon='pencil') }}
