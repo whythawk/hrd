@@ -79,6 +79,14 @@ def sub_menu_item(text, href, force_right=False):
     return '<div class="%s"><a href="%s">%s</a></div>' % (cls, href, text)
 
 
+def get_trans_state(value):
+    if value.get('missing'):
+        return 'no-translation'
+    if value.get('unpublished'):
+        return 'unpublished'
+    return ''
+
+
 hrd.app.jinja_env.globals.update(
     url_for_admin=hrd.url_for_admin,
     url_for=hrd.url_for,
@@ -96,4 +104,5 @@ hrd.app.jinja_env.globals.update(
     menu_class=menu_class,
     sub_menu_item=sub_menu_item,
     debug=hrd.DEBUG,
+    get_trans_state=get_trans_state,
 )

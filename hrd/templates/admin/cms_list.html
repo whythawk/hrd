@@ -3,7 +3,7 @@
 {% block title %}CMS{% endblock %}
 
 {% block content %}
- {{ form.translations_bar() }}
+ {{ form.translations_bar(trans=status) }}
   {% if lang =='en' %}
     <div class="alert new-page col-xs-12 alert-info">
 <h4>{{ _('Create a new page') }}</h4>

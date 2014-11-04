@@ -93,16 +93,19 @@
 
 
 
-{% macro translations_bar(trans=[]) %}
+{% macro translations_bar(trans={}) %}
   {% if has_perm('translator') %}
     <div class="col-xs-12 col-md-12 clearfix">
       <ul id="" class="nav nav-tabs nav-justified" data-tabs="" role="tablist">
     {% for code, lang, dir in lang_list() %}
+      {% set state = get_trans_state(trans[code]) %}
       {% set active = (get_admin_lang() == code) %}
-      <li class="{% if active %}active{% endif %}{% if code in trans %} no-translation{% endif %}">
+      <li class="{% if active %}active {% endif %}{{ state }}">
         <a href="?lang={{ code }}" {% if active %} data-toggle="tab"{% endif %}>
-          {% if code in trans %}
+          {% if state == '' %}
             <span class="glyphicon glyphicon-ok"></span>
+          {% elif state == 'unpublished' %}
+            <span class="glyphicon glyphicon-refresh"></span>
           {% else %}
             <span class="glyphicon glyphicon-remove"></span>
           {% endif %}

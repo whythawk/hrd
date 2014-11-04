@@ -1,7 +1,7 @@
 from flask import render_template, request, abort, redirect
 
 from hrd import (app, db, url_for_admin, get_admin_lang, get_bool,
-                 permission, permission_content, get_str)
+                 permission, permission_content, get_str, lang_codes)
 from hrd.models import Cms
 
 
@@ -211,9 +211,35 @@ def cms_list():
         trans = db.session.query(Cms.page_id).filter_by(lang=lang)
         missing = db.session.query(Cms).filter_by(lang='en', current=True)
         missing = missing.filter(db.not_(Cms.page_id.in_(trans)))
+    status = list_status()
     return render_template('admin/cms_list.html', pages=pages, lang=lang,
-                           missing=missing, trans=trans)
+                           missing=missing, trans=trans, status=status)
+
+def list_status():
+    results = {}
+    for lang in lang_codes:
+        # Unpublished
+        unpublished = Cms.query.filter_by(lang=lang, current=True).filter(Cms.status != 'publish').count()
+        # Missing
+        trans = db.session.query(Cms.page_id).filter_by(lang=lang)
+        missing = db.session.query(Cms).filter_by(lang='en', current=True)
+        missing = missing.filter(db.not_(Cms.page_id.in_(trans))).count()
+        results[lang] = {'missing':missing, 'unpublished':unpublished}
+    return results
+
 
 def get_trans(id):
-    rows = db.session.query(Cms.lang).filter_by(page_id=id)
-    return [row.lang for row in rows]
+    results = {}
+    rows = db.session.query(Cms.lang, Cms.status).filter_by(page_id=id, current=True)
+    t = {}
+    for row in rows:
+        t[row.lang] = row.status
+    for lang in lang_codes:
+        if lang in t:
+            if t[lang] == 'publish':
+                results[lang] = {'missing':0}
+            else:
+                results[lang] = {'unpublished':1}
+        else:
+            results[lang] = {'missing':1}
+    return results
