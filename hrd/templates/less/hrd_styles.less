@@ -586,10 +586,22 @@ body.admin{
     list-style-type: none;
     background: -5px 24px no-repeat url(../../static/images/org-list-heirarchy.png );
     padding: 0 0 7px 40px;
-    border-bottom: 1px @gray-lighter solid;
+    border-bottom: 1px @gray-light2 solid;
+}
+
+.org-cat-top-level ul li:first-child {
+    border-top: 1px @gray-light2 solid;
+    margin-top: 10px;
 }
 
 .org-cat-top-level ul li:last-child {
     background: -5px 24px  no-repeat url(../../static/images/org-list-heirarchy-last.png );
     border-bottom: none;
+}
+
+// Edit page elements
+
+.btn-save {
+    margin-top: 30px;
+    padding: 7px 50px;
 }
