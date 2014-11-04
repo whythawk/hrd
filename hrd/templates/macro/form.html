@@ -49,9 +49,14 @@
 {% endmacro %}
 
 
-{% macro action(label='', url='', method='POST', class='', onsubmit='') %}
+{% macro action(label='', url='', method='POST', class='', onsubmit='', icon='') %}
 <form method="{{ method }}" action="{{ url }}" style="display:inline" onsubmit="{{ onsubmit }}">
-    <input class="btn btn-default btn-sm {{ class }}" class="form-control" type="submit" class="btn" value="{{ label|sn }}" />
+  {# <input class="btn btn-default btn-sm {{ class }}" class="form-control" type="submit" class="btn" value="{{ label|sn }}" />
+  #}
+  <button type="submit" class="btn btn-default btn-sm {{ class }}" value="" />
+  {% if icon %}<span class="glyphicon glyphicon-{{ icon }}"></span> {% endif %}
+{{ label|sn }}
+    </button>
   </form>
 {% endmacro %}
 
