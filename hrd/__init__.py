@@ -38,6 +38,11 @@ for code, name, dir_ in language_list:
     lang_name[code] = name
 
 
+lang_codes = []
+for code, name, dir_ in language_list:
+    lang_codes.append(code)
+
+
 
 permission_list = [
     ('sys_admin', 'System administrator'),
