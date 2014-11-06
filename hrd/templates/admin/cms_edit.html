@@ -3,9 +3,9 @@
 {% block title %}CMS{% endblock %}
 
 {% block content %}
+<h1>Edit: Page<br /><br /></h1>
  {{ form.translations_bar(translations) }}
 <script type="text/javascript" src="/static/ckeditor/ckeditor.js"></script>
-<h1>Edit: Page<br /><br /></h1>
     <form method="POST" role="form">
         {{ form.save(label='Save') }}
         {{ form.input('title', label='Title', value=page.title, placeholder='Title', trans=trans) }}
