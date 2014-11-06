@@ -14,6 +14,13 @@
 {%- endmacro %}
 
 
+{%- macro password(name, id='', label='', value='', placeholder='', trans='') %}
+{% call form_control(name=name, label=label, trans=trans) -%}
+    <input id="{{ id or name }}" class="form-control" type="password" name="{{ name }}" value="{{ value|sn }}" placeholder="{{ placeholder }}" />
+{%- endcall %}
+{%- endmacro %}
+
+
 {%- macro checkbox(name, id='', label='', value='') %}
   <div class="checkbox">
     <label>

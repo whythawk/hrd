@@ -16,7 +16,7 @@
                 {{ form.input('name', label=_('Username'), value=username) }}
             </div>
             <div class="form-group">
-                {{ form.input('password', label=_('Password')) }}
+                {{ form.password('password', label=_('Password')) }}
             </div>
             {{ form.submit(label=_('Log in')) }}
             </form>
