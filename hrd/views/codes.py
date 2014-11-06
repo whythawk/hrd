@@ -24,6 +24,7 @@ def category_new(cat_type):
 
 @app.route('/admin/category_edit/<cat_type>/<id>', methods=['GET', 'POST'])
 def category_edit(id, cat_type):
+    set_menu(cat_type)
     category = Category.query.filter_by(id=id).first()
     if not category:
         abort(404)
@@ -54,6 +55,7 @@ def category_edit(id, cat_type):
 
 @app.route('/admin/code_edit/<cat_type>/<id>', methods=['GET', 'POST'])
 def code_edit(id, cat_type):
+    set_menu(cat_type)
     code = Code.query.filter_by(id=id).first()
     if not code:
         abort(404)
@@ -212,3 +214,7 @@ def all_codes(lang='en', cat_type=''):
             'codes': codes,
         })
     return out
+
+
+def set_menu(cat_type):
+    request.environ['MENU_PATH'] = url_for_admin('category_list', cat_type=cat_type)[3:]

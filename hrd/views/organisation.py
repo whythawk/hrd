@@ -7,6 +7,7 @@ from hrd.views.codes import all_codes
 
 @app.route('/admin/org_edit/<id>', methods=['GET', 'POST'])
 def org_edit(id):
+    set_menu()
     lang = get_admin_lang()
     permission_content(lang)
     org = Organisation.query.filter_by(org_id=id, lang=lang, current=True)
@@ -175,6 +176,7 @@ def org(id):
 
 @app.route('/admin/org_preview/<id>')
 def org_preview(id):
+    set_menu()
     lang = get_admin_lang()
     permission_content(lang)
     org = Organisation.query.filter_by(org_id=id, lang=lang, current=True).first()
@@ -228,3 +230,7 @@ def org_search():
     org = Organisation.query.filter_by(lang=lang, status='publish').first()
     orgs = [org, org, org]
     return render_template('org_search.html',cats=cats, orgs=orgs)
+
+
+def set_menu():
+    request.environ['MENU_PATH'] = url_for_admin('org_list')[3:]

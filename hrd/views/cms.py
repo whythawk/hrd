@@ -24,6 +24,7 @@ def content():
 
 @app.route('/admin/cms_edit/<id>', methods=['GET', 'POST'])
 def cms_edit(id):
+    set_menu()
     lang = get_admin_lang()
     permission_content(lang)
     page = Cms.query.filter_by(page_id=id, lang=lang, current=True)
@@ -161,6 +162,7 @@ def cms_page2(id=''):
 
 @app.route('/admin/cms_preview/<id>')
 def cms_preview(id):
+    set_menu()
     lang = get_admin_lang()
     permission_content(lang)
     page = Cms.query.filter_by(page_id=id, lang=lang, current=True).first()
@@ -243,3 +245,7 @@ def get_trans(id):
         else:
             results[lang] = {'missing':1}
     return results
+
+
+def set_menu():
+    request.environ['MENU_PATH'] = url_for_admin('cms_list')[3:]

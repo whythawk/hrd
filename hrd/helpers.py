@@ -65,7 +65,7 @@ def menu_class(href, force_right):
     cls = []
     if force_right:
         cls.append('navbar-right')
-    if href[3:] == request.environ['PATH_INFO']:
+    if href[3:] == request.environ.get('MENU_PATH', request.environ['PATH_INFO']):
         cls.append('active')
     if not cls:
         return ''
