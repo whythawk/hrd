@@ -1,8 +1,14 @@
-{% macro form_control(name, label='', trans='') %}
+{% macro form_control(name, label='', trans='', safe=false) %}
+  <div class="row alert alert-null">
+      {{ trans_disp(trans=trans, field=name, label=label, safe=safe) }}
+    <div class="col-xs-12 col-md-6">
   <div class="form-group">
-    <label for="{{ name }}">{{ label }}</label>
-      {{ caller() }}
-      {{ trans_disp(trans=trans, field=name) }}
+    {% if label %}
+      <label for="{{ name }}">{{ label }} <small>({{ get_admin_lang() }})</small></label>
+    {% endif %}
+    {{ caller() }}
+  </div>
+  </div>
   </div>
 {%- endmacro %}
 
@@ -31,6 +37,13 @@
 {%- endmacro %}
 
 
+{%- macro ckeditor(name, id='', label='', value='', placeholder='', trans='') %}
+{% call form_control(name=name, label=label, trans=trans, safe=true) -%}
+    <textarea id="{{ id or name }}" class="form-control" name="{{ name }}" placeholder="{{ placeholder }}" >{{ value|sn }}</textarea>
+{%- endcall %}
+{%- endmacro %}
+
+
 {%- macro textarea(name, id='', label='', value='', placeholder='', trans='') %}
 {% call form_control(name=name, label=label, trans=trans) -%}
     <textarea id="{{ id or name }}" class="form-control" name="{{ name }}" placeholder="{{ placeholder }}" >{{ value|sn }}</textarea>
@@ -50,9 +63,11 @@
 
 
 {% macro submit(name='', id='', label='Submit', value='') %}
+{% call form_control(name=name, label='') %}
       <button type="submit" class="btn btn-primary pull-right" value="" />
 {{ label|sn }}
     </button>
+{% endcall %}
 {% endmacro %}
 
 
@@ -74,9 +89,16 @@
   {{ label }}</a>
 {% endmacro %}
 
-{% macro trans_disp(trans, field) %}
+{% macro trans_disp(trans, field, label, safe) %}
   {% if trans %}
-    <div>{{ trans[field] }}</div>
+      <div class="col-xs-12 col-md-6">
+        <div class="form-group">
+          <label>{{ label|sn }} <small>(En)</small></label>
+          <div class="display-en">
+            {% if safe %}{{ trans[field]|safe }}{% else %}{{ trans[field] }}{% endif %}
+          </div>
+        </div>
+    </div>
   {% endif %}
 {% endmacro %}
 
