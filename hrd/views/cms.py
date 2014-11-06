@@ -197,6 +197,7 @@ def cms_trans(id):
 
 @app.route('/admin/cms')
 def cms_list():
+    set_menu()
     lang = get_admin_lang()
     permission_content(lang)
     pages = Cms.query.filter_by(lang=lang, current=True)
