@@ -1,10 +1,16 @@
 {% macro form_control(name, label='', trans='', safe=false) %}
   <div class="row alert alert-null">
+    {% if trans %}
       {{ trans_disp(trans=trans, field=name, label=label, safe=safe) }}
     <div class="col-xs-12 col-md-6">
+      {% else %}
+    <div class="col-xs-12">
+      {% endif %}
   <div class="form-group">
     {% if label %}
-      <label for="{{ name }}">{{ label }} <small>({{ get_admin_lang() }})</small></label>
+    <label for="{{ name }}">{{ label }}
+      {% if trans %} <small>({{ get_admin_lang() }})</small>{% endif %}
+    </label>
     {% endif %}
     {{ caller() }}
   </div>
@@ -28,12 +34,14 @@
 
 
 {%- macro checkbox(name, id='', label='', value='') %}
+{% call form_control(name=name, label='', trans=trans) -%}
   <div class="checkbox">
     <label>
 <input id="{{ id or name }}" type="checkbox" name="{{ name }}" value="True" {% if value %}checked{% endif %} />
 {{ label }}
   </label>
 </div>
+{%- endcall %}
 {%- endmacro %}
 
 
