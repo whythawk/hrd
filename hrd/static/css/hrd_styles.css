@@ -6505,14 +6505,14 @@ button.close {
   border: 0;
 }
 .pagination .active > a:hover {
-  background-color: #eeeeee;
+  background: #eeeeee;
   color: #163f92;
 }
 .pagination-top li.active a,
 .pagination-bottom li.active a {
   border: 0;
   border-top: 4px solid #be1939;
-  background-color: none;
+  background: none;
   color: #163f92;
   top: -4px;
 }
