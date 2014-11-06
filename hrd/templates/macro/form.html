@@ -70,12 +70,24 @@
 {% endmacro %}
 
 
-{% macro submit(name='', id='', label='Submit', value='') %}
+{% macro submit(name='', id='', label='Submit', value='', class='') %}
 {% call form_control(name=name, label='') %}
-      <button type="submit" class="btn btn-primary pull-right" value="" />
+<button type="submit" class="btn btn-primary pull-right {{ class }}" value="" />
 {{ label|sn }}
     </button>
 {% endcall %}
+{% endmacro %}
+
+{% macro save(name='', id='', label='Submit', value='') %}
+  <div class="row">
+    <div class="col-xs-12">
+  <div class="form-group">
+<button type="submit" class="btn btn-primary pull-right btn-save" value="" />
+{{ label|sn }}
+    </button>
+  </div>
+  </div>
+  </div>
 {% endmacro %}
 
 
