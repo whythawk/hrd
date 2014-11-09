@@ -13,12 +13,16 @@
         <h1>{{ _('Log in') }}<br /><br /></h1>
         <div class="row col-xs-12 col-md-4 col-md-offset-4 blue-left-border hrd-padded-20 red-panel-bkg login-form"><form role="form" method="POST">
             <div class="form-group">
-                {{ form.input('name', label=_('Username'), value=username) }}
+                <label for="name">{{ _('Username') }}</label>
+                <input id="name" class="form-control" name="name" type="text">
             </div>
             <div class="form-group">
-                {{ form.password('password', label=_('Password')) }}
+                <label for="password">{{ _('Password') }}</label>
+                <input id="password" class="form-control" name="password" type="password">
             </div>
-            {{ form.submit(label=_('Log in')) }}
+            <button type="submit" class="btn btn-primary pull-right" value="">
+                {{ _('Log in') }}
+            </button>
             </form>
         </div>
 {% endblock %}
