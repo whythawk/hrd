@@ -5,19 +5,16 @@
 
 {% block content %}
   <h1>Edit: Codes<br /><br /></h1>
+ {{ form.translations_bar(translations) }}
   <form role="form" method="POST">
     {# FIXME Needs lang and dir coding in #}
-      <div class="col-xs-12 col-md-9" lang="en" dir="ltr">
+    {{ form.save(label='Save') }}
         {{ form.input('title', label='Title', value=code.title, trans=trans) }}
         {{ form.textarea('description', label='description', value=code.description, trans=trans) }}
         {% if not trans %}
             {{ form.input('order', label='Order', value=code.order) }}
             {{ form.checkbox('active', label='Active', value=code.active) }}
         {% endif %}
-      </div>
-      {# FIXME Needs lang and dir coding in #}
-      <div class="col-xs-12 col-md-3" lang="en" dir="ltr">
-        {{ form.submit(label='Save') }}
-      </div>
+    {{ form.save(label='Save') }}
   </form>
 {% endblock %}

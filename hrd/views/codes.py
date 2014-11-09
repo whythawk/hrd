@@ -1,9 +1,11 @@
 from flask import render_template, request, abort, redirect, url_for
 
-from hrd import app, db, url_for_admin, get_admin_lang, get_bool, get_int
+from hrd import (app, db, url_for_admin, get_admin_lang, get_bool,
+                 get_int, lang_codes)
 from hrd.models import Category, Code
 
 CAT_TYPES = ['org', 'res']
+
 
 def check_cat_type(cat_type):
     if cat_type not in CAT_TYPES:
@@ -19,16 +21,23 @@ def category_new(cat_type):
     category.cat_type = cat_type
     db.session.add(category)
     db.session.commit()
-    return redirect(url_for('category_edit', id=category.id, cat_type=cat_type))
+    return redirect(url_for('category_edit',
+                            id=category.category_id,
+                            cat_type=cat_type))
 
 
 @app.route('/admin/category_edit/<cat_type>/<id>', methods=['GET', 'POST'])
 def category_edit(id, cat_type):
     set_menu(cat_type)
-    category = Category.query.filter_by(id=id).first()
+    lang = get_admin_lang()
+    category = Category.query.filter_by(category_id=id, lang=lang).first()
+    if not category and lang != 'en':
+        category = Category.query.filter_by(category_id=id, lang='en').first()
+        if not category:
+            abort(404)
+        return category_trans(id, cat_type)
     if not category:
         abort(404)
-    lang = get_admin_lang()
     if lang != 'en':
         trans = Category.query.filter_by(category_id=category.category_id,
                                          lang='en').first()
@@ -49,17 +58,48 @@ def category_edit(id, cat_type):
             ).update(locked)
         db.session.commit()
         return redirect(url_for_admin('category_list', cat_type=cat_type))
+    translations = get_cat_trans(category.category_id)
     return render_template('admin/category_edit.html', category=category,
-                           trans=trans, cat_type=cat_type)
+                           trans=trans, cat_type=cat_type,
+                           translations=translations)
+
+
+def get_cat_trans(id):
+    results = {}
+    rows = db.session.query(Category.lang).filter_by(category_id=id)
+    t = [row.lang for row in rows]
+    for lang in lang_codes:
+        if lang in t:
+            results[lang] = {'missing': 0, 'unpublished': 0}
+        else:
+            results[lang] = {'missing': 1}
+    return results
+
+
+def get_code_trans(id):
+    results = {}
+    rows = db.session.query(Code.lang).filter_by(code_id=id)
+    t = [row.lang for row in rows]
+    for lang in lang_codes:
+        if lang in t:
+            results[lang] = {'missing': 0, 'unpublished': 0}
+        else:
+            results[lang] = {'missing': 1}
+    return results
 
 
 @app.route('/admin/code_edit/<cat_type>/<id>', methods=['GET', 'POST'])
 def code_edit(id, cat_type):
     set_menu(cat_type)
-    code = Code.query.filter_by(id=id).first()
+    lang = get_admin_lang()
+    code = Code.query.filter_by(code_id=id, lang=lang).first()
+    if not code and lang != 'en':
+        code = Code.query.filter_by(code_id=id, lang='en').first()
+        if not code:
+            abort(404)
+        return code_trans(id, cat_type)
     if not code:
         abort(404)
-    lang = get_admin_lang()
     if request.method == 'POST':
         code.title = request.form['title']
         code.description = request.form['description']
@@ -82,14 +122,16 @@ def code_edit(id, cat_type):
     for cat in cats:
         categories.append({'name': cat.title, 'value': cat.category_id})
 
+    translations = get_code_trans(code.code_id)
     return render_template('admin/code_edit.html', code=code, trans=trans,
-                           categories=categories, cat_type=cat_type)
+                           categories=categories, cat_type=cat_type,
+                           translations=translations)
 
 
 @app.route('/admin/category_trans/<cat_type>/<id>', methods=['POST'])
 def category_trans(id, cat_type):
     lang = get_admin_lang()
-    category = Category.query.filter_by(id=id, lang='en').first()
+    category = Category.query.filter_by(category_id=id, lang='en').first()
     if not category:
         abort(404)
     exists = Category.query.filter_by(category_id=category.category_id,
@@ -98,16 +140,17 @@ def category_trans(id, cat_type):
         abort(403)
     trans = Category(lang=lang)
     trans.status = 'edit'
-    trans.category_id = category.category_id
+    trans.category_id = id
+    trans.cat_type = cat_type
     db.session.add(trans)
     db.session.commit()
-    return redirect(url_for_admin('category_edit', id=trans.id, cat_type=cat_type))
+    return redirect(url_for_admin('category_edit', id=id, cat_type=cat_type))
 
 
 @app.route('/admin/code_trans/<cat_type>/<id>', methods=['POST'])
 def code_trans(id, cat_type):
     lang = get_admin_lang()
-    code = Code.query.filter_by(id=id, lang='en').first()
+    code = Code.query.filter_by(code_id=id, lang='en').first()
     if not code:
         abort(404)
     exists = Code.query.filter_by(code_id=code.code_id, lang=lang).first()
@@ -115,15 +158,16 @@ def code_trans(id, cat_type):
         abort(403)
     trans = Code(lang=lang)
     trans.status = 'edit'
-    trans.code_id = code.code_id
+    trans.code_id = id
     trans.category_id = code.category_id
     db.session.add(trans)
     db.session.commit()
-    return redirect(url_for_admin('code_edit', id=trans.id, cat_type=cat_type))
+    return redirect(url_for_admin('code_edit', id=id, cat_type=cat_type))
 
 
 @app.route('/admin/category/<cat_type>')
 def category_list(cat_type):
+    set_menu(cat_type)
     check_cat_type(cat_type)
     lang = get_admin_lang()
     categories = Category.query.filter_by(
@@ -136,8 +180,12 @@ def category_list(cat_type):
         m_codes = []
     else:
         # missing categories
-        trans = db.session.query(Category.category_id).filter_by(lang=lang)
-        missing_cat = db.session.query(Category).filter_by(lang='en')
+        trans = db.session.query(Category.category_id).filter_by(
+            lang=lang, cat_type=cat_type
+        )
+        missing_cat = db.session.query(Category).filter_by(
+            lang='en', cat_type=cat_type
+        )
         missing_cat = missing_cat.filter(
             db.not_(Category.category_id.in_(trans))
         )
@@ -150,14 +198,45 @@ def category_list(cat_type):
             if code.category_id not in m_codes:
                 m_codes[code.category_id] = []
             m_codes[code.category_id].append(code)
-
+    status = list_status(cat_type)
     return render_template('admin/category_list.html',
                            categories=categories,
                            missing_cat=missing_cat,
                            m_codes=m_codes,
                            all=all_,
                            cat_type=cat_type,
+                           status=status,
                            lang=lang)
+
+
+def list_status(cat_type):
+    results = {}
+    for lang in lang_codes:
+        # missing categories
+        cat_trans = db.session.query(Category.category_id).filter_by(
+            lang=lang, cat_type=cat_type
+        )
+        missing_cat = db.session.query(Category).filter_by(
+            lang='en', cat_type=cat_type
+        )
+        missing_cat = missing_cat.filter(
+            db.not_(Category.category_id.in_(cat_trans))
+        ).count()
+        # missing codes
+        trans = db.session.query(Code.code_id).filter_by(lang=lang).filter(
+            Code.category_id.in_(cat_trans)
+        )
+        missing_codes = db.session.query(Code).filter_by(lang='en').filter(
+            Code.category_id.in_(cat_trans)
+        )
+
+        missing_codes = missing_codes.filter(
+            db.not_(Code.code_id.in_(trans))
+        ).count()
+
+        results[lang] = {'missing': missing_cat + missing_codes,
+                         'unpublished': 0}
+    return results
 
 
 @app.route('/admin/code_new/<cat_type>/<category_id>', methods=['POST'])
@@ -168,7 +247,7 @@ def code_new(category_id, cat_type):
     code.category_id = category_id
     db.session.add(code)
     db.session.commit()
-    return redirect(url_for('code_edit', id=code.id, cat_type=cat_type))
+    return redirect(url_for('code_edit', id=code.code_id, cat_type=cat_type))
 
 
 @app.route('/admin/category_delete/<cat_type>/<category_id>', methods=['POST'])
@@ -204,6 +283,7 @@ def all_codes(lang='en', cat_type=''):
                 'title': code.title,
                 'desc': code.description,
                 'id': code.id,
+                'code_id': code.code_id,
                 'active': code.active,
             })
         out.append({
@@ -217,4 +297,5 @@ def all_codes(lang='en', cat_type=''):
 
 
 def set_menu(cat_type):
-    request.environ['MENU_PATH'] = url_for_admin('category_list', cat_type=cat_type)[3:]
+    request.environ['MENU_PATH'] = url_for_admin('category_list',
+                                                 cat_type=cat_type)[3:]
