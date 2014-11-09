@@ -58,7 +58,7 @@ def cms_edit(id):
         trans = {}
     translations = get_trans(id)
     return render_template('admin/cms_edit.html', page=page, trans=trans,
-                          translations=translations)
+                           translations=translations)
 
 
 @app.route('/admin/cms_reedit/<id>', methods=['POST'])
@@ -141,10 +141,13 @@ def cms_page(id):
     lang = request.environ['LANG']
     page = Cms.query.filter_by(page_id=id, lang=lang, status='publish').first()
     if not page:
-        page = Cms.query.filter_by(page_id=id, lang='en', status='publish').first()
+        page = Cms.query.filter_by(
+            page_id=id, lang='en', status='publish'
+        ).first()
         if not page:
             abort(404)
     return render_template('page.html', page=page)
+
 
 @app.route('/<id>')
 @app.route('/')
@@ -172,7 +175,9 @@ def cms_preview(id):
             abort(404)
         page = None
     translations = get_trans(id)
-    return render_template('admin/cms_preview.html', page=page, translations=translations)
+    return render_template('admin/cms_preview.html',
+                           page=page,
+                           translations=translations)
 
 
 @app.route('/admin/cms_trans/<id>', methods=['POST'])
@@ -182,7 +187,9 @@ def cms_trans(id):
     page = Cms.query.filter_by(page_id=id, lang='en', current=True).first()
     if not page:
         abort(404)
-    exists = Cms.query.filter_by(page_id=page.page_id, lang=lang, current=True).first()
+    exists = Cms.query.filter_by(
+        page_id=page.page_id, lang=lang, current=True
+    ).first()
     if exists:
         return redirect(url_for_admin('cms_edit', id=page.page_id))
     trans = Cms(lang=lang)
@@ -218,33 +225,38 @@ def cms_list():
     return render_template('admin/cms_list.html', pages=pages, lang=lang,
                            missing=missing, trans=trans, status=status)
 
+
 def list_status():
     results = {}
     for lang in lang_codes:
         # Unpublished
-        unpublished = Cms.query.filter_by(lang=lang, current=True).filter(Cms.status != 'publish').count()
+        unpublished = Cms.query.filter_by(lang=lang, current=True).filter(
+            Cms.status != 'publish'
+        ).count()
         # Missing
         trans = db.session.query(Cms.page_id).filter_by(lang=lang)
         missing = db.session.query(Cms).filter_by(lang='en', current=True)
         missing = missing.filter(db.not_(Cms.page_id.in_(trans))).count()
-        results[lang] = {'missing':missing, 'unpublished':unpublished}
+        results[lang] = {'missing': missing, 'unpublished': unpublished}
     return results
 
 
 def get_trans(id):
     results = {}
-    rows = db.session.query(Cms.lang, Cms.status).filter_by(page_id=id, current=True)
+    rows = db.session.query(Cms.lang, Cms.status).filter_by(
+        page_id=id, current=True
+    )
     t = {}
     for row in rows:
         t[row.lang] = row.status
     for lang in lang_codes:
         if lang in t:
             if t[lang] == 'publish':
-                results[lang] = {'missing':0}
+                results[lang] = {'missing': 0}
             else:
-                results[lang] = {'unpublished':1}
+                results[lang] = {'unpublished': 1}
         else:
-            results[lang] = {'missing':1}
+            results[lang] = {'missing': 1}
     return results
 
 
