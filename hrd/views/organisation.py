@@ -2,7 +2,7 @@ from flask import render_template, request, abort, redirect
 
 from hrd import (app, db, url_for_admin, get_admin_lang, get_bool,
                  permission, permission_content, get_str, lang_codes)
-from hrd.models import Organisation, OrgCodes
+from hrd.models import Organisation, OrgCodes, Code
 from hrd.views.codes import all_codes
 
 
@@ -182,14 +182,26 @@ def org(id):
         ).first()
         if not org:
             abort(404)
+    cat_codes = org_cat_codes(lang, id)
+    return render_template('admin/org.html',
+                           org=org,
+                           cat_codes=cat_codes)
+
+
+def org_cat_codes(lang, id):
     codes = all_codes(lang, 'org')
     current = [
         c.code for c in OrgCodes.query.filter_by(org_id=id).all()
     ]
-    return render_template('admin/org.html',
-                           org=org,
-                           codes=codes,
-                           current=current)
+    out = []
+    for cat in codes:
+        found = []
+        for code in cat['codes']:
+            if code['code_id'] in current:
+                found.append(code['title'])
+        if found:
+            out.append((cat['title'], ', '.join(found)))
+    return out
 
 
 @app.route('/admin/org_preview/<id>')
@@ -207,7 +219,9 @@ def org_preview(id):
         if not org:
             abort(404)
     translations = get_trans(id)
+    cat_codes = org_cat_codes(lang, id)
     return render_template('admin/org_preview.html', org=org,
+                           cat_codes=cat_codes,
                            translations=translations)
 
 
@@ -302,8 +316,17 @@ def org_search():
     lang = request.environ['LANG']
     cats = all_codes(lang, 'org')
     org = Organisation.query.filter_by(lang=lang, status='publish').first()
+    # FIX ME thois is till full search
+    if not org:
+        org = Organisation.query.filter_by(lang='en', status='publish').first()
     orgs = [org, org, org]
-    return render_template('org_search.html', cats=cats, orgs=orgs)
+    results = []
+    for org in orgs:
+        codes = db.session.query(OrgCodes.code).filter_by(org_id=org.org_id)
+        c = Code.query.filter_by(lang=lang).filter(
+            Code.code_id.in_(codes))
+        results.append((org, [code.title for code in c]))
+    return render_template('org_search.html', cats=cats, results=results)
 
 
 def get_trans(id):

@@ -22,7 +22,7 @@
                         <summary class="search-filter-title">{{ cat.title }}</summary>
         {% for code in cat.codes if code.active %}
                             <label>
-                                <input class="" type="checkbox" id="{{ code.code }}" value="true">
+                                <input class="" type="checkbox" name="{{ code.code }}" id="{{ code.code }}" value="true"{% if request.args.get(code.code) %} checked="checked"{% endif %}>
                                 <div class="search-filter-item">{{ code.title }}</div>
                             </label>
         {% endfor %}
@@ -44,7 +44,7 @@
                     <li><a href="" alt="">3</a></li>
                     </ul></div>
                 <!-- /Top pagination ends ============================= -->
-                {% for org in orgs %}
+                {% for org, codes in results %}
                 <!-- Search result row begins ============================= -->
                 <article class="search-result{% if loop.index == 1 %} first{% elif loop.index == loop.length %} last{% endif %}">
                     <div class="excerpt">
@@ -58,15 +58,9 @@
                     <div class="col-xs-12 col-sm-12 col-md-8 pull-right">
                         <!-- Search meta tags begins ============================= -->
                         <ul class="search-meta list-inline">
-                            <li><a href="" alt="">tag here</a></li>
-                            <li><a href="" alt="">tag here</a></li>
-                            <li><a href="" alt="">tag here</a></li>
-                            <li><a href="" alt="">tag here</a></li>
-                            <li><a href="" alt="">tag here</a></li>
-                            <li><a href="" alt="">tag here</a></li>
-                            <li><a href="" alt="">tag here</a></li>
-                            <li><a href="" alt="">tag here</a></li>
-                            <li><a href="" alt="">tag here</a></li>
+                            {% for code in codes %}
+                            <li><small><a>{{ code }}</a></small></li>
+                            {% endfor %}
                         </ul>
                         <!-- /Search meta tags ends ============================= -->
                     </div>

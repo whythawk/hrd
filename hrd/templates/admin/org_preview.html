@@ -66,22 +66,10 @@
             <!-- Organization detail column begins ============================= -->
             <div class="org-detail-col col-xs-12 col-sm-6 col-md-4">
                 <h2>{{ _('Detail') }}<br /><br /></h2>
-                <p><strong>Type of organisation</strong><br />
-                    {% block orgType %}Professional Association{% endblock %}</p>
-                <p><strong>Location of HRDs</strong><br />
-                    {% block orgLoc %}South America, Central America &amp; Mexico, Caribbean, North America, Southern Africa, North Africa, East/Horn of Africa, West Africa, Central Africa, Europe, Central Asia, South Asia Southeast Asia, Hong Kong, East Asia, Middle East, Oceania{% endblock %}</p>
-                <p><strong>Location of relocation programme</strong><br />
-                    {% block progLoc %}Europe, USA{% endblock %}</p>
-                <p><strong>Types of HRDs</strong><br />
-                    {% block hrdType %}Journalists, Scholars, Writers{% endblock %}</p>
-                <p><strong>Language of programme</strong><br />
-                    {% block progLang %}English, French{% endblock %}</p>
-                <p><strong>Family members</strong><br />
-                    {% block familyMembs %}Yes{% endblock %}</p>
-                <p><strong>Duration of relocation</strong><br />
-                    {% block progDuration %}6 to 12 months{% endblock %}</p>
-                <p><strong>Emergency assistance</strong><br />
-                    {% block emergencyAssist %}No{% endblock %}</p>
+                {% for cat, codes in cat_codes %}
+                  <p><strong>{{ cat }}</strong><br />
+                  {{ codes }}</p>
+                {% endfor %}
             </div>
             <!-- /Organization detail column ends ============================= -->
         </div> <!-- /row -->
