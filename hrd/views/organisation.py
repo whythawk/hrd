@@ -1,9 +1,10 @@
 from flask import render_template, request, abort, redirect
 
 from hrd import (app, db, url_for_admin, get_admin_lang, get_bool,
-                 permission, permission_content, get_str)
+                 permission, permission_content, get_str, lang_codes)
 from hrd.models import Organisation, OrgCodes
 from hrd.views.codes import all_codes
+
 
 @app.route('/admin/org_edit/<id>', methods=['GET', 'POST'])
 def org_edit(id):
@@ -12,8 +13,12 @@ def org_edit(id):
     permission_content(lang)
     org = Organisation.query.filter_by(org_id=id, lang=lang, current=True)
     org = org.filter(Organisation.status != 'publish').first()
-    if not org:
-        abort(404)
+    if not org and lang != 'en':
+        org = Organisation.query.filter_by(org_id=id, lang='en', current=True)
+        org = org.filter(Organisation.status != 'publish').first()
+        if not org:
+            abort(404)
+        return org_trans(id=id)
     if org.status == 'publish':
         return redirect(url_for_admin('org_reedit', id=id), code=307)
     if request.method == 'POST':
@@ -61,8 +66,9 @@ def org_edit(id):
         db.session.commit()
         return redirect(url_for_admin('org_preview', id=id))
     if lang != 'en':
-        trans = Organisation.query.filter_by(org_id=org.org_id, lang='en',
-                                    current=True).first()
+        trans = Organisation.query.filter_by(
+            org_id=org.org_id, lang='en', current=True
+        ).first()
     else:
         trans = {}
 
@@ -74,16 +80,19 @@ def org_edit(id):
     else:
         codes = []
         current = []
+    translations = get_trans(id)
     return render_template('admin/org_edit.html', org=org, trans=trans,
-                           codes=codes, current=current)
+                           codes=codes, current=current,
+                           translations=translations)
 
 
 @app.route('/admin/org_reedit/<id>', methods=['POST'])
 def org_reedit(id):
     lang = get_admin_lang()
     permission_content(lang)
-    org = Organisation.query.filter_by(org_id=id, status='publish', lang=lang,
-                               current=True).first()
+    org = Organisation.query.filter_by(
+        org_id=id, status='publish', lang=lang, current=True
+    ).first()
     if not org:
         abort(404)
     new_org = Organisation(
@@ -94,12 +103,12 @@ def org_reedit(id):
         status='edit',
         published=True,
 
-        address = org.address,
-        contact = org.contact,
-        phone = org.phone,
-        email = org.email,
-        pgp_key = org.pgp_key,
-        website = org.website,
+        address=org.address,
+        contact=org.contact,
+        phone=org.phone,
+        email=org.email,
+        pgp_key=org.pgp_key,
+        website=org.website,
 
     )
     db.session.add(new_org)
@@ -141,14 +150,16 @@ def org_state(id, state):
     permission_content(lang)
     if state not in STATES:
         abort(403)
-    org = Organisation.query.filter_by(org_id=id, status=STATES[state], lang=lang,
-                               current=True).first()
+    org = Organisation.query.filter_by(
+        org_id=id, status=STATES[state], lang=lang, current=True
+    ).first()
     if not org:
         abort(403)
     if state == 'publish':
         org.published = True
-        old_org = Organisation.query.filter_by(org_id=id, status='publish',
-                                       lang=lang).first()
+        old_org = Organisation.query.filter_by(
+            org_id=id, status='publish', lang=lang
+        ).first()
         if old_org:
             old_org.status = 'archive'
             db.session.add(old_org)
@@ -162,16 +173,23 @@ def org_state(id, state):
 def org(id):
     lang = get_admin_lang()
     lang = request.environ['LANG']
-    org = Organisation.query.filter_by(org_id=id, lang=lang, status='publish').first()
+    org = Organisation.query.filter_by(
+        org_id=id, lang=lang, status='publish'
+    ).first()
     if not org:
-        org = Organisation.query.filter_by(org_id=id, lang='en', status='publish').first()
+        org = Organisation.query.filter_by(
+            org_id=id, lang='en', status='publish'
+        ).first()
         if not org:
             abort(404)
     codes = all_codes(lang, 'org')
     current = [
         c.code for c in OrgCodes.query.filter_by(org_id=id).all()
     ]
-    return render_template('admin/org.html', org=org, codes=codes, current=current)
+    return render_template('admin/org.html',
+                           org=org,
+                           codes=codes,
+                           current=current)
 
 
 @app.route('/admin/org_preview/<id>')
@@ -179,10 +197,37 @@ def org_preview(id):
     set_menu()
     lang = get_admin_lang()
     permission_content(lang)
-    org = Organisation.query.filter_by(org_id=id, lang=lang, current=True).first()
+    org = Organisation.query.filter_by(
+        org_id=id, lang=lang, current=True
+    ).first()
     if not org:
-        abort(404)
-    return render_template('admin/org_preview.html', org=org)
+        org = Organisation.query.filter_by(
+            org_id=id, lang='en', current=True
+        ).first()
+        if not org:
+            abort(404)
+    translations = get_trans(id)
+    return render_template('admin/org_preview.html', org=org,
+                           translations=translations)
+
+
+def get_trans(id):
+    results = {}
+    rows = db.session.query(Organisation.lang, Organisation.status).filter_by(
+        org_id=id, current=True
+    )
+    t = {}
+    for row in rows:
+        t[row.lang] = row.status
+    for lang in lang_codes:
+        if lang in t:
+            if t[lang] == 'publish':
+                results[lang] = {'missing': 0}
+            else:
+                results[lang] = {'unpublished': 1}
+        else:
+            results[lang] = {'missing': 1}
+    return results
 
 
 @app.route('/admin/org_trans/<id>', methods=['POST'])
@@ -202,6 +247,7 @@ def org_trans(id):
     db.session.commit()
     return redirect(url_for_admin('org_edit', id=trans.org_id))
 
+
 @app.route('/admin/org')
 def org_list():
     lang = get_admin_lang()
@@ -209,19 +255,47 @@ def org_list():
     orgs = Organisation.query.filter_by(lang=lang, current=True)
     orgs = orgs.order_by('name')
     for org in orgs:
-        p = Organisation.query.filter_by(org_id=org.org_id, lang=lang,
-                                status='publish').first()
+        p = Organisation.query.filter_by(
+            org_id=org.org_id, lang=lang, status='publish'
+        ).first()
         org.has_published = bool(p)
     if lang == 'en':
         missing = []
         trans = {}
     else:
         # missing orgs
-        trans = db.session.query(Organisation.org_id).filter_by(lang=lang)
-        missing = db.session.query(Organisation).filter_by(lang='en')
+        trans = db.session.query(Organisation.org_id).filter_by(
+            lang=lang, current=True
+        )
+        missing = db.session.query(Organisation).filter_by(
+            lang='en', current=True
+        )
         missing = missing.filter(db.not_(Organisation.org_id.in_(trans)))
+    status = list_status()
     return render_template('admin/org_list.html', orgs=orgs, lang=lang,
-                           missing=missing, trans=trans)
+                           missing=missing, trans=trans, status=status)
+
+
+def list_status():
+    results = {}
+    for lang in lang_codes:
+        # Unpublished
+        unpublished = Organisation.query.filter_by(
+            lang=lang, current=True
+        ).filter(
+            Organisation.status != 'publish'
+        ).count()
+        # Missing
+        trans = db.session.query(Organisation.org_id).filter_by(lang=lang)
+        missing = db.session.query(Organisation).filter_by(
+            lang='en', current=True
+        )
+        missing = missing.filter(
+            db.not_(Organisation.org_id.in_(trans))
+        ).count()
+        results[lang] = {'missing': missing, 'unpublished': unpublished}
+    return results
+
 
 @app.route('/orgs')
 def org_search():
@@ -229,7 +303,26 @@ def org_search():
     cats = all_codes(lang, 'org')
     org = Organisation.query.filter_by(lang=lang, status='publish').first()
     orgs = [org, org, org]
-    return render_template('org_search.html',cats=cats, orgs=orgs)
+    return render_template('org_search.html', cats=cats, orgs=orgs)
+
+
+def get_trans(id):
+    results = {}
+    rows = db.session.query(Organisation.lang, Organisation.status).filter_by(
+        org_id=id, current=True
+    )
+    t = {}
+    for row in rows:
+        t[row.lang] = row.status
+    for lang in lang_codes:
+        if lang in t:
+            if t[lang] == 'publish':
+                results[lang] = {'missing': 0}
+            else:
+                results[lang] = {'unpublished': 1}
+        else:
+            results[lang] = {'missing': 1}
+    return results
 
 
 def set_menu():

@@ -4,11 +4,11 @@
 
 {% block content %}
     <h1>Edit: Organization<br /><br /></h1>
+ {{ form.translations_bar(translations) }}
     <form method="POST" role="form">
+          {{ form.save(label='Save ') }}
     {# FIXME Needs lang and dir coding in #}
-      <div class="col-xs-12 col-md-9" lang="en" dir="ltr">
           {{ form.input('name', label='Name', value=org.name, trans=trans) }}
-          
           {# FIXME Add rows attribute to textareas eg. <textarea rows="10"></textarea> #}
           {# FIXME make description textarea 10 rows #}
       {{ form.textarea('description', label='Description', value=org.description, trans=trans) }}
@@ -30,11 +30,8 @@
         {% endfor %}
       {% endfor %}
           {% endif %}
-        </div>
-        <div class="col-xs-12 col-md-3" lang="en" dir="ltr">
         {# FIXME Insert button classes: btn btn-primary pull-right #}
-          {{ form.submit(label='Save ') }}
-        </div>
+          {{ form.save(label='Save ') }}
     </form>
   {{ form.code_list(all) }}
 {% endblock %}
