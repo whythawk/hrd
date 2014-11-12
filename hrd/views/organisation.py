@@ -264,6 +264,7 @@ def org_trans(id):
 
 @app.route('/admin/org')
 def org_list():
+    set_menu()
     lang = get_admin_lang()
     permission_content(lang)
     orgs = Organisation.query.filter_by(lang=lang, current=True)
