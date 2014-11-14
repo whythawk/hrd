@@ -59,200 +59,31 @@ Import Bootstrap LESS and Site Specific LESS
 
 
 //
-// Menu and button - border options
-// --------------------------------------------------
-
-.navbar-nav > li.active{
-}
-
-.navbar-nav > li.active > a {
-    border-top: 8px solid @brand-secondary;
-    top: -8px;
-   
-}
-
-.navbar-nav > li.active > a:hover {
-    color: @brand-secondary;
-}
-
-.btn-secondary {
-    background-color: @brand-secondary;
-    color: #fff;
-}
-
-//
-// Nav mega menu
-// --------------------------------------------------
-.menu-wrapper {
-    
-}
-
-/* Reset */
-.nav-mega,
-.nav-mega a,
-.nav-mega ul,
-.nav-mega li,
-.nav-mega div,
-.nav-mega form,
-.nav-mega input {
-	margin: 0;
-	padding: 0;
-	border: none;
-	outline: none;
-}
-
-.nav-mega a { text-decoration: none; }
-
-.nav-mega li { list-style: none; }
-
-/* Menu Container */
-.nav-mega {
-	display: inline-block;
-	position: relative;
-	cursor: default;
-	z-index: 500;
-    width: 100%;
-    top: 50%;
-    border-top: 2px solid @brand-secondary;
-}
-
-/* Menu List */
-.nav-mega > li {
-	display: block;
-	float: left;
-}
-
-/* Menu Links */
-.nav-mega > li > a {
-	position: relative;
-	display: block;
-	z-index: 510;
-	height: 54px;
-	padding: 0 20px;
-	line-height: 54px;
-    overflow: visible;
-
-	background-color: #fff;
-
-	-webkit-transition: all .3s ease;
-	-moz-transition: all .3s ease;
-	-o-transition: all .3s ease;
-	-ms-transition: all .3s ease;
-	transition: all .3s ease;
-}
-
-.nav-mega > li.active > a {
-    height: 62px;
-    color: @brand-secondary; 
-}
-
-.nav-mega li a:hover{ 
-    background-color: @brand-info; 
-    color: #fff; 
-}
-
-.nav-mega > li > a:hover, .nav-mega > li.active > a:hover { 
-    background-color: @brand-info; 
-    color: @brand-secondary; 
-}
-
-/* Menu Dropdown */
-.nav-mega > li > div {
-	position: absolute;
-	display: block;
-	top: 55px;
-	left: 0;
-    width: 100%;
-    height: 50px;
-    background-color: @brand-info;
-    padding: @padding-large-vertical;
-
-	opacity: 1;
-	visibility: hidden;
-	overflow: hidden;
-
-	-webkit-transition: all .3s ease .15s;
-	-moz-transition: all .3s ease .15s;
-	-o-transition: all .3s ease .15s;
-	-ms-transition: all .3s ease .15s;
-	transition: all .3s ease .15s;
-}
-
-.nav-mega > li:hover > div {
-	opacity: 1;
-	visibility: visible;
-	overflow: visible;
-}
-
-.nav-mega .nav-column {
-    position: relative;
-}
-
-.nav-mega .nav-column a {
-    margin: 0 auto;
-    display: block; 
-    padding: 6px;
-    color: #fff;
-    text-align: center;
-    font-weight: 700;
-}
-
-.nav-mega .nav-column a:hover {
-    background: none;
-}
-
-.nav-mega .nav-column:hover {
-    color: #fff;
-    background-color: lighten(@brand-info, 5%);
-}
-
-/* Menu Content Styles */
-.nav-mega .nav-mega-column {
-	float: left;
-	width: 20%;
-	padding: 2.5%;
-}
-
-.nav-mega .nav-mega-column h3 {
-	margin: 20px 0 10px 0;
-	line-height: 18px;
-}
-
-.nav-mega .nav-mega-column h3.orange { color: #ff722b; }
-
-.nav-mega .nav-mega-column li a {
-	display: block;
-	line-height: 26px;
-}
-
-.nav-mega .nav-mega-column li a:hover { color: #fff; }
-
-
-//
 // Panels - eg content and footer
 // --------------------------------------------------
 
+
 .header {
-    height: 255px;
     padding-left: 0;
     padding-right: 0;
     margin-bottom: 25px;
 }
+
 .hrd_logo {
-    margin-left: 30px;
+    //margin-left: 30px;
 }
 
 .sitetitle {
-    margin-top: 20px;
+    margin-top: 30px;
     margin-left: -20px;
     font-weight: 500;
+    font-size: @font-size-h4;
 }
 
-.menu-wrapper .container {
-    border-top: 2px solid @brand-secondary;
-    background-color: #fff;
-    padding: 0 30px 50px 30px; 
-}
+.eu_logo img {
+        max-width: 100%;
+        height: auto;
+    }
 
 .container { 
     padding-left: 0;
@@ -507,50 +338,6 @@ Import Bootstrap LESS and Site Specific LESS
 
 
 //
-// ADMIN pages coloring 
-// --------------------------------------------------
-
-// Adjustments for admin pages
-body.admin{
-    background-color: darken(@body-bg, 40%);
-    
-    // Menu adjustments
-    
-    .navbar-nav > li.active > a {
-        border-top: 8px solid @gray-darker;   
-    }
-    
-    .nav-mega {
-        border-top: 2px solid @gray-darker;
-    }
-
-    .nav-mega li a:hover, .nav-mega li.active a:hover { 
-        background-color: @gray-lighter;
-        color: @gray-dark;
-    }
-    
-    .nav-mega li div {
-	    background-color: @gray-lighter;
-    }
-    
-    .nav-mega li div a{
-        color: @gray-dark !important;
-    }
-    
-    .nav-mega li div a:hover {
-        background-color: darken(@gray-lighter, 10%);
-
-    }
-    
-    
-    // Heading adjustments
-    h1 {
-        //color: @gray-darker;
-    }
-
-}
-
-//
 // ADMIN pages forms and warnings 
 // --------------------------------------------------
 
@@ -597,7 +384,7 @@ body.admin{
 .org-cat-top-level ul li {
     list-style-type: none;
     background: -5px 24px no-repeat url(../../static/images/org-list-heirarchy.png );
-    padding: 0 0 7px 40px;
+    padding: 0 0 0 40px;
     border-bottom: 1px @gray-light2 solid;
 }
 
@@ -609,6 +396,13 @@ body.admin{
 .org-cat-top-level ul li:last-child {
     background: -5px 24px  no-repeat url(../../static/images/org-list-heirarchy-last.png );
     border-bottom: none;
+}
+
+.org-cat-alert {
+    padding: 7px;
+    form {
+        margin-bottom: 0px;
+    }
 }
 
 // Edit page elements
@@ -635,4 +429,338 @@ body.admin{
     input input[type=checkbox] {
         top: -2px;
     }
+}
+
+//
+// Nav mega menu resets for all sizes
+// --------------------------------------------------
+
+/* Reset */
+    .nav-mega,
+    .nav-mega a,
+    .nav-mega ul,
+    .nav-mega li,
+    .nav-mega div,
+    .nav-mega form,
+    .nav-mega input {
+        margin: 0;
+        padding: 0;
+        border: none;
+        outline: none;
+    }
+
+    .nav-mega a { text-decoration: none; }
+
+    .nav-mega li { list-style: none; }
+
+
+
+//
+// Responsive menu
+// --------------------------------------------------
+
+// SM specific menu styling breakpoint
+@media (max-width: 768px) { 
+    
+    .navbar-toggle span {
+        display: block; 
+        width: 40px;
+        height: 40px;
+        background-image: url(../../static/images/menu_toggle_40px.png);
+    }
+
+    .header {
+        height: 155px;
+    }
+    
+    .nav-mega {
+        z-index: 10;
+        display: block;
+        margin: 0 auto;
+        width: 50%;
+        font-size: @font-size-base;
+        background-color: @brand-info;
+    }
+    
+    .nav-mega a { 
+        color: #fff !important;
+    }
+    
+    .nav-mega a:hover {
+        background-color: darken(@brand-info, 20%) !important;
+        color: darken(#fff, 20%)
+    }
+
+    .nav-mega li a {
+        position: relative;
+        display: block;
+        height: 50px;
+        padding: 0 10px;
+        line-height: 50px;
+        overflow: visible;
+        background-color: @brand-info;
+        -webkit-transition: all .3s ease;
+        -moz-transition: all .3s ease;
+        -o-transition: all .3s ease;
+        -ms-transition: all .3s ease;
+        transition: all .3s ease;
+        border-top: none;
+        color: #fff;
+    }
+    
+    .nav-mega li.active a {
+        background-color: @brand-info;
+    }
+
+    .nav-mega .nav-column  a {
+        padding: 0;
+        margin: 0;
+        padding: 0px;
+        color: #fff;
+    }
+
+    .nav-mega .nav-column a:hover {
+        margin: 0;
+    }
+}
+
+
+//
+// RESPONSIVE 
+// --------------------------------------------------
+
+// SM breakpoint
+@media (min-width: 768px) {
+
+    //
+    // Nav mega menu with reduced padding
+    // --------------------------------------------------
+
+    .header {
+        height: 233px;
+    }
+
+    /* Menu Container */
+    .nav-mega {
+        display: inline-block;
+        position: relative;
+        cursor: default;
+        z-index: 500;
+        width: 95%;
+        top: 50%;
+        border-left: none;
+        border-top: 2px solid @brand-secondary;
+        font-size: @font-size-small;
+        left: 0px;
+    }
+
+    /* Menu List */
+    .nav-mega > li {
+        display: block;
+        float: left;
+    }
+
+    /* Menu Links */
+    .nav-mega > li > a {
+        position: relative;
+        display: block;
+        z-index: 510;
+        height: 50px;
+        padding: 0 10px;
+        line-height: 50px;
+        overflow: visible;
+        background-color: #fff;
+        -webkit-transition: all .3s ease;
+        -moz-transition: all .3s ease;
+        -o-transition: all .3s ease;
+        -ms-transition: all .3s ease;
+        transition: all .3s ease;
+    }
+
+    .nav-mega > li.active > a {
+        height: 58px;
+        color: @brand-secondary; 
+    }
+
+    .nav-mega li a:hover{ 
+        background-color: @brand-info; 
+        color: #fff; 
+    }
+
+    .nav-mega > li > a:hover, .nav-mega > li.active > a:hover { 
+        background-color: @brand-info; 
+        color: @brand-secondary; 
+    }
+
+    /* Menu Dropdown */
+    .nav-mega > li > div {
+        position: absolute;
+        display: block;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        height: 50px;
+        background-color: @brand-info;
+        padding: @padding-large-vertical;
+
+        opacity: 1;
+        visibility: hidden;
+        overflow: hidden;
+
+        -webkit-transition: all .3s ease .15s;
+        -moz-transition: all .3s ease .15s;
+        -o-transition: all .3s ease .15s;
+        -ms-transition: all .3s ease .15s;
+        transition: all .3s ease .15s;
+    }
+
+    .nav-mega > li:hover > div {
+        opacity: 1;
+        visibility: visible;
+        overflow: visible;
+    }
+
+    .nav-mega .nav-column {
+        position: relative;
+        display: inline-block;
+        width: 20%;
+    }
+
+    .nav-mega .nav-column a {
+        margin: 0 auto;
+        display: block; 
+        padding: 6px;
+        color: #fff;
+        text-align: center;
+        font-weight: 700;
+    }
+
+    .nav-mega .nav-column a:hover {
+        background: none;
+    }
+
+    .nav-mega .nav-column:hover {
+        color: #fff;
+        background-color: lighten(@brand-info, 5%);
+        
+    }
+
+    /* Menu Content Styles */
+    .nav-mega .nav-mega-column {
+        float: left;
+        width: 20%;
+        padding: 2.5%;
+    }
+
+    .nav-mega .nav-mega-column h3 {
+        margin: 20px 0 10px 0;
+        line-height: 18px;
+    }
+
+    .nav-mega .nav-mega-column h3.orange { color: #a6a6a6; }
+
+    .nav-mega .nav-mega-column li a {
+        display: block;
+        line-height: 26px;
+    }
+
+    .nav-mega .nav-mega-column li a:hover { color: #fff; }
+    
+    //
+    // Menu and button - border options
+    // --------------------------------------------------
+
+    .navbar-nav > li.active{
+    }
+
+    .navbar-nav > li.active > a {
+        border-left: none;
+        border-top: 8px solid @brand-secondary;
+        top: -8px;
+    }
+
+    .navbar-nav > li.active > a:hover {
+        color: @brand-secondary;
+    }
+
+    .btn-secondary {
+        background-color: @brand-secondary;
+        color: #fff;
+    }
+    
+    .btn-secondary:hover {
+        background-color: darken(@brand-secondary, 10%);
+        color: #fff;
+    }
+}
+
+// MD breakpoint
+@media (min-width: 992px) {
+    .sitetitle {
+    margin-top: 20px;
+    margin-left: -20px;
+    font-size: @font-size-h3;
+    }
+
+    /* Menu Container */
+    .nav-mega {
+        font-size: @font-size-base;
+        width: 100%;
+    }
+
+    .nav-mega {
+        left: 0;
+    }
+}
+
+// LG breakpoint
+@media (min-width: 1200px) {
+    .nav-mega {
+        left: 0;
+    }
+    
+}
+
+
+//
+// ADMIN pages coloring 
+// --------------------------------------------------
+
+// Adjustments for admin pages
+body.admin{
+    background-color: darken(@body-bg, 40%);
+    
+    // Menu adjustments
+    
+    .navbar-nav > li.active > a {
+        border-color: @gray-darker;   
+    }
+    
+    .nav-mega {
+        border-top: 2px solid @gray-darker;
+    }
+
+    .nav-mega li a:hover, .nav-mega li.active a:hover { 
+        background-color: @gray-lighter;
+        color: @gray-dark;
+    }
+    
+    .nav-mega li div {
+	    background-color: @gray-lighter;
+    }
+    
+    .nav-mega li div a{
+        color: @gray-dark !important;
+    }
+    
+    .nav-mega li div a:hover {
+        background-color: darken(@gray-lighter, 10%);
+    }
+    
+    
+    // Heading adjustments
+    h1 {
+        //color: @gray-darker;
+    }
+
 }
