@@ -62,18 +62,6 @@
 <div class=" container footer">
     <div class="panel panel-default">
         <div class="panel-body grey-bottom-border">
-            <div class="footer-menu col-xs-12 col-md-2">
-                <ul>
-                    <h4>Site</h4>
-                    <li class="first"><a href="{{ url_for('cms_page2') }}">Home</a></li>
-                    <li><a href="{{ url_for('cms_page2', id='news') }}">News</a></li>
-                    <li class="last"><a href="{{ url_for('cms_page2', id='about') }}">About</a></li>
-                </ul>
-            </div>
-            <div class="footer-seo-blurb col-xs-12 col-md-3">
-                <h4>SEO blurb</h4>
-                <p>{% block seoBlurb %}SEO blurb. Pieniam, simoluptas porrum is eturita turist et magnihilit ut et facererferum quuntur, consero blautae autem. Id eos eos non et ma perest aliqui doles{% endblock %}</p>
-            </div>
             <div class="footer-third-col col-xs-12 col-md-7">
 
                 {% block langSwitch %}
@@ -87,21 +75,10 @@
                 </div>
                 {% endblock %}
 
-                <div class="footer-partners">
-                    <ul class="list-inline">
-                      <h4>{{ _('Partners') }}</h4>
-                        <li><a href="" alt=""><img src="/static/images/logo.png" class="img-responsive" alt="Logo" /></a></li>
-                        <li><a href="" alt=""><img src="/static/images/logo.png" class="img-responsive" alt="Logo" /></a></li>
-                        <li><a href="" alt=""><img src="/static/images/logo.png" class="img-responsive" alt="Logo" /></a></li>
-                        <li><a href="" alt=""><img src="/static/images/logo.png" class="img-responsive" alt="Logo" /></a></li>
-                        <li><a href="" alt=""><img src="/static/images/logo.png" class="img-responsive" alt="Logo" /></a></li>
-                    </ul>
-                </div>
             </div>
         </div>
     </div>
-</div><!-- /container -->
-
+</div>
 <!-- /Footer ends ========================================== -->
 
 
