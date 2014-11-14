@@ -25,7 +25,8 @@ language_list = [
     ('fr', u'français', 'ltr'),
     ('es', u'español', 'ltr'),
     ('ar', u'العربية', 'rtl'),
-    ('zh', u'中文', 'ltr'),
+    #('zh', u'中文', 'ltr'),
+    ('ru', u'русский', 'ltr'),
 ]
 
 lang_dir = {}
