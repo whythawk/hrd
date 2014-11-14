@@ -5,7 +5,7 @@
 {% block content %}
  {{ form.translations_bar(status) }}
   {% if lang =='en' %}
-  <div class="alert new-page col-xs-12 alert-info">
+  <div class="alert new-page col-xs-12 alert-null">
 <h4>{{ _('Create a new organisation') }}</h4>
     {{ form.action('New organisation', url_for('org_new'), class='btn-primary btn-success pull-right', icon='plus') }}
         </div>
@@ -13,7 +13,7 @@
 
   {% for org in orgs %}
 
-    <div class="alert col-xs-12 alert-info">
+    <div class="alert col-xs-12 alert-null">
         <h4>{{ org.name }} <small>{{ org.status }}</small></h4>
 
         {{ form.action_link('Edit', url_for_admin('org_edit', id=org.org_id), icon='pencil') }}

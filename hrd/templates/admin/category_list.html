@@ -9,7 +9,7 @@
  <div class="alert col-xs-12 org-cat-list">
 {# new cat #}
   {% if lang =='en' %}
-  <div class="alert col-xs-12 org-cat-list alert-info">
+  <div class="alert col-xs-12 org-cat-list alert-null">
 <h4>{{ _('Create a new category') }}</h4>
     {{ form.action('New category', url_for('category_new', cat_type=cat_type), class='btn-primary btn-success pull-right', icon='plus') }}
         </div>
@@ -18,7 +18,7 @@
   <ul>
     {% for cat in all %}
     {# category start #}
-    <li class="alert col-xs-12 org-cat-top-level alert-info">
+    <li class="alert col-xs-12 org-cat-top-level alert-null">
         <h4>{{ cat.title }}
         {% if not cat.active %}
         <small>Inactive</small>
