@@ -52,6 +52,7 @@
                         <p class="search-result-body">{{ org.description }}</p>
 
                     </div>
+                    {#
                     <div class="col-xs-6 col-sm-6 col-md-3">
                         <!-- Search logo --><a href="{{ url_for('org', id=org.org_id) }}" title="Logo" class="logo"><img src="/static/images/logo.png" alt="Logo" /></a>
                     </div>
@@ -64,6 +65,7 @@
                         </ul>
                         <!-- /Search meta tags ends ============================= -->
                     </div>
+                    #}
                     <span class="clearfix borda"></span>
                     <div class="col-md-5 view-detail pull-right"><a href="{{ url_for('org', id=org.org_id) }}" title="View detail">{{ _("Go to organisation's page") }}</a></div>
                     <span class="clearfix borda"></span>
