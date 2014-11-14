@@ -6293,6 +6293,9 @@ button.close {
 .search-filter-col label.last {
   border-bottom: none;
 }
+.search-filter-col summary:focus {
+  outline: none;
+}
 .search-filter-col details {
   display: block;
   border-bottom: 1px solid #fff;
