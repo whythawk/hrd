@@ -332,14 +332,6 @@ Import Bootstrap LESS and Site Specific LESS
     padding: 20px;
 }
 
-//
-// New null alert class
-// --------------------------------------------------
-
-.alert-null {
-    background-color: @gray-lighter;
-}
-
 
 //
 // ADMIN pages forms and warnings 
@@ -388,7 +380,7 @@ Import Bootstrap LESS and Site Specific LESS
 .org-cat-top-level ul li {
     list-style-type: none;
     background: -5px 24px no-repeat url(../../static/images/org-list-heirarchy.png );
-    padding: 0 0 0 40px;
+    padding: 0 0 0 17px;
     border-bottom: 1px @gray-light2 solid;
 }
 
@@ -403,11 +395,27 @@ Import Bootstrap LESS and Site Specific LESS
 }
 
 .org-cat-alert {
-    padding: 7px;
+    padding: 7px 7px 7px 14px;
     form {
         margin-bottom: 0px;
     }
 }
+
+//
+// New null alert class
+// --------------------------------------------------
+
+.alert-null {
+    background-color: @gray-lighter;
+    border-color: darken(@gray-lighter, 5%)
+}
+
+// Edit pages list elements
+
+.page-list-url {
+    right: 0;
+}
+
 
 // Edit page elements
 
@@ -463,68 +471,90 @@ Import Bootstrap LESS and Site Specific LESS
 // Responsive menu
 // --------------------------------------------------
 
-// SM specific menu styling breakpoint
+// SM specific menu styling reverse breakpoint
 @media (max-width: 768px) { 
     
-    .navbar-toggle span {
+    
+    .navbar-header {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 43px;
+    }
+    
+    button.navbar-toggle {
+        margin-top: -5px;
         display: block; 
         width: 40px;
         height: 40px;
-        background-image: url(../../static/images/menu_toggle_40px.png);
-    }
-
-    .header {
-        height: 155px;
+        padding: 0;
+        margin: 0;
+        background: url(../../static/images/menu_toggle_40px.png) -2px -2px ;
     }
     
+    
+    .header {
+        height: 175px;
+    }
+    
+   
+    
     .nav-mega {
-        z-index: 10;
-        display: block;
-        margin: 0 auto;
+        float: right;
+        margin-right: 15px;
+        //z-index: 10;
+        display: block;float: right;
         width: 50%;
         font-size: @font-size-base;
         background-color: @brand-info;
+        border-top: none;
     }
     
-    .nav-mega a { 
-        color: #fff !important;
+ .navbar-default .navbar-nav { 
+     li > a {color: #fff;}
+     li > a:hover {color: darken(#fff, 10%);}
+     li.active > a {color: darken(#fff, 10%);}
+     li.active > a:hover {color: darken(#fff, 20%);}
     }
     
     .nav-mega a:hover {
         background-color: darken(@brand-info, 20%) !important;
-        color: darken(#fff, 20%)
+        color: darken(#fff, 20%);
     }
 
     .nav-mega li a {
         position: relative;
         display: block;
-        height: 50px;
-        padding: 0 10px;
-        line-height: 50px;
+        height: 45px;
+        padding: 0 12px;
+        line-height: 45px;
         overflow: visible;
         background-color: @brand-info;
-        -webkit-transition: all .3s ease;
-        -moz-transition: all .3s ease;
-        -o-transition: all .3s ease;
-        -ms-transition: all .3s ease;
-        transition: all .3s ease;
         border-top: none;
+        border-bottom: 1px dotted darken(@brand-info, 20%);
         color: #fff;
     }
     
     .nav-mega li.active a {
-        background-color: @brand-info;
+        background-color: @brand-info !important;
+    }
+    
+    .nav-mega li.active a:hover {
+        background-color: darken(@brand-info, 20%)!important;
     }
 
     .nav-mega .nav-column  a {
-        padding: 0;
+        padding: 0 0 0 20px !important;
         margin: 0;
         padding: 0px;
-        color: #fff;
+        color: lighten(@brand-info, 20%);
+        height: 30px;
+        line-height: 30px;
+        padding: 0 7px;
     }
 
     .nav-mega .nav-column a:hover {
-        margin: 0;
+        color: #fff !important;;
     }
 }
 
