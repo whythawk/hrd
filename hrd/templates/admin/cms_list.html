@@ -17,9 +17,9 @@
   {% for page in pages %}
   <div class="alert col-xs-12 alert-{% if page.status != 'publish' %}warning{% else %}null{% endif %}">
       <h4>
-        <small>{{ page.url }}</small>
         {{ page.title }}
         <small>{{ page.status }}</small>
+        <span class="small pull-right">{{ page.url }}</span>
       </h4>
       {% if page.status == 'edit' %}
         {{ form.action_link('Edit', url_for_admin('cms_edit', id=page.page_id), icon='pencil') }}
@@ -48,9 +48,9 @@
   {% for page in missing %}
     <div class="alert col-xs-12 alert-danger">
       <h4>
-        <small>{{ page.url }}</small>
         {{ page.title }}
         <small>Missing</small>
+        <span class="small pull-right">{{ page.url }}</span>
       </h4>
       {{ form.action('Create', url_for_admin('cms_trans', id=page.page_id), icon='plus', class='btn-success') }}
     </div>
