@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 
-{%- macro menu_item(text, href, force_right=false, content='') %}
-  <li{{ menu_class(href, force_right)|safe }}>
-  <a href="{{ href }}">{{ text }}{% if content %}<span class="caret"></span>{% endif %}</a>
+{%- macro menu_item(text, href, force_right=false, content='', class='', icon='') %}
+  <li{{ menu_class(href, force_right, class)|safe }}>
+  <a href="{{ href }}">
+    {% if icon %}<span class="glyphicon glyphicon-{{ icon }}"></span>{% endif %}
+    {{ text }}{% if content %}<span class="caret"></span>{% endif %}</a>
   {{ content|safe }}</li>
 {%- endmacro -%}
 
@@ -15,7 +17,7 @@
         {% set my_content = '<div>' +
           sub_menu_item(_('Log out'), url_for('logout'), force_right=true) +
           '</div>' %}
-        {{ menu_item(user, '#', force_right=true, content=my_content) }}
+        {{ menu_item(user, '#', force_right=true, content=my_content, class='logged-in', icon='user') }}
 
       {% if show_extras %}
         {{ menu_item(_('Message board'), '#', force_right=true) }}
