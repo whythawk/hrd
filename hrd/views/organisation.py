@@ -19,8 +19,14 @@ def org_edit(id):
         if not org:
             abort(404)
         return org_trans(id=id)
+    if not org:
+        org = Organisation.query.filter_by(
+            org_id=id, lang=lang, current=True
+        ).first()
+    if not org:
+        abort(404)
     if org.status == 'publish':
-        return redirect(url_for_admin('org_reedit', id=id), code=307)
+        return org_reedit(id=id)
     if request.method == 'POST':
         org.name = get_str('name')
         org.description = get_str('description')
