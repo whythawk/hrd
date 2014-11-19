@@ -322,18 +322,21 @@ def list_status():
 def org_search():
     lang = request.environ['LANG']
     cats = all_codes(lang, 'org')
-    org = Organisation.query.filter_by(lang=lang, status='publish').first()
-    # FIX ME thois is till full search
-    if not org:
-        org = Organisation.query.filter_by(lang='en', status='publish').first()
-    orgs = [org, org, org]
-    results = []
-    for org in orgs:
-        codes = db.session.query(OrgCodes.code).filter_by(org_id=org.org_id)
-        c = Code.query.filter_by(lang=lang).filter(
-            Code.code_id.in_(codes))
-        results.append((org, [code.title for code in c]))
-    return render_template('org_search.html', cats=cats, results=results)
+
+
+    orgs = Organisation.query.filter_by(lang=lang, status='publish')
+
+    for field, _null in request.args.items():
+        if field == 'Filter':
+            continue
+        c = db.session.query(OrgCodes.org_id).filter_by(code=field)
+        orgs = orgs.filter(Organisation.org_id.in_(c))
+
+    count = orgs.count()
+
+    orgs = orgs.all()
+
+    return render_template('org_search.html', cats=cats, orgs=orgs, count=count)
 
 
 def get_trans(id):

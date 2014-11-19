@@ -36,7 +36,7 @@
             <!-- Search results column begins ============================= -->
             <div class="search-results-col col-xs-12 col-sm-6 col-md-8 pull-right">
                 <h2>Search results<br /><br /></h2>
-                <div class="no-of-records">XX records</div>
+                <div class="no-of-records">{{ count }} records</div>
                 <!-- Top pagination begins ============================= -->
                 <div class="col-xs-12 pagination-top"><ul class="pagination pull-right">
                     <li class="active"><a href="" alt="">1</a></li>
@@ -44,7 +44,7 @@
                     <li><a href="" alt="">3</a></li>
                     </ul></div>
                 <!-- /Top pagination ends ============================= -->
-                {% for org, codes in results %}
+                {% for org in orgs %}
                 <!-- Search result row begins ============================= -->
                 <article class="search-result{% if loop.index == 1 %} first{% elif loop.index == loop.length %} last{% endif %}">
                     <div class="excerpt">
