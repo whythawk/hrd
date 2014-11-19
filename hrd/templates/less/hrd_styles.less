@@ -435,6 +435,7 @@ Import Bootstrap LESS and Site Specific LESS
 .org-choose-list {
     margin-top: 10px;
     border-bottom: 1px @gray-light2 solid;
+    padding-bottom: 10px;
     label {
         font-size: 12px;
     }
@@ -442,6 +443,31 @@ Import Bootstrap LESS and Site Specific LESS
         top: -2px;
     }
 }
+
+ // Org edit page category chooser for SM -devices
+
+    .org-choose-list {
+        summary { 
+            width: 100%; 
+            display: block;
+            height: 40px;
+        }
+        summary:focus { 
+            outline: none;
+            cursor: pointer;
+        }
+        .checkbox {
+        width: 100%;
+        //outline: 1px dotted red;
+        padding: 4px 0 2px 15px;
+        margin: 0;
+        position: relative;
+        float: left;
+        border-top: 1px dotted @gray-light2;
+        }
+    }
+
+
 
 //
 // Nav mega menu resets for all sizes
@@ -554,13 +580,23 @@ Import Bootstrap LESS and Site Specific LESS
 
     .nav-mega .nav-column a:hover {
         color: #fff !important;;
-    }
+    } 
 }
 
 
 //
 // RESPONSIVE 
 // --------------------------------------------------
+
+// Pre SM breakpoint
+@media (min-width: 500px) {
+   // Org edit page category chooser for SM - devices
+    .org-choose-list {
+        .checkbox {
+            width: 50%;
+        }
+   }
+}
 
 // SM breakpoint
 @media (min-width: 768px) {
@@ -571,6 +607,11 @@ Import Bootstrap LESS and Site Specific LESS
 
     .header {
         height: 233px;
+    }
+    
+    .sitetitle {
+        margin-left: -40px;
+        padding-right: 80px;
     }
 
     /* Menu Container */
@@ -725,14 +766,22 @@ Import Bootstrap LESS and Site Specific LESS
         background-color: darken(@brand-secondary, 10%);
         color: #fff;
     }
+    
+    // Org edit page category chooser for MD - devices
+     .org-choose-list {
+        .checkbox {
+            width: 33.3333%;
+        }
+   }
 }
 
 // MD breakpoint
 @media (min-width: 992px) {
     .sitetitle {
-    margin-top: 20px;
-    margin-left: -20px;
-    font-size: @font-size-h3;
+        margin-top: 20px;
+        margin-left: -20px;
+        font-size: @font-size-h3;
+        padding-right: 50px;
     }
 
     /* Menu Container */
@@ -744,14 +793,19 @@ Import Bootstrap LESS and Site Specific LESS
     .nav-mega {
         left: 0;
     }
+    
+     // Org edit page category chooser for MD - devices
+
+    .org-choose-list .checkbox {
+        width: 25%;
+    }
 }
 
 // LG breakpoint
 @media (min-width: 1200px) {
     .nav-mega {
         left: 0;
-    }
-    
+    }    
 }
 
 
