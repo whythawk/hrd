@@ -3,6 +3,16 @@
 {% block title %}Organization{% endblock %}
 
 {% block content %}
+
+<script>
+    function select_all(that){
+        $(that).parent().next('div').find(':checkbox').prop('checked', true);
+    }
+
+    function clear_all(that){
+        $(that).parent().next('div').find(':checkbox').prop('checked', false);
+    }
+</script>
     <h1>Edit: Organization<br /><br /></h1>
  {{ form.translations_bar(translations) }}
     <form method="POST" role="form">
@@ -24,10 +34,14 @@
 
       {{ form.checkbox('active', label='Active', value=org.active) }}
       {% for cat in codes if cat.active %}
-        <h3>{{ cat.title }}</h3>
+         <details class="col-xs-12 org-choose-list" open="open"> <summary class="h3">{{ cat.title }}</summary>
+         <div><a onclick="select_all(this)">select all</a> | <a onclick="clear_all(this)">clear all</a></div>
+         <div>
         {% for code in cat.codes if code.active %}
-          {{ form.checkbox(code.code, label=code.title, value=code.code in current) }}
+        <div class="checkbox"> <label> <input value="True" type="checkbox" name="code.code">{{ code.title }}</label> </div>
         {% endfor %}
+    </div>
+        </details>
       {% endfor %}
           {% endif %}
         {# FIXME Insert button classes: btn btn-primary pull-right #}
