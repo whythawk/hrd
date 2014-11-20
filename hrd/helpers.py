@@ -61,6 +61,11 @@ def has_perm(permission):
         return True
     return False
 
+
+def search_subset(set1, set2):
+    return set([c['code'] for c in set1]) & set(set2)
+
+
 def menu_class(href, force_right, css_class):
     cls = []
     if force_right:
@@ -107,5 +112,6 @@ hrd.app.jinja_env.globals.update(
     menu_class=menu_class,
     sub_menu_item=sub_menu_item,
     debug=hrd.DEBUG,
+    search_subset=search_subset,
     get_trans_state=get_trans_state,
 )

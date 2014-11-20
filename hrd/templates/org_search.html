@@ -5,6 +5,11 @@
 {% block container_class %}search-content{% endblock %}
 
 {% block content %}
+<script>
+    function clear_all(){
+        $('.search-filter-col').find(':checkbox').prop('checked', false);
+    }
+</script>
         <h1>{{ _('Search: Member organizations') }}<br /><br /></h1>
         <div class="row col-xs-12">
             <!-- Search filter column begins ============================= -->
@@ -12,13 +17,13 @@
                 <div class="column-label">Organizations</div>
                 <h3 class="">Filter list...</h3>
                 <div class="clearfix">
-                <div class="filter-reset pull-right text-right"><a href="">Select all</a> | <a href="">Select none</a></div>
+                    <div class="filter-reset pull-right text-right"><a onclick="clear_all()">{{ _('Clear selection') }}</a></div>
                 </div>
                 <form action="" method="">
 
 {% for cat in cats if cat.active %}
                     <div class="row">
-                        <details class="{% if loop.index == 1 %}first{% elif loop.index == loop.length %}last{% endif %}" open="open">
+                        <details class="{% if loop.index == 1 %}first{% elif loop.index == loop.length %}last{% endif %}" {% if search_subset(cat.codes, request.args) %}open="open"{% endif %}>
                         <summary class="search-filter-title">{{ cat.title }}</summary>
         {% for code in cat.codes if code.active %}
                             <label>
