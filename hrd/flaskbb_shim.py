@@ -18,6 +18,10 @@ def get_flaskbb(app, path):
     flaskbb = create_app(bb_config)
 
     flaskbb.theme_manager = app.theme_manager
+    flaskbb.jinja_env.globals['_'] = app.jinja_env.globals['_']
+    flaskbb.jinja_env.globals['lang_list'] = app.jinja_env.globals['lang_list']
+    flaskbb.jinja_env.globals['current_lang'] = app.jinja_env.globals['current_lang']
+    flaskbb.jinja_env.globals['lang_pick'] = app.jinja_env.globals['lang_pick']
     return flaskbb
 
 # we want to force our theme but need to hack each module due to the way
