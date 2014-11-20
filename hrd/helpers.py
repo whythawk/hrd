@@ -96,6 +96,7 @@ def get_trans_state(value):
 hrd.app.jinja_env.globals.update(
     url_for_admin=hrd.url_for_admin,
     url_for=hrd.url_for,
+    url_for_fixed=hrd.url_for_fixed,
     get_admin_lang=hrd.get_admin_lang,
     lang_html=hrd.lang_html,
     lang_pick=hrd.lang_pick,

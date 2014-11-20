@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
-import os
-
+import urllib
 
 from flask import Flask, request, abort
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -9,14 +7,16 @@ from werkzeug.wsgi import DispatcherMiddleware
 
 from flaskbb_shim import get_flaskbb
 
-secret_key = os.urandom(24)
-secret_key = 'FIXME - DELETE THIS'
+
+# FIXME need config file
+secret_key = "ddSecretKeyForSessionSigning"
 
 app = Flask(__name__)
 app.debug = True
 app.secret_key = secret_key
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 db = SQLAlchemy(app)
+
 
 DEBUG = False
 
@@ -27,7 +27,7 @@ language_list = [
     ('fr', u'français', 'ltr'),
     ('es', u'español', 'ltr'),
     ('ar', u'العربية', 'rtl'),
-    #('zh', u'中文', 'ltr'),
+    # ('zh', u'中文', 'ltr'),
     ('ru', u'русский', 'ltr'),
 ]
 
@@ -44,7 +44,6 @@ for code, name, dir_ in language_list:
 lang_codes = []
 for code, name, dir_ in language_list:
     lang_codes.append(code)
-
 
 
 permission_list = [
@@ -76,6 +75,7 @@ def lang_list():
 def current_lang():
     return request.environ['LANG']
 
+
 def current_lang_name():
     return lang_name[request.environ['LANG']]
 
@@ -97,6 +97,12 @@ def lang_pick(lang):
 
 def url_for(*args, **kw):
     url = default_url_for(*args, **kw)
+    lang = request.environ['LANG']
+    url = '/%s%s' % (lang, url)
+    return url
+
+
+def url_for_fixed(url):
     lang = request.environ['LANG']
     url = '/%s%s' % (lang, url)
     return url
@@ -134,10 +140,6 @@ def get_int(field, default):
 import helpers
 import models
 import views
-
-
-import urllib
-
 
 
 @app.template_filter('sn')

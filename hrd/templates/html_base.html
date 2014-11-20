@@ -20,7 +20,7 @@
         {{ menu_item(user, '#', force_right=true, content=my_content, class='logged-in', icon='user') }}
 
       {% if show_extras %}
-        {{ menu_item(_('Message board'), '#', force_right=true) }}
+        {{ menu_item(_('Message board'), url_for_fixed('/forum'), force_right=true) }}
         {% if has_perm('translator') %}
             {{ menu_item(_('Admin'), url_for('admin'), force_right=true) }}
         {% endif %}
