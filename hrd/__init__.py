@@ -5,7 +5,9 @@ import os
 
 from flask import Flask, request, abort
 from flask.ext.sqlalchemy import SQLAlchemy
+from werkzeug.wsgi import DispatcherMiddleware
 
+from flaskbb_shim import get_flaskbb
 
 secret_key = os.urandom(24)
 secret_key = 'FIXME - DELETE THIS'
@@ -187,5 +189,15 @@ class I18nMiddleware(object):
                 environ['CURRENT_URL'] = path_info
         return self.app(environ, start_response)
 
+
+flaskbb = get_flaskbb(app)
+flaskbb.jinja_env.globals['url_for'] = url_for
+flaskbb.jinja_env.globals['url_for_fixed'] = url_for_fixed
+
+app.login_manager = flaskbb.login_manager
+
+app = DispatcherMiddleware(app, {
+    '/forum': flaskbb
+})
 
 app = I18nMiddleware(app)

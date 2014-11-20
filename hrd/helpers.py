@@ -3,6 +3,7 @@
 import re
 
 from flask import request
+from flask.ext.login import current_user
 
 import hrd
 
@@ -41,9 +42,12 @@ def mangle(value):
 
 
 def username():
-    user = request.user
+    user = current_user
     if user:
-        return user.name
+        try:
+            return user.username
+        except:
+            pass
     return False
 
 
