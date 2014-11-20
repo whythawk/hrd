@@ -25,7 +25,6 @@
             <div id="menu-wrapper container">
 
 {% block menu %}
-
     <ul class="navbar-nav nav-mega">
         {{ menu_item(_('Home'), url_for('cms_page2')) }}
         {% if user %}
@@ -40,7 +39,6 @@
     {% block user_bar %}
         {{ user_menu() }}
     {% endblock %}
-
 {% endblock %}
 
 </div></div></div>
