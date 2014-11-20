@@ -15,7 +15,7 @@
         <meta name="description" content="FlaskBB is a forum software written in Flask">
         <meta name="author" content="FlaskBB Team">
 
-        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <link rel="shortcut icon" href="/static/images/favicon.ico"">
 
         {% block css %}
         <link rel="stylesheet" href="{{ url_for('static', filename='css/code.css') }}">
@@ -26,12 +26,53 @@
     </head>
 
     <body>
+<div class="header container red-left-border">
+    <div class="row">
+        <div class="hrd_logo col-xs-5 col-sm-3 col-md-2">
+            <a href="{{ url_for_fixed('/') }}"><img width="auto" height="130" src="/static/images/hrd_logo_163x130_Alt_RedBlue.png" alt=""></a>
+        </div>
+        <div class="col-xs-7 col-sm-6 col-md-6">
+            <h3 class="sitetitle">{{ _('Global Platform for the Temporary Relocation of Human Rights Defenders') }}<br />
+                {#    <small class="sitesubtitle">{{ _('Support organizations’ program') }}</small> #}
+            </h3>
+        </div>
+        {% block eu_logo %}
+        <div class="eu_logo hidden-xs col-sm-3 col-md-3 pull-right">
+            <a href="#"><img width="auto" height="130" src="/static/images/EC_logo_173x130.jpg" alt=""></a>
+        </div>
+        {% endblock %}
+    </div>
+<!-- Nav begins =============================================== -->
+    <div class="navbar-header container">
+         <button type="button" class="sm-only navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"></button>
+    </div>
+    <div class="navbar-collapse collapse">
+        <div class="navbar navbar-default navbar-static-top col-md-12 container" role="navigation">
+            <div id="menu-wrapper container">
+                {#
+{% block menu %}
+    <ul class="navbar-nav nav-mega">
+        {{ menu_item(_('Home'), url_for('cms_page2')) }}
+        {% if user %}
+            {{ menu_item(_('Resources'), '#') }}
+            {{ menu_item(_('Search'), url_for('org_search')) }}
+        {% endif %}
+        {{ menu_item(_('News'), url_for('cms_page2', id='news')) }}
+        {{ menu_item(_('About Us'), url_for('cms_page2', id='about')) }}
+        {{ menu_item(_('HRDs'), url_for('cms_page2', id='hrds')) }}
+        {{ menu_item(_('Get involved'), url_for('cms_page2', id='get_involved')) }}
+
+    {% block user_bar %}
+        {{ user_menu() }}
+    {% endblock %}
+{% endblock %}
+#}
         <div id="wrap">
         {% block navigation %}
         {%- from "macros.html" import topnav with context -%}
         <!-- Navigation -->
             <nav class="navbar navbar-default navbar-static-top">
-                <div class="container">
+                <div>
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
                             <span class="sr-only">Toggle navigation</span>
@@ -101,10 +142,12 @@
                     </div><!-- nav-collapse -->
                 </div><!-- container -->
             </nav> <!-- navbar navbar-inverse -->
+    </div></div></div></div>
             {% endblock %}
+            <div class="wrap">
+                <br/>
 
-
-            <div class="container">
+            <div class="container forum-container">
                 {% block messages %}
                     {% include 'flashed_messages.html' %}
                 {% endblock %}
@@ -115,13 +158,30 @@
         </div> <!-- End wrap -->
 
             {% block footer %}
-            <div id="footer">
-                <div class="container">
-                    <p class="text-muted credit pull-left">powered by <a href="http://flask.pocoo.org">Flask</a></p>
-                    <p class="text-muted credit pull-right">&copy; 2013 - <a href="http://flaskbb.org">FlaskBB.org</a></p>
+<br/>
+<!-- Footer begins ========================================== -->
+<div class=" container footer">
+    <div class="panel panel-default">
+        <div class="panel-body grey-bottom-border">
+            <div class="footer-third-col col-xs-12 col-md-7">
+
+                {% block langSwitch %}
+                <div class="footer-language-switch">
+                    <ul class="list-inline">
+                        <h4>{{ _('Languages') }}</h4>
+                        {% for code, lang, dir in lang_list() %}
+                        <li class="{% if loop.index == 1 %}first{% elif loop.index == loop.length %}last{% endif %}{% if code==current_lang() %} active{% endif %}"><a href="{{ lang_pick(code) }}" lang="{{ code }}" dir="{{ dir }}">{{ lang }}</a></li>
+                        {% endfor %}
+                    </ul>
                 </div>
+                {% endblock %}
+
             </div>
+        </div>
+    </div>
+</div>
             {% endblock %}
+<!-- /Footer ends ========================================== -->
 
         {% block javascript %}
         <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
