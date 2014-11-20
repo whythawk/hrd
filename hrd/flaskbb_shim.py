@@ -1,3 +1,4 @@
+import os.path
 from importlib import import_module
 
 from flask.ext.themes2 import Themes, render_theme_template
@@ -6,10 +7,12 @@ from flaskbb import create_app
 from flaskbb.configs.development import DevelopmentConfig as bb_config
 
 
-def get_flaskbb(app):
+def get_flaskbb(app, path):
     Themes(app, app_identifier="hrd")
-
-    bb_config.SQLALCHEMY_DATABASE_URI = 'sqlite:////home/toby/whythawk/flashbb/src/hrd/hrd/db.sqlite'
+    db = app.config['SQLALCHEMY_DATABASE_URI']
+    if db.startswith('sqlite:///'):
+        db = 'sqlite:///%s' % os.path.join(path, db[10:])
+    bb_config.SQLALCHEMY_DATABASE_URI = db
     bb_config.SECRET_KEY = app.secret_key
 
     flaskbb = create_app(bb_config)

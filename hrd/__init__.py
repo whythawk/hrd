@@ -191,8 +191,7 @@ class I18nMiddleware(object):
                 environ['CURRENT_URL'] = path_info
         return self.app(environ, start_response)
 
-
-flaskbb = get_flaskbb(app)
+flaskbb = get_flaskbb(app, __path__[0])
 flaskbb.jinja_env.globals['url_for'] = url_for
 flaskbb.jinja_env.globals['url_for_fixed'] = url_for_fixed
 
