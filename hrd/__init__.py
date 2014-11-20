@@ -100,6 +100,12 @@ def url_for(*args, **kw):
     return url
 
 
+def url_for_fixed(url):
+    lang = request.environ['LANG']
+    url = '/%s%s' % (lang, url)
+    return url
+
+
 def url_for_admin(*args, **kw):
     if 'lang' not in kw:
         lang = request.args.get('lang')
