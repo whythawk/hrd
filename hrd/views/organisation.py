@@ -9,9 +9,13 @@ from hrd.models import Organisation, OrgCodes
 from hrd.views.codes import all_codes
 
 
-@app.route('/admin/org_logo/<filename>')
-def org_logo(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+@app.route('/admin/org_logo/<type>/<id>')
+def org_logo(type, id):
+    if type == 'live':
+        org = Organisation.query.filter_by(org_id=id, lang='en', status='publish').first()
+    else:
+        org = Organisation.query.filter_by(org_id=id, lang='en', current=True).first()
+    return send_from_directory(app.config['UPLOAD_FOLDER'], org.image)
 
 
 @app.route('/admin/org_edit/<id>', methods=['GET', 'POST'])
