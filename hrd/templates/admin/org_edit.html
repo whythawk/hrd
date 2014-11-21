@@ -19,19 +19,15 @@
           {{ form.save(label='Save ') }}
     {# FIXME Needs lang and dir coding in #}
           {{ form.input('name', label='Name', value=org.name, trans=trans) }}
-          {# FIXME Add rows attribute to textareas eg. <textarea rows="10"></textarea> #}
-          {# FIXME make description textarea 10 rows #}
       {{ form.textarea('description', label='Description', value=org.description, trans=trans, rows=10) }}
     {% if not trans %}
       {% call form.form_control(name='logo', label='Logo', trans=trans) -%}
         <input type="file" name="logo"/>
       {% endcall %}
-          {# FIXME make address textarea 5 rows #}
       {{ form.textarea('address', label='Address', value=org.address, trans=trans) }}
       {{ form.input('contact', label='Contact', value=org.contact, trans=trans) }}
       {{ form.input('phone', label='Phone', value=org.phone, trans=trans) }}
       {{ form.input('email', label='Email', value=org.email, trans=trans) }}
-          {# FIXME make PGP key textarea 5 rows #}
       {{ form.textarea('pgp_key', label='Pgp key', value=org.pgp_key, trans=trans, rows=7) }}
       {{ form.input('website', label='Website', value=org.website, trans=trans) }}
 
@@ -47,8 +43,7 @@
         </details>
       {% endfor %}
           {% endif %}
-        {# FIXME Insert button classes: btn btn-primary pull-right #}
-          {{ form.save(label='Save ') }}
+          {{ form.save(label='Save') }}
     </form>
   {{ form.code_list(all) }}
 {% endblock %}
