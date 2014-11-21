@@ -52,9 +52,9 @@
 {%- endmacro %}
 
 
-{%- macro textarea(name, id='', label='', value='', placeholder='', trans='') %}
+{%- macro textarea(name, id='', label='', value='', placeholder='', trans='', rows=5) %}
 {% call form_control(name=name, label=label, trans=trans) -%}
-    <textarea id="{{ id or name }}" class="form-control" name="{{ name }}" placeholder="{{ placeholder }}" >{{ value|sn }}</textarea>
+<textarea id="{{ id or name }}" class="form-control" name="{{ name }}" placeholder="{{ placeholder }}" rows="{{ rows }}">{{ value|sn }}</textarea>
 {%- endcall %}
 {%- endmacro %}
 
