@@ -1,3 +1,6 @@
+import uuid
+import os.path
+
 from flask import render_template, request, abort, redirect, send_from_directory
 
 from hrd import (app, db, url_for_admin, get_admin_lang, get_bool,
@@ -56,6 +59,15 @@ def cms_edit(id):
             page.active = get_bool('active')
             page.url = get_str('url')
 
+            logo = request.files['logo']
+            if logo:
+                extension = os.path.splitext(logo.filename)[1]
+                filename = unicode(uuid.uuid4())
+                if extension:
+                    filename += extension
+                logo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                page.image = filename
+
         db.session.commit()
         return redirect(url_for_admin('cms_preview', id=id))
     if lang != 'en':
@@ -82,6 +94,7 @@ def cms_reedit(id):
         content=page.content,
         title=page.title,
         url=page.url,
+        image=page.image,
         status='edit',
         current=True,
         published=True
@@ -158,6 +171,7 @@ def update_translations(id):
     for tran in trans:
         tran.active = page.active
         tran.url = page.url
+        tran.image = page.image
         db.session.add(tran)
     db.session.commit()
 
@@ -224,6 +238,7 @@ def cms_trans(id):
     trans.page_id = page.page_id
     trans.active = page.active
     trans.url = page.url
+    trans.image = page.image
     db.session.add(trans)
     db.session.commit()
     return redirect(url_for_admin('cms_edit', id=trans.page_id))

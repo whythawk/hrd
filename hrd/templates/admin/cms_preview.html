@@ -35,7 +35,9 @@
               {{ page.content|safe }}
         </div>
         <div class="col-sm-12 col-md-4">
-            <img src="/static/images/panos_00186767_283x271px.jpg" width="100%" height="auto" class="homepage_image blue-left-border" alt="homepage_image">
+            {% if page.image %}
+            <img src="{{ url_for('cms_logo', id=page.page_id, type='preview') }}" width="100%" height="auto" class="homepage_image blue-left-border" alt="homepage_image">
+            {% endif %}
         </div>
     </div>
 {% endblock %}
