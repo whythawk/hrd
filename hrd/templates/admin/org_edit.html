@@ -37,7 +37,7 @@
          <div><a onclick="select_all(this)">select all</a> | <a onclick="clear_all(this)">clear all</a></div>
          <div>
         {% for code in cat.codes if code.active %}
-        <div class="checkbox"> <label> <input value="True" type="checkbox" name="code.code">{{ code.title }}</label> </div>
+        <div class="checkbox"> <label> <input value="True" type="checkbox" name="{{ code.code }}"{% if code.code in current %} checked="checked"{% endif %}>{{ code.title }}</label> </div>
         {% endfor %}
     </div>
         </details>
