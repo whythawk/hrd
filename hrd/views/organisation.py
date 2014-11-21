@@ -1,9 +1,17 @@
-from flask import render_template, request, abort, redirect
+import os.path
+import uuid
+
+from flask import render_template, request, abort, redirect, send_from_directory
 
 from hrd import (app, db, url_for_admin, get_admin_lang, get_bool,
                  permission, permission_content, get_str, lang_codes)
-from hrd.models import Organisation, OrgCodes, Code
+from hrd.models import Organisation, OrgCodes
 from hrd.views.codes import all_codes
+
+
+@app.route('/admin/org_logo/<filename>')
+def org_logo(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
 @app.route('/admin/org_edit/<id>', methods=['GET', 'POST'])
@@ -31,12 +39,22 @@ def org_edit(id):
         org.name = get_str('name')
         org.description = get_str('description')
 
-        org.address = get_str('address')
-        org.contact = get_str('contact')
-        org.phone = get_str('phone')
-        org.email = get_str('email')
-        org.pgp_key = get_str('pgp_key')
-        org.website = get_str('website')
+        if lang == 'en':
+            org.address = get_str('address')
+            org.contact = get_str('contact')
+            org.phone = get_str('phone')
+            org.email = get_str('email')
+            org.pgp_key = get_str('pgp_key')
+            org.website = get_str('website')
+
+            logo = request.files['logo']
+            if logo:
+                extension = os.path.splitext(logo.filename)[1]
+                filename = unicode(uuid.uuid4())
+                if extension:
+                    filename += extension
+                logo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                org.image = filename
 
         org.status = 'edit'
         db.session.add(org)
@@ -115,6 +133,7 @@ def org_reedit(id):
         email=org.email,
         pgp_key=org.pgp_key,
         website=org.website,
+        image=org.image,
 
     )
     db.session.add(new_org)
@@ -172,7 +191,32 @@ def org_state(id, state):
     org.status = state
     db.session.add(org)
     db.session.commit()
+    if lang == 'en':
+        update_translations(id)
     return redirect(url_for_admin('org_preview', id=id))
+
+
+def update_translations(id):
+    org = Organisation.query.filter_by(
+        org_id=id, status='publish', lang='en'
+    ).first()
+
+    trans = Organisation.query.filter_by(org_id=id)
+    trans = trans.filter(db.not_(Organisation.lang == 'en'))
+    trans = trans.filter(db.or_(
+        Organisation.status == 'publish', Organisation.current == True
+    ))
+
+    for tran in trans:
+        tran.address = org.address
+        tran.contact = org.contact
+        tran.phone = org.phone
+        tran.email = org.email
+        tran.pgp_key = org.pgp_key
+        tran.website = org.website
+        tran.image = org.image
+        db.session.add(tran)
+    db.session.commit()
 
 
 @app.route('/org/<id>')
@@ -263,6 +307,15 @@ def org_trans(id):
     trans = Organisation(lang=lang)
     trans.status = 'edit'
     trans.org_id = org.org_id
+
+    trans.address=org.address
+    trans.contact=org.contact
+    trans.phone=org.phone
+    trans.email=org.email
+    trans.pgp_key=org.pgp_key
+    trans.website=org.website
+    trans.image = org.image
+
     db.session.add(trans)
     db.session.commit()
     return redirect(url_for_admin('org_edit', id=trans.org_id))

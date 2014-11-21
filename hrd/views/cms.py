@@ -44,11 +44,9 @@ def cms_edit(id):
         page.status = 'edit'
         db.session.add(page)
         if lang == 'en':
-            locked = {
-                'active': get_bool('active'),
-                'url': get_str('url'),
-            }
-            Cms.query.filter_by(page_id=page.page_id).update(locked)
+            page.active = get_bool('active')
+            page.url = get_str('url')
+
         db.session.commit()
         return redirect(url_for_admin('cms_preview', id=id))
     if lang != 'en':
@@ -132,7 +130,27 @@ def cms_state(id, state):
     page.status = state
     db.session.add(page)
     db.session.commit()
+    if lang == 'en':
+        update_translations(id)
     return redirect(url_for_admin('cms_preview', id=id))
+
+
+def update_translations(id):
+    page = Cms.query.filter_by(
+        page_id=id, status='publish', lang='en'
+    ).first()
+
+    trans = Cms.query.filter_by(page_id=id)
+    trans = trans.filter(db.not_(Cms.lang == 'en'))
+    trans = trans.filter(db.or_(
+        Cms.status == 'publish', Cms.current == True
+    ))
+
+    for tran in trans:
+        tran.active = page.active
+        tran.url = page.url
+        db.session.add(tran)
+    db.session.commit()
 
 
 @app.route('/page/<id>')

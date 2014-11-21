@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os.path
 import urllib
 
 from flask import Flask, request, abort
@@ -8,6 +9,8 @@ from werkzeug.wsgi import DispatcherMiddleware
 from flaskbb_shim import get_flaskbb
 
 
+DIR = os.path.dirname(os.path.realpath(__file__))
+
 # FIXME need config file
 secret_key = "ddSecretKeyForSessionSigning"
 
@@ -15,8 +18,13 @@ app = Flask(__name__)
 app.debug = True
 app.secret_key = secret_key
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
-db = SQLAlchemy(app)
+app.config['UPLOAD_FOLDER'] = os.path.join(DIR, 'files')
 
+
+if not os.path.isdir(app.config['UPLOAD_FOLDER']):
+    os.makedirs(app.config['UPLOAD_FOLDER'])
+
+db = SQLAlchemy(app)
 
 DEBUG = False
 
