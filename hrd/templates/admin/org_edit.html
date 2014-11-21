@@ -23,7 +23,9 @@
           {# FIXME make description textarea 10 rows #}
       {{ form.textarea('description', label='Description', value=org.description, trans=trans, rows=10) }}
     {% if not trans %}
-      <input type="file" name="logo"/>
+      {% call form.form_control(name='logo', label='Logo', trans=trans) -%}
+        <input type="file" name="logo"/>
+      {% endcall %}
           {# FIXME make address textarea 5 rows #}
       {{ form.textarea('address', label='Address', value=org.address, trans=trans) }}
       {{ form.input('contact', label='Contact', value=org.contact, trans=trans) }}
