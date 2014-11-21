@@ -21,7 +21,7 @@
           {{ form.input('name', label='Name', value=org.name, trans=trans) }}
           {# FIXME Add rows attribute to textareas eg. <textarea rows="10"></textarea> #}
           {# FIXME make description textarea 10 rows #}
-      {{ form.textarea('description', label='Description', value=org.description, trans=trans) }}
+      {{ form.textarea('description', label='Description', value=org.description, trans=trans, rows=10) }}
     {% if not trans %}
           {# FIXME make address textarea 5 rows #}
       {{ form.textarea('address', label='Address', value=org.address, trans=trans) }}
@@ -29,7 +29,7 @@
       {{ form.input('phone', label='Phone', value=org.phone, trans=trans) }}
       {{ form.input('email', label='Email', value=org.email, trans=trans) }}
           {# FIXME make PGP key textarea 5 rows #}
-      {{ form.textarea('pgp_key', label='Pgp key', value=org.pgp_key, trans=trans) }}
+      {{ form.textarea('pgp_key', label='Pgp key', value=org.pgp_key, trans=trans, rows=7) }}
       {{ form.input('website', label='Website', value=org.website, trans=trans) }}
 
       {{ form.checkbox('active', label='Active', value=org.active) }}
