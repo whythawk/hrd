@@ -8,6 +8,7 @@ from flaskbb.configs.development import DevelopmentConfig as bb_config
 
 
 def get_flaskbb(app, path):
+    theme_hack()
     Themes(app, app_identifier="hrd")
     db = app.config['SQLALCHEMY_DATABASE_URI']
     if db.startswith('sqlite:///'):
@@ -22,27 +23,44 @@ def get_flaskbb(app, path):
     flaskbb.jinja_env.globals['lang_list'] = app.jinja_env.globals['lang_list']
     flaskbb.jinja_env.globals['current_lang'] = app.jinja_env.globals['current_lang']
     flaskbb.jinja_env.globals['lang_pick'] = app.jinja_env.globals['lang_pick']
+    block_routes(flaskbb)
     return flaskbb
 
-# we want to force our theme but need to hack each module due to the way
-# imports are done
+
+def theme_hack():
+    ''' Force our theme on templates.
+    We need to hack each module due to the way imports are done '''
+    def render_template(template, **context):
+        theme = 'hrd'
+        return render_theme_template(theme, template, **context)
+
+    hack_list = [
+        'auth.views',
+        'forum.views',
+        'user.views',
+        'email',
+        'utils.helpers',
+        'app',
+        'management.views',
+        'plugins.portal.views'
+    ]
+
+    for module_name in hack_list:
+        p = import_module('flaskbb.' + module_name)
+        p.render_template = render_template
 
 
-def render_template(template, **context):
-    theme = 'hrd'
-    return render_theme_template(theme, template, **context)
 
-hack_list = [
-    'auth.views',
-    'forum.views',
-    'user.views',
-    'email',
-    'utils.helpers',
-    'app',
-    'management.views',
-    'plugins.portal.views'
+BARRED_VIEWS = [
+    'forum.view_forum'
 ]
 
-for x in hack_list:
-    p = import_module('flaskbb.' + x)
-    p.render_template = render_template
+def block_routes(app):
+    ''' remove routes for views we do not want '''
+    rules = []
+    for rule in app.url_map._rules:
+        print rule.endpoint, rule.rule
+        if rule.endpoint not in BARRED_VIEWS:
+            rules.append(rule)
+
+    app.url_map._rules = rules
