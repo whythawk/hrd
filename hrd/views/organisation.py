@@ -31,12 +31,13 @@ def org_edit(id):
         org.name = get_str('name')
         org.description = get_str('description')
 
-        org.address = get_str('address')
-        org.contact = get_str('contact')
-        org.phone = get_str('phone')
-        org.email = get_str('email')
-        org.pgp_key = get_str('pgp_key')
-        org.website = get_str('website')
+        if lang == 'en':
+            org.address = get_str('address')
+            org.contact = get_str('contact')
+            org.phone = get_str('phone')
+            org.email = get_str('email')
+            org.pgp_key = get_str('pgp_key')
+            org.website = get_str('website')
 
         org.status = 'edit'
         db.session.add(org)
@@ -263,6 +264,14 @@ def org_trans(id):
     trans = Organisation(lang=lang)
     trans.status = 'edit'
     trans.org_id = org.org_id
+
+    trans.address=org.address
+    trans.contact=org.contact
+    trans.phone=org.phone
+    trans.email=org.email
+    trans.pgp_key=org.pgp_key
+    trans.website=org.website
+
     db.session.add(trans)
     db.session.commit()
     return redirect(url_for_admin('org_edit', id=trans.org_id))
