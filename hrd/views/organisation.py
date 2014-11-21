@@ -167,6 +167,8 @@ def org_state(id, state):
         old_org = Organisation.query.filter_by(
             org_id=id, status='publish', lang=lang
         ).first()
+        if lang == 'en':
+            update_translations(id)
         if old_org:
             old_org.status = 'archive'
             db.session.add(old_org)
@@ -174,6 +176,30 @@ def org_state(id, state):
     db.session.add(org)
     db.session.commit()
     return redirect(url_for_admin('org_preview', id=id))
+
+
+def update_translations(id):
+    org = Organisation.query.filter_by(
+        org_id=id, status='publish', lang='en'
+    ).first()
+
+    trans = Organisation.query.filter_by(org_id=org.org_id)
+    trans = trans.filter(db.not_(Organisation.lang == 'en'))
+    trans = trans.filter(db.or_(
+        Organisation.status == 'publish', Organisation.current == True
+    ))
+
+    for tran in trans:
+        print tran.lang, tran.status
+        tran.address = org.address
+        tran.contact = org.contact
+        tran.phone = org.phone
+        tran.email = org.email
+        tran.pgp_key = org.pgp_key
+        tran.website = org.website
+        tran.image = org.image
+        db.session.add(tran)
+    db.session.commit()
 
 
 @app.route('/org/<id>')
@@ -271,6 +297,7 @@ def org_trans(id):
     trans.email=org.email
     trans.pgp_key=org.pgp_key
     trans.website=org.website
+    trans.image = org.image
 
     db.session.add(trans)
     db.session.commit()
