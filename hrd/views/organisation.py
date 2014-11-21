@@ -185,14 +185,14 @@ def org_state(id, state):
         old_org = Organisation.query.filter_by(
             org_id=id, status='publish', lang=lang
         ).first()
-        if lang == 'en':
-            update_translations(id)
         if old_org:
             old_org.status = 'archive'
             db.session.add(old_org)
     org.status = state
     db.session.add(org)
     db.session.commit()
+    if lang == 'en':
+        update_translations(id)
     return redirect(url_for_admin('org_preview', id=id))
 
 
@@ -201,14 +201,13 @@ def update_translations(id):
         org_id=id, status='publish', lang='en'
     ).first()
 
-    trans = Organisation.query.filter_by(org_id=org.org_id)
+    trans = Organisation.query.filter_by(org_id=id)
     trans = trans.filter(db.not_(Organisation.lang == 'en'))
     trans = trans.filter(db.or_(
         Organisation.status == 'publish', Organisation.current == True
     ))
 
     for tran in trans:
-        print tran.lang, tran.status
         tran.address = org.address
         tran.contact = org.contact
         tran.phone = org.phone
