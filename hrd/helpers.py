@@ -107,6 +107,7 @@ hrd.app.jinja_env.globals.update(
     lang_pick=hrd.lang_pick,
     get_username=username,
     get_user_id=user_id,
+    current_user=current_user,
     lang_list=hrd.lang_list,
     current_lang=hrd.current_lang,
     current_lang_name=hrd.current_lang_name,
