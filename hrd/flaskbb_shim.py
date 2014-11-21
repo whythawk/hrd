@@ -52,7 +52,6 @@ def theme_hack():
 
 
 BARRED_VIEWS = [
-    'forum.view_forum'
 ]
 
 def block_routes(app):
