@@ -5,7 +5,7 @@ from flask import render_template, request, abort, redirect, send_from_directory
 
 from hrd import (app, db, url_for_admin, get_admin_lang, get_bool,
                  permission, permission_content, get_str, lang_codes)
-from hrd.models import Organisation, OrgCodes, Code
+from hrd.models import Organisation, OrgCodes
 from hrd.views.codes import all_codes
 
 
