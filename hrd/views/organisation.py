@@ -1,9 +1,17 @@
-from flask import render_template, request, abort, redirect
+import os.path
+import uuid
+
+from flask import render_template, request, abort, redirect, send_from_directory
 
 from hrd import (app, db, url_for_admin, get_admin_lang, get_bool,
                  permission, permission_content, get_str, lang_codes)
 from hrd.models import Organisation, OrgCodes, Code
 from hrd.views.codes import all_codes
+
+
+@app.route('/admin/org_logo/<filename>')
+def org_logo(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
 @app.route('/admin/org_edit/<id>', methods=['GET', 'POST'])
@@ -38,6 +46,15 @@ def org_edit(id):
             org.email = get_str('email')
             org.pgp_key = get_str('pgp_key')
             org.website = get_str('website')
+
+            logo = request.files['logo']
+            if logo:
+                extension = os.path.splitext(logo.filename)[1]
+                filename = unicode(uuid.uuid4())
+                if extension:
+                    filename += extension
+                logo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                org.image = filename
 
         org.status = 'edit'
         db.session.add(org)
@@ -116,6 +133,7 @@ def org_reedit(id):
         email=org.email,
         pgp_key=org.pgp_key,
         website=org.website,
+        image=org.image,
 
     )
     db.session.add(new_org)

@@ -15,7 +15,7 @@
 </script>
     <h1>Edit: Organization<br /><br /></h1>
  {{ form.translations_bar(translations) }}
-    <form method="POST" role="form">
+    <form method="POST" role="form" enctype="multipart/form-data">
           {{ form.save(label='Save ') }}
     {# FIXME Needs lang and dir coding in #}
           {{ form.input('name', label='Name', value=org.name, trans=trans) }}
@@ -23,6 +23,7 @@
           {# FIXME make description textarea 10 rows #}
       {{ form.textarea('description', label='Description', value=org.description, trans=trans, rows=10) }}
     {% if not trans %}
+      <input type="file" name="logo"/>
           {# FIXME make address textarea 5 rows #}
       {{ form.textarea('address', label='Address', value=org.address, trans=trans) }}
       {{ form.input('contact', label='Contact', value=org.contact, trans=trans) }}
