@@ -29,26 +29,26 @@ DEBUG = False
 default_url_for = app.jinja_env.globals['url_for']
 
 language_list = [
-    ('en', u'English', 'ltr'),
-    ('fr', u'français', 'ltr'),
-    ('es', u'español', 'ltr'),
-    ('ar', u'العربية', 'rtl'),
-    # ('zh', u'中文', 'ltr'),
-    ('ru', u'русский', 'ltr'),
+    ('en', u'English', 'ltr', True),
+    ('fr', u'français', 'ltr', True),
+    ('es', u'español', 'ltr', True),
+    ('ar', u'العربية', 'rtl', True),
+#   ('zh', u'中文', 'ltr', False),
+    ('ru', u'русский', 'ltr', True),
 ]
 
 lang_dir = {}
-for code, name, dir_ in language_list:
+for code, name, dir_, active in language_list:
     lang_dir[code] = dir_
 
 
 lang_name = {}
-for code, name, dir_ in language_list:
+for code, name, dir_, active in language_list:
     lang_name[code] = name
 
 
 lang_codes = []
-for code, name, dir_ in language_list:
+for code, name, dir_, active in language_list:
     lang_codes.append(code)
 
 
@@ -163,7 +163,7 @@ class I18nMiddleware(object):
         self.app = app
         self.default_locale = 'en'
         locale_list = []
-        for code, lang, _dir in language_list:
+        for code, lang, _dir, active in language_list:
             locale_list.append(code)
         self.locale_list = locale_list
 
