@@ -1,7 +1,8 @@
 import uuid
 import os.path
 
-from flask import render_template, request, abort, redirect, send_from_directory
+from flask import (render_template, request, abort, redirect,
+                   send_from_directory)
 
 from hrd import (app, db, url_for_admin, get_admin_lang, get_bool,
                  permission, permission_content, get_str, lang_codes)
@@ -28,7 +29,9 @@ def content():
 @app.route('/admin/cms_logo/<type>/<id>')
 def cms_logo(type, id):
     if type == 'live':
-        org = Cms.query.filter_by(page_id=id, lang='en', status='publish').first()
+        org = Cms.query.filter_by(
+            page_id=id, lang='en', status='publish'
+        ).first()
     else:
         org = Cms.query.filter_by(page_id=id, lang='en', current=True).first()
     return send_from_directory(app.config['UPLOAD_FOLDER'], org.image)
@@ -43,18 +46,25 @@ def cms_edit(id):
     page = page.first()
     if not page and lang != 'en':
         page = Cms.query.filter_by(page_id=id, lang='en', current=True)
+        page = page.first()
         if not page:
             abort(404)
-        return cms_trans(id=id)
     if not page:
         abort(404)
-    if page.status == 'publish':
-        return cms_reedit(id=id)
-    if request.method == 'POST':
-        page.title = get_str('title')
-        page.content = get_str('content')
-        page.status = 'edit'
-        db.session.add(page)
+    if request.method == 'POST' and 'title' in request.form:
+        if page.lang != lang:
+            # no translation
+            page = page_reedit(page)
+
+        if (page.title != get_str('title')
+                or page.content != get_str('content')):
+            if page.status == 'publish':
+                page = page_reedit(page)
+
+            page.title = get_str('title')
+            page.content = get_str('content')
+            page.status = 'edit'
+            db.session.add(page)
         if lang == 'en':
             page.active = get_bool('active')
             page.url = get_str('url')
@@ -69,9 +79,11 @@ def cms_edit(id):
                 page.image = filename
 
         db.session.commit()
+        if lang == 'en':
+            update_translations(id)
         return redirect(url_for_admin('cms_preview', id=id))
     if lang != 'en':
-        trans = Cms.query.filter_by(page_id=page.page_id, lang='en',
+        trans = Cms.query.filter_by(page_id=id, lang='en',
                                     current=True).first()
     else:
         trans = {}
@@ -80,14 +92,8 @@ def cms_edit(id):
                            translations=translations)
 
 
-@app.route('/admin/cms_reedit/<id>', methods=['POST'])
-def cms_reedit(id):
+def page_reedit(page):
     lang = get_admin_lang()
-    permission_content(lang)
-    page = Cms.query.filter_by(page_id=id, status='publish', lang=lang,
-                               current=True).first()
-    if not page:
-        abort(404)
     new_page = Cms(
         lang=lang,
         page_id=page.page_id,
@@ -103,7 +109,7 @@ def cms_reedit(id):
     page.current = False
     db.session.add(page)
     db.session.commit()
-    return redirect(url_for_admin('cms_edit', id=new_page.page_id))
+    return new_page
 
 
 @app.route('/admin/cms_delete/<id>', methods=['POST'])
@@ -152,8 +158,6 @@ def cms_state(id, state):
     page.status = state
     db.session.add(page)
     db.session.commit()
-    if lang == 'en':
-        update_translations(id)
     return redirect(url_for_admin('cms_preview', id=id))
 
 
@@ -178,27 +182,26 @@ def update_translations(id):
 
 @app.route('/page/<id>')
 def cms_page(id):
-    lang = get_admin_lang()
-    lang = request.environ['LANG']
-    page = Cms.query.filter_by(page_id=id, lang=lang, status='publish').first()
-    if not page:
-        page = Cms.query.filter_by(
-            page_id=id, lang='en', status='publish'
-        ).first()
-        if not page:
-            abort(404)
-    return render_template('page.html', page=page)
+    return show_page(page_id=id)
 
 
 @app.route('/<id>')
 @app.route('/')
 def cms_page2(id=''):
     id = '/%s' % id
+    return show_page(url=id)
+
+
+def show_page(**kw):
     lang = get_admin_lang()
-    lang = request.environ.get('LANG', 'en')
-    page = Cms.query.filter_by(url=id, lang=lang, status='publish').first()
+    lang = request.environ['LANG']
+    page = Cms.query.filter_by(
+        lang=lang, status='publish', active=True, **kw
+    ).first()
     if not page:
-        page = Cms.query.filter_by(url=id, lang='en', status='publish').first()
+        page = Cms.query.filter_by(
+            lang='en', status='publish', active=True, **kw
+        ).first()
         if not page:
             abort(404)
     return render_template('page.html', page=page)
@@ -219,29 +222,6 @@ def cms_preview(id):
     return render_template('admin/cms_preview.html',
                            page=page,
                            translations=translations)
-
-
-@app.route('/admin/cms_trans/<id>', methods=['POST'])
-def cms_trans(id):
-    lang = get_admin_lang()
-    permission_content(lang)
-    page = Cms.query.filter_by(page_id=id, lang='en', current=True).first()
-    if not page:
-        abort(404)
-    exists = Cms.query.filter_by(
-        page_id=page.page_id, lang=lang, current=True
-    ).first()
-    if exists:
-        return redirect(url_for_admin('cms_edit', id=page.page_id))
-    trans = Cms(lang=lang)
-    trans.status = 'edit'
-    trans.page_id = page.page_id
-    trans.active = page.active
-    trans.url = page.url
-    trans.image = page.image
-    db.session.add(trans)
-    db.session.commit()
-    return redirect(url_for_admin('cms_edit', id=trans.page_id))
 
 
 @app.route('/admin/cms')

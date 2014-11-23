@@ -12,7 +12,7 @@
       <div class="pull-right">
   {% if page %}
       {% if page.status == 'publish' %}
-          {{ form.action('Edit', url_for_admin('cms_reedit', id=page.page_id), icon='pencil') }}
+          {{ form.action('Edit', url_for_admin('cms_edit', id=page.page_id), icon='pencil') }}
       {% else %}
           {{ form.action_link('Edit', url_for_admin('cms_edit', id=page.page_id), icon='pencil') }}
       {% endif %}
@@ -24,7 +24,7 @@
           {{ form.action('Publish', url_for_admin('cms_state', state='publish', id=page.page_id)) }}
       {% endif %}
   {% else %}
-      {{ form.action('Create', url_for_admin('cms_trans', id=page.page_id), icon='plus', class='btn-success') }}
+      {{ form.action('Create', url_for_admin('cms_edit', id=page.page_id), icon='plus', class='btn-success') }}
   {% endif %}
       </div>
       </div>
