@@ -99,7 +99,7 @@ def org_edit(id):
 
         db.session.commit()
         if lang == 'en':
-            update_translations(id)
+            update_translations(org)
         return redirect(url_for_admin('org_preview', id=id))
     if lang != 'en':
         trans = Organisation.query.filter_by(
@@ -206,13 +206,9 @@ def trans_need_update(org):
     pass
 
 
-def update_translations(id):
-    org = Organisation.query.filter_by(
-        org_id=id, status='publish', lang='en'
-    ).first()
-
-    trans = Organisation.query.filter_by(org_id=id)
-    trans = trans.filter(db.not_(Organisation.lang == 'en'))
+def update_translations(org):
+    trans = Organisation.query.filter_by(org_id=org.org_id)
+    trans = trans.filter(db.not_(Organisation.id == org.id))
     trans = trans.filter(
         db.or_(
             Organisation.status == 'publish', Organisation.current == True
