@@ -7,15 +7,5 @@
 {% block container_class %}content{% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-sm-12 col-md-8">
-            <h1>{{ page.title }}<br /><br /></h1>
-              {{ page.content|safe }}
-        </div>
-        <div class="col-sm-12 col-md-4">
-            {% if page.image %}
-            <img src="{{ url_for('cms_logo', id=page.page_id, type='live') }}" width="100%" height="auto" class="homepage_image blue-left-border" alt="homepage_image">
-            {% endif %}
-        </div>
-    </div>
+  {% include '/cms_content.html' with context %}
 {% endblock %}
