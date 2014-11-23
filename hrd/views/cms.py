@@ -64,7 +64,7 @@ def cms_edit(id):
             page.title = get_str('title')
             page.content = get_str('content')
             page.status = 'edit'
-            db.session.add(page)
+            trans_need_update(page)
         if lang == 'en':
             page.active = get_bool('active')
             page.url = get_str('url')
@@ -78,6 +78,7 @@ def cms_edit(id):
                 logo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 page.image = filename
 
+        db.session.add(page)
         db.session.commit()
         if lang == 'en':
             update_translations(id)
@@ -90,6 +91,11 @@ def cms_edit(id):
     translations = get_trans(id)
     return render_template('admin/cms_edit.html', page=page, trans=trans,
                            translations=translations)
+
+
+def trans_need_update(page):
+    # FIXME trigger updates needed for trans
+    pass
 
 
 def page_reedit(page):
