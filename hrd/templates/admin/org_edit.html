@@ -32,6 +32,7 @@
       {{ form.input('website', label='Website', value=org.website, trans=trans) }}
 
       {{ form.checkbox('active', label='Active', value=org.active) }}
+      {{ form.checkbox('private', label='Private', value=org.private) }}
       {% for cat in codes if cat.active %}
          <details class="col-xs-12 org-choose-list" open="open"> <summary class="h3">{{ cat.title }}</summary>
          <div><a onclick="select_all(this)">select all</a> | <a onclick="clear_all(this)">clear all</a></div>

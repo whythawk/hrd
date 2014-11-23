@@ -64,6 +64,7 @@ class Organisation(db.Model):
     status = db.Column(db.String(10))
     current = db.Column(db.Boolean(), default=True)
     active = db.Column(db.Boolean(), default=True)
+    private = db.Column(db.Boolean(), default=True)
     name = db.Column(db.String(250))
     description = db.Column(db.Text())
     address = db.Column(db.String(250))

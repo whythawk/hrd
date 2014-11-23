@@ -59,6 +59,8 @@ def org_edit(id):
             org.email = get_str('email')
             org.pgp_key = get_str('pgp_key')
             org.website = get_str('website')
+            org.private = get_bool('private')
+            org.active = get_bool('active')
 
             logo = request.files['logo']
             if logo:
@@ -71,10 +73,6 @@ def org_edit(id):
 
         db.session.add(org)
         if lang == 'en':
-            locked = {
-                'active': get_bool('active'),
-            }
-            Organisation.query.filter_by(org_id=org.org_id).update(locked)
             # codes
             codes_data = all_codes('en', 'org')
             cats = [cat for cat in codes_data if cat['active']]
@@ -140,6 +138,8 @@ def org_reedit(org):
         email=org.email,
         pgp_key=org.pgp_key,
         website=org.website,
+        private=org.private,
+        active=org.active,
         image=org.image,
 
     )
@@ -226,6 +226,8 @@ def update_translations(id):
         tran.email = org.email
         tran.pgp_key = org.pgp_key
         tran.website = org.website
+        tran.active = org.active
+        tran.private = org.private
         tran.image = org.image
         db.session.add(tran)
     db.session.commit()
@@ -237,13 +239,20 @@ def org(id):
     lang = request.environ['LANG']
     org = Organisation.query.filter_by(
         org_id=id, lang=lang, status='publish', active=True
-    ).first()
+    )
+
+    org = org.first()
     if not org:
         org = Organisation.query.filter_by(
             org_id=id, lang='en', status='publish', active=True
         ).first()
         if not org:
             abort(404)
+
+    # only show public orgs
+    if not bool(request.user) and org.private:
+        abort(403)
+
     cat_codes = org_cat_codes(lang, id)
     return render_template('admin/org.html',
                            org=org,
@@ -361,7 +370,14 @@ def org_search():
     lang = request.environ['LANG']
     cats = all_codes(lang, 'org')
 
-    orgs = Organisation.query.filter_by(lang=lang, status='publish')
+
+    orgs = Organisation.query.filter_by(
+        lang=lang, status='publish', active=True
+    )
+
+    # only show public orgs
+    if not bool(request.user):
+        orgs = orgs.filter_by(private=False)
 
     for field, _null in request.args.items():
         if field == 'Filter':

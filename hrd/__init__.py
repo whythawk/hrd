@@ -134,6 +134,7 @@ def get_int(field, default):
         value = default
     return value
 
+import migrate
 import helpers
 import models
 import views
