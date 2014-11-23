@@ -67,6 +67,7 @@ def cms_edit(id):
             trans_need_update(page)
         if lang == 'en':
             page.active = get_bool('active')
+            page.private = get_bool('private')
             page.url = get_str('url')
 
             logo = request.files['logo']
@@ -81,7 +82,7 @@ def cms_edit(id):
         db.session.add(page)
         db.session.commit()
         if lang == 'en':
-            update_translations(id)
+            update_translations(page)
         return redirect(url_for_admin('cms_preview', id=id))
     if lang != 'en':
         trans = Cms.query.filter_by(page_id=id, lang='en',
@@ -106,6 +107,8 @@ def page_reedit(page):
         content=page.content,
         title=page.title,
         url=page.url,
+        active=page.active,
+        private=page.private,
         image=page.image,
         status='edit',
         current=True,
@@ -167,19 +170,16 @@ def cms_state(id, state):
     return redirect(url_for_admin('cms_preview', id=id))
 
 
-def update_translations(id):
-    page = Cms.query.filter_by(
-        page_id=id, status='publish', lang='en'
-    ).first()
-
-    trans = Cms.query.filter_by(page_id=id)
-    trans = trans.filter(db.not_(Cms.lang == 'en'))
+def update_translations(page):
+    trans = Cms.query.filter_by(page_id=page.page_id)
+    trans = trans.filter(db.not_(Cms.id == page.id))
     trans = trans.filter(db.or_(
         Cms.status == 'publish', Cms.current == True
     ))
 
     for tran in trans:
         tran.active = page.active
+        tran.private = page.private
         tran.url = page.url
         tran.image = page.image
         db.session.add(tran)
@@ -210,6 +210,11 @@ def show_page(**kw):
         ).first()
         if not page:
             abort(404)
+
+    # only show public page
+    if not bool(request.user) and page.private:
+        abort(403)
+
     return render_template('page.html', page=page)
 
 

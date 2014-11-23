@@ -17,6 +17,7 @@ class Cms(db.Model):
     current = db.Column(db.Boolean(), default=True)
     published = db.Column(db.Boolean(), default=False)
     active = db.Column(db.Boolean(), default=True)
+    private = db.Column(db.Boolean(), default=True)
     needs_trans = db.Column(db.Boolean(), default=False)
     image = db.Column(db.String(250))
 

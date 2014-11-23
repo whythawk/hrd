@@ -17,6 +17,8 @@
   {% for page in pages %}
   <div class="alert col-xs-12 alert-{% if page.status != 'publish' %}warning{% else %}null{% endif %}">
       <h4>
+        {% if not page.active %}<small>Inactive</small>{% endif %}
+        {% if page.private %}<small>Private</small>{% endif %}
         {{ page.title }}
         <small>{{ page.status }}</small>
         <span class="small pull-right">{{ page.url }}</span>

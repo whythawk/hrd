@@ -16,6 +16,7 @@
           {% endcall %}
             {{ form.input('url', label='Url', value=page.url, placeholder='Custom url') }}
             {{ form.checkbox('active', label='Active', value=page.active) }}
+            {{ form.checkbox('private', label='Private', value=page.private) }}
         {% endif %}
         {{ form.save(label='Save') }}
     </form>
