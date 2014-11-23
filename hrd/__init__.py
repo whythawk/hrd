@@ -6,17 +6,22 @@ from flask import Flask, request, abort
 from flask.ext.sqlalchemy import SQLAlchemy
 
 
+# Import our config
+try:
+    import config.production as config
+except ImportError:
+    import config.default as config
 
+
+language_list = config.LANGUAGE_LIST
 DIR = os.path.dirname(os.path.realpath(__file__))
 
-# FIXME need config file
-secret_key = "ddSecretKeyForSessionSigning"
 
 app = Flask(__name__)
-app.debug = True
-app.secret_key = secret_key
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
-app.config['UPLOAD_FOLDER'] = os.path.join(DIR, 'files')
+app.debug = config.DEBUG
+app.secret_key = config.SECRET_KEY
+app.config['SQLALCHEMY_DATABASE_URI'] = config.DB_CONNECTION
+app.config['UPLOAD_FOLDER'] = os.path.join(DIR, config.UPLOAD_FOLDER)
 
 
 if not os.path.isdir(app.config['UPLOAD_FOLDER']):
@@ -24,18 +29,10 @@ if not os.path.isdir(app.config['UPLOAD_FOLDER']):
 
 db = SQLAlchemy(app)
 
-DEBUG = False
+DEBUG = config.DEBUG
 
 default_url_for = app.jinja_env.globals['url_for']
 
-language_list = [
-    ('en', u'English', 'ltr', True),
-    ('fr', u'français', 'ltr', True),
-    ('es', u'español', 'ltr', True),
-    ('ar', u'العربية', 'rtl', True),
-#   ('zh', u'中文', 'ltr', False),
-    ('ru', u'русский', 'ltr', True),
-]
 
 lang_dir = {}
 for code, name, dir_, active in language_list:
@@ -52,13 +49,7 @@ for code, name, dir_, active in language_list:
     lang_codes.append(code)
 
 
-permission_list = [
-    ('sys_admin', 'System administrator'),
-    ('content_manage', 'Content managment'),
-    ('translator', 'Content translation'),
-    ('user_admin', 'User administrator'),
-    ('user_manage', 'User management'),
-]
+permission_list = config.PERMISSIONS
 
 
 def permission(permission):
