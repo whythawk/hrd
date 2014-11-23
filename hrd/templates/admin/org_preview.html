@@ -11,7 +11,7 @@
           <a href="{{ url_for_admin('org_list') }}">Organisation list</a>
       <div class="pull-right">
       {% if org.status == 'publish' %}
-          {{ form.action('Edit', url_for_admin('org_reedit', id=org.org_id), icon='pencil') }}
+          {{ form.action('Edit', url_for_admin('org_edit', id=org.org_id), icon='pencil') }}
       {% else %}
           {{ form.action_link('Edit', url_for_admin('org_edit', id=org.org_id), icon='pencil') }}
       {% endif %}

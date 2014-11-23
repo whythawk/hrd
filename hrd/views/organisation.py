@@ -1,7 +1,8 @@
 import os.path
 import uuid
 
-from flask import render_template, request, abort, redirect, send_from_directory
+from flask import (render_template, request, abort, redirect,
+                   send_from_directory)
 
 from hrd import (app, db, url_for_admin, get_admin_lang, get_bool,
                  permission, permission_content, get_str, lang_codes)
@@ -12,9 +13,13 @@ from hrd.views.codes import all_codes
 @app.route('/admin/org_logo/<type>/<id>')
 def org_logo(type, id):
     if type == 'live':
-        org = Organisation.query.filter_by(org_id=id, lang='en', status='publish').first()
+        org = Organisation.query.filter_by(
+            org_id=id, lang='en', status='publish'
+        ).first()
     else:
-        org = Organisation.query.filter_by(org_id=id, lang='en', current=True).first()
+        org = Organisation.query.filter_by(
+            org_id=id, lang='en', current=True
+        ).first()
     return send_from_directory(app.config['UPLOAD_FOLDER'], org.image)
 
 
@@ -23,25 +28,29 @@ def org_edit(id):
     set_menu()
     lang = get_admin_lang()
     permission_content(lang)
-    org = Organisation.query.filter_by(org_id=id, lang=lang, current=True)
-    org = org.filter(Organisation.status != 'publish').first()
+    org = Organisation.query.filter_by(
+        org_id=id, lang=lang, current=True
+    ).first()
     if not org and lang != 'en':
-        org = Organisation.query.filter_by(org_id=id, lang='en', current=True)
-        org = org.filter(Organisation.status != 'publish').first()
+        org = Organisation.query.filter_by(
+            org_id=id, lang='en', current=True
+        ).first()
         if not org:
             abort(404)
-        return org_trans(id=id)
-    if not org:
-        org = Organisation.query.filter_by(
-            org_id=id, lang=lang, current=True
-        ).first()
     if not org:
         abort(404)
-    if org.status == 'publish':
-        return org_reedit(id=id)
-    if request.method == 'POST':
-        org.name = get_str('name')
-        org.description = get_str('description')
+    if request.method == 'POST' and 'name' in request.form:
+        if org.lang != lang:
+            # No translation
+            org = org_reedit(org)
+        if (org.name != get_str('name')
+                or org.description != get_str('description')):
+            if org.status == 'publish':
+                org = org_reedit(org)
+            org.name = get_str('name')
+            org.description = get_str('description')
+            org.status = 'edit'
+            trans_need_update(org)
 
         if lang == 'en':
             org.address = get_str('address')
@@ -60,7 +69,6 @@ def org_edit(id):
                 logo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 org.image = filename
 
-        org.status = 'edit'
         db.session.add(org)
         if lang == 'en':
             locked = {
@@ -92,6 +100,8 @@ def org_edit(id):
                 OrgCodes.query.filter_by(org_id=id, code=code).delete()
 
         db.session.commit()
+        if lang == 'en':
+            update_translations(id)
         return redirect(url_for_admin('org_preview', id=id))
     if lang != 'en':
         trans = Organisation.query.filter_by(
@@ -114,15 +124,8 @@ def org_edit(id):
                            translations=translations)
 
 
-@app.route('/admin/org_reedit/<id>', methods=['POST'])
-def org_reedit(id):
+def org_reedit(org):
     lang = get_admin_lang()
-    permission_content(lang)
-    org = Organisation.query.filter_by(
-        org_id=id, status='publish', lang=lang, current=True
-    ).first()
-    if not org:
-        abort(404)
     new_org = Organisation(
         lang=lang,
         org_id=org.org_id,
@@ -144,7 +147,7 @@ def org_reedit(id):
     org.current = False
     db.session.add(org)
     db.session.commit()
-    return redirect(url_for_admin('org_edit', id=new_org.org_id))
+    return new_org
 
 
 @app.route('/admin/org_delete/<id>', methods=['POST'])
@@ -195,9 +198,12 @@ def org_state(id, state):
     org.status = state
     db.session.add(org)
     db.session.commit()
-    if lang == 'en':
-        update_translations(id)
     return redirect(url_for_admin('org_preview', id=id))
+
+
+def trans_need_update(org):
+    # FIXME trigger updates needed for trans
+    pass
 
 
 def update_translations(id):
@@ -207,9 +213,11 @@ def update_translations(id):
 
     trans = Organisation.query.filter_by(org_id=id)
     trans = trans.filter(db.not_(Organisation.lang == 'en'))
-    trans = trans.filter(db.or_(
-        Organisation.status == 'publish', Organisation.current == True
-    ))
+    trans = trans.filter(
+        db.or_(
+            Organisation.status == 'publish', Organisation.current == True
+        )
+    )
 
     for tran in trans:
         tran.address = org.address
@@ -298,33 +306,6 @@ def get_trans(id):
     return results
 
 
-@app.route('/admin/org_trans/<id>', methods=['POST'])
-def org_trans(id):
-    lang = get_admin_lang()
-    permission_content(lang)
-    org = Organisation.query.filter_by(org_id=id, lang='en').first()
-    if not org:
-        abort(404)
-    exists = Organisation.query.filter_by(org_id=org.org_id, lang=lang).first()
-    if exists:
-        abort(403)
-    trans = Organisation(lang=lang)
-    trans.status = 'edit'
-    trans.org_id = org.org_id
-
-    trans.address=org.address
-    trans.contact=org.contact
-    trans.phone=org.phone
-    trans.email=org.email
-    trans.pgp_key=org.pgp_key
-    trans.website=org.website
-    trans.image = org.image
-
-    db.session.add(trans)
-    db.session.commit()
-    return redirect(url_for_admin('org_edit', id=trans.org_id))
-
-
 @app.route('/admin/org')
 def org_list():
     set_menu()
@@ -380,7 +361,6 @@ def org_search():
     lang = request.environ['LANG']
     cats = all_codes(lang, 'org')
 
-
     orgs = Organisation.query.filter_by(lang=lang, status='publish')
 
     for field, _null in request.args.items():
@@ -393,7 +373,9 @@ def org_search():
 
     orgs = orgs.all()
 
-    return render_template('org_search.html', cats=cats, orgs=orgs, count=count)
+    return render_template(
+        'org_search.html', cats=cats, orgs=orgs, count=count
+    )
 
 
 def get_trans(id):
