@@ -236,11 +236,11 @@ def org(id):
     lang = get_admin_lang()
     lang = request.environ['LANG']
     org = Organisation.query.filter_by(
-        org_id=id, lang=lang, status='publish'
+        org_id=id, lang=lang, status='publish', active=True
     ).first()
     if not org:
         org = Organisation.query.filter_by(
-            org_id=id, lang='en', status='publish'
+            org_id=id, lang='en', status='publish', active=True
         ).first()
         if not org:
             abort(404)
