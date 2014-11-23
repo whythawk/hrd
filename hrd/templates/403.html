@@ -21,7 +21,7 @@
           <br /><br /><br />
       </h3>
       <h4>
-          {% if not getuser_id() %}
+          {% if not get_user_id() %}
           <a href="{{ url_for('login') }}" class="btn btn-default"/>Log in </a>
           {% endif %}
           <a href="/" class="btn btn-default"/>Return to Home page </a>
