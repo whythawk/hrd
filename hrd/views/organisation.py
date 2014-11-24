@@ -7,7 +7,7 @@ from flask import (render_template, request, abort, redirect,
 from hrd import (app, db, url_for_admin, get_admin_lang, get_bool,
                  permission, permission_content, get_str, lang_codes)
 from hrd.models import Organisation, OrgCodes
-from hrd.views.codes import all_codes
+from hrd.views.codes import all_codes, cat_codes
 
 
 @app.route('/admin/org_logo/<type>/<id>')
@@ -365,6 +365,7 @@ def list_status():
 def org_search():
     lang = request.environ['LANG']
     cats = all_codes(lang, 'org')
+    codes_list = cat_codes(lang, 'org')
 
 
     orgs = Organisation.query.filter_by(
@@ -375,14 +376,19 @@ def org_search():
     if not bool(request.user):
         orgs = orgs.filter_by(private=False)
 
+    search_codes = set()
     for field, _null in request.args.items():
         if field == 'Filter':
             continue
-        c = db.session.query(OrgCodes.org_id).filter_by(code=field)
-        orgs = orgs.filter(Organisation.org_id.in_(c))
+        search_codes.add(field)
+
+    for codes in codes_list:
+        union = set(codes) & search_codes
+        if union:
+            c = db.session.query(OrgCodes.org_id).filter(OrgCodes.code.in_(list(union)))
+            orgs = orgs.filter(Organisation.org_id.in_(c))
 
     count = orgs.count()
-
     orgs = orgs.all()
 
     return render_template(
