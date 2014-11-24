@@ -3,7 +3,7 @@ from hrd import db
 
 sql = '''
 ALTER TABLE organisation
-    ADD private BOOLEAN
+    ADD private BOOLEAN;
 '''
 
 try:
@@ -14,8 +14,8 @@ except:
 
 sql = '''
 ALTER TABLE cms
-    ADD private BOOLEAN
- '''
+    ADD private BOOLEAN;
+'''
 
 try:
     db.engine.execute(sql)
