@@ -108,4 +108,18 @@ class UserPerms(db.Model):
         return "<UserPerm %s %s>" % (self.user_id, self.permission)
 
 
+class Translation(db.Model):
+    id = db.Column(db.String(250), primary_key=True)
+    plural = db.Column(db.String(250), primary_key=True)
+    lang = db.Column(db.String(2), primary_key=True)
+    active = db.Column(db.Boolean(), default=True)
+    plural = db.Column(db.String(250))
+    trans1 = db.Column(db.String(250))
+    trans2 = db.Column(db.String(250))
+    trans3 = db.Column(db.String(250))
+    trans4 = db.Column(db.String(250))
+
+    def __repr__(self):
+        return "<Translation %s %s>" % (self.id, self.lang)
+
 db.create_all()

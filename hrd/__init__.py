@@ -4,7 +4,7 @@ import urllib
 
 from flask import Flask, request, abort
 from flask.ext.sqlalchemy import SQLAlchemy
-
+from flask.ext.babel import Babel
 
 # Import our config
 try:
@@ -22,12 +22,18 @@ app.debug = config.DEBUG
 app.secret_key = config.SECRET_KEY
 app.config['SQLALCHEMY_DATABASE_URI'] = config.DB_CONNECTION
 app.config['UPLOAD_FOLDER'] = os.path.join(DIR, config.UPLOAD_FOLDER)
-
+app.config['BABEL_DEFAULT_LOCALE'] = 'en'
 
 if not os.path.isdir(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
 
 db = SQLAlchemy(app)
+babel = Babel(app)
+
+def get_locale():
+    return request.environ['LANG']
+
+babel.localeselector(get_locale)
 
 DEBUG = config.DEBUG
 
