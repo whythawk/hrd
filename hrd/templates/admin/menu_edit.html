@@ -1,0 +1,19 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Menu items{% endblock %}
+
+{% block content %}
+  <h1>Edit: Menu<br /><br /></h1>
+ {{ form.translations_bar(translations) }}
+  <form role="form" method="POST">
+        {{ form.save(label='Save') }}
+        {{ form.input('title', label='Title', value=menuitem.title, placeholder='Title', trans=trans) }}
+        {% if not trans %}
+            {{ form.dropdown('item', label='Item', value=menuitem.item, options=options) }}
+            {{ form.input('order', label='Order', value=menuitem.order) }}
+            {{ form.checkbox('active', label='Active', value=menuitem.active) }}
+            {{ form.checkbox('private', label='Private', value=menuitem.private) }}
+        {% endif %}
+    {{ form.save(label='Save') }}
+  </form>
+{% endblock %}

@@ -5,6 +5,7 @@ import re
 from flask import request
 
 import hrd
+import views.menu
 
 
 # for fake translations
@@ -113,4 +114,5 @@ hrd.app.jinja_env.globals.update(
     debug=hrd.DEBUG,
     search_subset=search_subset,
     get_trans_state=get_trans_state,
+    get_menu_items=views.menu.get_menu_items,
 )
