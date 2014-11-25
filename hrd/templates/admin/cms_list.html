@@ -6,7 +6,7 @@
  {{ form.translations_bar(trans=status) }}
   {% if lang =='en' %}
     <div class="alert new-page col-xs-12 alert-null">
-<h4>{{ _('Create a new page') }}</h4>
+<h4>{{ 'Create a new page' }}</h4>
     {{ form.action('New page', url_for('cms_new'),
       class='btn-primary btn-success pull-right',
       icon='plus'
@@ -17,10 +17,10 @@
   {% for page in pages %}
   <div class="alert col-xs-12 alert-{% if page.status != 'publish' %}warning{% else %}null{% endif %}">
       <h4>
-        {% if not page.active %}<small>Inactive</small>{% endif %}
-        {% if page.private %}<small>Private</small>{% endif %}
+        {% if not page.active %}<small><span class="label label-danger">Inactive</span></small>{% endif %}
+        {% if page.private %}<small><span class="label label-success">Private</span></small>{% endif %}
         {{ page.title }}
-        <small>{{ page.status }}</small>
+        <small><span class="label label-default">{{ cms_state_nice_name(page.status) }}</span></small>
         <span class="small pull-right">{{ page.url }}</span>
       </h4>
       {% if page.status == 'edit' %}

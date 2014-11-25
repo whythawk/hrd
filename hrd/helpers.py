@@ -99,6 +99,18 @@ def get_trans_state(value):
     return ''
 
 
+STATE_NICE_NAME = {
+    'edit': 'Needs updating',
+    'approve': 'Awaiting approval',
+    'approved': 'Awaiting publication',
+    'publish': 'Published',
+}
+
+
+def cms_state_nice_name(state):
+    return STATE_NICE_NAME[state]
+
+
 hrd.app.jinja_env.globals.update(
     url_for_admin=hrd.url_for_admin,
     url_for=hrd.url_for,
@@ -120,4 +132,5 @@ hrd.app.jinja_env.globals.update(
     search_subset=search_subset,
     get_trans_state=get_trans_state,
     get_menu_items=views.menu.get_menu_items,
+    cms_state_nice_name=cms_state_nice_name,
 )
