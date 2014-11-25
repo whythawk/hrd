@@ -14,18 +14,6 @@ def admin():
     return render_template('index.html')
 
 
-@app.route('/admin/translation')
-def translation():
-    permission('translatior')
-    return render_template('admin/translation.html')
-
-
-@app.route('/admin/content')
-def content():
-    permission('content_manage')
-    return render_template('admin/content.html')
-
-
 @app.route('/admin/cms_logo/<type>/<id>')
 def cms_logo(type, id):
     if type == 'live':
