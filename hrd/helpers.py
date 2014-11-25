@@ -7,6 +7,7 @@ from flask.ext.login import current_user
 
 import hrd
 import views.menu
+import views.user
 
 
 # for fake translations
@@ -60,6 +61,10 @@ def user_id():
 
 
 def has_perm(permission):
+    try:
+        request.permission
+    except AttributeError:
+        request.permissions = views.user.get_users_permissions(current_user)
     if permission in request.permissions:
         return True
     if 'sys_admin' in request.permissions:

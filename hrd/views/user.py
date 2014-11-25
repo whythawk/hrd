@@ -15,12 +15,16 @@ def before_request():
     request.user = None
     request.permissions = []
     user = current_user
-    if user:
+    if user.is_authenticated():
         request.user = user
-        request.permissions = [
-            p.permission
-            for p in UserPermsBB.query.filter_by(user_id=user.id).all()
-        ]
+        request.permissions = get_users_permissions(user)
+
+
+def get_users_permissions(user):
+    return [
+        p.permission
+        for p in UserPermsBB.query.filter_by(user_id=user.id).all()
+    ]
 
 
 def password_verify(password, p_hash):

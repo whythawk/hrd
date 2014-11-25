@@ -48,6 +48,9 @@ def get_flaskbb(app, path):
     flaskbb.jinja_env.globals['lang_list'] = app.jinja_env.globals['lang_list']
     flaskbb.jinja_env.globals['current_lang'] = app.jinja_env.globals['current_lang']
     flaskbb.jinja_env.globals['lang_pick'] = app.jinja_env.globals['lang_pick']
+    flaskbb.jinja_env.globals['menu_class'] = app.jinja_env.globals['menu_class']
+    flaskbb.jinja_env.globals['sub_menu_item'] = app.jinja_env.globals['sub_menu_item']
+    flaskbb.jinja_env.globals['has_perm'] = app.jinja_env.globals['has_perm']
     block_routes(flaskbb)
     return flaskbb
 
