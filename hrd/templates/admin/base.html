@@ -12,11 +12,11 @@
 
 {% block menu %}
     <ul class="navbar-nav nav-mega">
-        {{ menu_item(_('Pages'), url_for_admin('cms_list')) }}
-        {{ menu_item(_('Organisations'), url_for_admin('org_list')) }}
-        {{ menu_item(_('Organisation categories'), url_for_admin('category_list', cat_type='org')) }}
-        {{ menu_item(_('Resource categories'), url_for_admin('category_list', cat_type='res')) }}
-        {{ menu_item(_('Menu Items'), url_for_admin('menu_list')) }}
+        {{ menu_item('Pages', url_for_admin('cms_list')) }}
+        {{ menu_item('Organisations', url_for_admin('org_list')) }}
+        {{ menu_item('Organisation categories', url_for_admin('category_list', cat_type='org')) }}
+        {{ menu_item('Resource categories', url_for_admin('category_list', cat_type='res')) }}
+        {{ menu_item('Menu Items', url_for_admin('menu_list')) }}
 
     {% block user_bar %}
         {{ user_menu(show_extras=false) }}
