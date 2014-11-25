@@ -77,6 +77,8 @@ def cms_edit(id):
                                     current=True).first()
     else:
         trans = {}
+    if lang != page.lang:
+        page = {}
     translations = get_trans(id)
     return render_template('admin/cms_edit.html', page=page, trans=trans,
                            translations=translations)

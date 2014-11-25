@@ -117,6 +117,8 @@ def org_edit(id):
         codes = []
         current = []
     translations = get_trans(id)
+    if lang != org.lang:
+        org = {}
     return render_template('admin/org_edit.html', org=org, trans=trans,
                            codes=codes, current=current,
                            translations=translations)
