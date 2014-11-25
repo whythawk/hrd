@@ -4,7 +4,7 @@ from flask import render_template, request, abort, redirect, session
 
 from hrd import (app, db, url_for_admin, get_str, url_for,
                  get_bool, permission_list)
-from hrd.models import User, UserPerms
+from hrd.models import User, UserPermsBB
 
 from flask.ext.login import (current_user, login_user, login_required,
                              logout_user, confirm_login, login_fresh)
@@ -12,17 +12,15 @@ from flask.ext.login import (current_user, login_user, login_required,
 
 @app.before_request
 def before_request():
-    user_id = session.get('user')
     request.user = None
     request.permissions = []
-    if user_id:
-        user = User.query.filter_by(id=user_id).first()
-        if user:
-            request.user = user
-            request.permissions = [
-                p.permission
-                for p in UserPerms.query.filter_by(user_id=user_id).all()
-            ]
+    user = current_user
+    if user:
+        request.user = user
+        request.permissions = [
+            p.permission
+            for p in UserPermsBB.query.filter_by(user_id=user.id).all()
+        ]
 
 
 def password_verify(password, p_hash):
