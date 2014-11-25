@@ -159,7 +159,7 @@
                 <div class="footer-language-switch">
                     <ul class="list-inline">
                         <h4>{{ _('Languages') }}</h4>
-                        {% for code, lang, dir in lang_list() %}
+                        {% for code, lang, dir, active in lang_list() %}
                         <li class="{% if loop.index == 1 %}first{% elif loop.index == loop.length %}last{% endif %}{% if code==current_lang() %} active{% endif %}"><a href="{{ lang_pick(code) }}" lang="{{ code }}" dir="{{ dir }}">{{ lang }}</a></li>
                         {% endfor %}
                     </ul>

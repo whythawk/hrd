@@ -2,8 +2,9 @@ import os.path
 from importlib import import_module
 
 from flask.ext.themes2 import Themes, render_theme_template
-from flaskbb import create_app
+from flask.ext.babel import Babel
 
+from flaskbb import create_app
 from flaskbb.configs.development import DevelopmentConfig as bb_config
 
 
@@ -17,9 +18,9 @@ def get_flaskbb(app, path):
     bb_config.SECRET_KEY = app.secret_key
 
     flaskbb = create_app(bb_config)
+    babel = Babel(flaskbb)
 
     flaskbb.theme_manager = app.theme_manager
-    flaskbb.jinja_env.globals['_'] = app.jinja_env.globals['_']
     flaskbb.jinja_env.globals['lang_list'] = app.jinja_env.globals['lang_list']
     flaskbb.jinja_env.globals['current_lang'] = app.jinja_env.globals['current_lang']
     flaskbb.jinja_env.globals['lang_pick'] = app.jinja_env.globals['lang_pick']
