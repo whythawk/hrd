@@ -1,11 +1,34 @@
-import os.path
+import os
 from importlib import import_module
 
+from flask import request
 from flask.ext.themes2 import Themes, render_theme_template
 from flask.ext.babel import Babel
 
 from flaskbb import create_app
 from flaskbb.configs.development import DevelopmentConfig as bb_config
+
+
+def set_translations(app):
+    # we want a symbolic link between the translations so that
+    # flaskbb can find them
+    DIR = os.path.dirname(os.path.realpath(__file__))
+    hrd_trans = os.path.join(DIR, 'translations')
+    flaskbb_trans = os.path.normpath(
+        os.path.join(DIR, '..', '..', 'flaskbb', 'flaskbb', 'translations')
+    )
+    try:
+        os.symlink(hrd_trans, flaskbb_trans)
+    except OSError:
+        pass
+
+    # attach babel-flask
+    babel = Babel(app)
+
+    # set locale on request
+    def get_locale():
+        return request.environ['LANG']
+    babel.localeselector(get_locale)
 
 
 def get_flaskbb(app, path):
@@ -18,7 +41,8 @@ def get_flaskbb(app, path):
     bb_config.SECRET_KEY = app.secret_key
 
     flaskbb = create_app(bb_config)
-    babel = Babel(flaskbb)
+
+    set_translations(flaskbb)
 
     flaskbb.theme_manager = app.theme_manager
     flaskbb.jinja_env.globals['lang_list'] = app.jinja_env.globals['lang_list']
@@ -51,15 +75,15 @@ def theme_hack():
         p.render_template = render_template
 
 
-
 BARRED_VIEWS = [
 ]
+
 
 def block_routes(app):
     ''' remove routes for views we do not want '''
     rules = []
     for rule in app.url_map._rules:
-        print rule.endpoint, rule.rule
+        # print rule.endpoint, rule.rule
         if rule.endpoint not in BARRED_VIEWS:
             rules.append(rule)
 
