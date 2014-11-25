@@ -19,6 +19,15 @@
 {%- endmacro %}
 
 
+{% macro info_bar(info='') %}
+  <div class="row alert alert-success">
+    <div class="col-xs-12">
+      <h4>{{ info }}</h4>
+  </div>
+  </div>
+{%- endmacro %}
+
+
 {%- macro input(name, id='', label='', value='', placeholder='', trans='') %}
 {% call form_control(name=name, label=label, trans=trans) -%}
     <input id="{{ id or name }}" class="form-control" type="text" name="{{ name }}" value="{{ value|sn }}" placeholder="{{ placeholder }}" />
@@ -146,7 +155,7 @@
   {% if has_perm('translator') %}
     <div class="col-xs-12 col-md-12 clearfix">
       <ul id="" class="nav nav-tabs nav-justified" data-tabs="" role="tablist">
-    {% for code, lang, dir in lang_list() %}
+    {% for code, lang, dir, active in lang_list() %}
       {% set state = get_trans_state(trans[code]) %}
       {% set active = (get_admin_lang() == code) %}
       <li class="{% if active %}active {% endif %}{{ state }}">

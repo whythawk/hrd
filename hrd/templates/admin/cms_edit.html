@@ -6,13 +6,18 @@
 <h1>Edit: Page<br /><br /></h1>
  {{ form.translations_bar(translations) }}
 <script type="text/javascript" src="/static/ckeditor/ckeditor.js"></script>
-    <form method="POST" role="form">
+    <form method="POST" role="form" enctype="multipart/form-data">
         {{ form.save(label='Save') }}
         {{ form.input('title', label='Title', value=page.title, placeholder='Title', trans=trans) }}
         {{ form.ckeditor('content', label='Content', value=page.content, trans=trans) }}
         {% if not trans %}
+          {{ form.info_bar('The following fields will be take immediate effect when saved') }}
+          {% call form.form_control(name='logo', label='Image', trans=trans) -%}
+            <input type="file" name="logo"/>
+          {% endcall %}
             {{ form.input('url', label='Url', value=page.url, placeholder='Custom url') }}
             {{ form.checkbox('active', label='Active', value=page.active) }}
+            {{ form.checkbox('private', label='Private', value=page.private) }}
         {% endif %}
         {{ form.save(label='Save') }}
     </form>

@@ -29,10 +29,8 @@
 {% block menu %}
     <ul class="navbar-nav nav-mega">
         {{ menu_item(_('Home'), url_for('cms_page2')) }}
-        {% if user %}
             {{ menu_item(_('Resources'), '#') }}
             {{ menu_item(_('Search'), url_for('org_search')) }}
-        {% endif %}
         {{ menu_item(_('News'), url_for('cms_page2', id='news')) }}
         {{ menu_item(_('About Us'), url_for('cms_page2', id='about')) }}
         {{ menu_item(_('HRDs'), url_for('cms_page2', id='hrds')) }}
@@ -65,8 +63,10 @@
                 <div class="footer-language-switch">
                     <ul class="list-inline">
                         <h4>{{ _('Languages') }}</h4>
-                        {% for code, lang, dir in lang_list() %}
+                        {% for code, lang, dir, active in lang_list()%}
+                        {% if active %}
                         <li class="{% if loop.index == 1 %}first{% elif loop.index == loop.length %}last{% endif %}{% if code==current_lang() %} active{% endif %}"><a href="{{ lang_pick(code) }}" lang="{{ code }}" dir="{{ dir }}">{{ lang }}</a></li>
+                        {% endif %}
                         {% endfor %}
                     </ul>
                 </div>

@@ -17,6 +17,7 @@ class Cms(db.Model):
     current = db.Column(db.Boolean(), default=True)
     published = db.Column(db.Boolean(), default=False)
     active = db.Column(db.Boolean(), default=True)
+    private = db.Column(db.Boolean(), default=True)
     needs_trans = db.Column(db.Boolean(), default=False)
     image = db.Column(db.String(250))
 
@@ -64,6 +65,7 @@ class Organisation(db.Model):
     status = db.Column(db.String(10))
     current = db.Column(db.Boolean(), default=True)
     active = db.Column(db.Boolean(), default=True)
+    private = db.Column(db.Boolean(), default=True)
     name = db.Column(db.String(250))
     description = db.Column(db.Text())
     address = db.Column(db.String(250))
@@ -105,5 +107,19 @@ class UserPerms(db.Model):
     def __repr__(self):
         return "<UserPerm %s %s>" % (self.user_id, self.permission)
 
+
+class Translation(db.Model):
+    id = db.Column(db.String(250), primary_key=True)
+    plural = db.Column(db.String(250), primary_key=True)
+    lang = db.Column(db.String(2), primary_key=True)
+    active = db.Column(db.Boolean(), default=True)
+    plural = db.Column(db.String(250))
+    trans1 = db.Column(db.String(250))
+    trans2 = db.Column(db.String(250))
+    trans3 = db.Column(db.String(250))
+    trans4 = db.Column(db.String(250))
+
+    def __repr__(self):
+        return "<Translation %s %s>" % (self.id, self.lang)
 
 db.create_all()

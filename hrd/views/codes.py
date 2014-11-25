@@ -295,6 +295,21 @@ def all_codes(lang='en', cat_type=''):
         })
     return out
 
+def cat_codes(lang='en', cat_type=''):
+    check_cat_type(cat_type)
+    out = []
+    cats = Category.query.filter_by(lang=lang, current=True, cat_type=cat_type)
+    cats = cats.order_by('"order"', 'title')
+    for cat in cats:
+        cat_codes = Code.query.filter_by(lang=lang, current=True,
+                                         category_id=cat.category_id)
+        cat_codes = cat_codes.order_by('"order"', 'title')
+        codes = []
+        for code in cat_codes:
+            codes.append(code.code_id)
+        out.append(codes)
+    return out
+
 
 def set_menu(cat_type):
     request.environ['MENU_PATH'] = url_for_admin('category_list',

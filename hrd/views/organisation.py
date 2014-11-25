@@ -1,17 +1,26 @@
 import os.path
 import uuid
 
-from flask import render_template, request, abort, redirect, send_from_directory
+from flask import (render_template, request, abort, redirect,
+                   send_from_directory)
 
 from hrd import (app, db, url_for_admin, get_admin_lang, get_bool,
                  permission, permission_content, get_str, lang_codes)
 from hrd.models import Organisation, OrgCodes
-from hrd.views.codes import all_codes
+from hrd.views.codes import all_codes, cat_codes
 
 
-@app.route('/admin/org_logo/<filename>')
-def org_logo(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+@app.route('/admin/org_logo/<type>/<id>')
+def org_logo(type, id):
+    if type == 'live':
+        org = Organisation.query.filter_by(
+            org_id=id, lang='en', status='publish'
+        ).first()
+    else:
+        org = Organisation.query.filter_by(
+            org_id=id, lang='en', current=True
+        ).first()
+    return send_from_directory(app.config['UPLOAD_FOLDER'], org.image)
 
 
 @app.route('/admin/org_edit/<id>', methods=['GET', 'POST'])
@@ -19,25 +28,29 @@ def org_edit(id):
     set_menu()
     lang = get_admin_lang()
     permission_content(lang)
-    org = Organisation.query.filter_by(org_id=id, lang=lang, current=True)
-    org = org.filter(Organisation.status != 'publish').first()
+    org = Organisation.query.filter_by(
+        org_id=id, lang=lang, current=True
+    ).first()
     if not org and lang != 'en':
-        org = Organisation.query.filter_by(org_id=id, lang='en', current=True)
-        org = org.filter(Organisation.status != 'publish').first()
+        org = Organisation.query.filter_by(
+            org_id=id, lang='en', current=True
+        ).first()
         if not org:
             abort(404)
-        return org_trans(id=id)
-    if not org:
-        org = Organisation.query.filter_by(
-            org_id=id, lang=lang, current=True
-        ).first()
     if not org:
         abort(404)
-    if org.status == 'publish':
-        return org_reedit(id=id)
-    if request.method == 'POST':
-        org.name = get_str('name')
-        org.description = get_str('description')
+    if request.method == 'POST' and 'name' in request.form:
+        if org.lang != lang:
+            # No translation
+            org = org_reedit(org)
+        if (org.name != get_str('name')
+                or org.description != get_str('description')):
+            if org.status == 'publish':
+                org = org_reedit(org)
+            org.name = get_str('name')
+            org.description = get_str('description')
+            org.status = 'edit'
+            trans_need_update(org)
 
         if lang == 'en':
             org.address = get_str('address')
@@ -46,6 +59,8 @@ def org_edit(id):
             org.email = get_str('email')
             org.pgp_key = get_str('pgp_key')
             org.website = get_str('website')
+            org.private = get_bool('private')
+            org.active = get_bool('active')
 
             logo = request.files['logo']
             if logo:
@@ -56,13 +71,8 @@ def org_edit(id):
                 logo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 org.image = filename
 
-        org.status = 'edit'
         db.session.add(org)
         if lang == 'en':
-            locked = {
-                'active': get_bool('active'),
-            }
-            Organisation.query.filter_by(org_id=org.org_id).update(locked)
             # codes
             codes_data = all_codes('en', 'org')
             cats = [cat for cat in codes_data if cat['active']]
@@ -88,6 +98,8 @@ def org_edit(id):
                 OrgCodes.query.filter_by(org_id=id, code=code).delete()
 
         db.session.commit()
+        if lang == 'en':
+            update_translations(org)
         return redirect(url_for_admin('org_preview', id=id))
     if lang != 'en':
         trans = Organisation.query.filter_by(
@@ -110,15 +122,8 @@ def org_edit(id):
                            translations=translations)
 
 
-@app.route('/admin/org_reedit/<id>', methods=['POST'])
-def org_reedit(id):
+def org_reedit(org):
     lang = get_admin_lang()
-    permission_content(lang)
-    org = Organisation.query.filter_by(
-        org_id=id, status='publish', lang=lang, current=True
-    ).first()
-    if not org:
-        abort(404)
     new_org = Organisation(
         lang=lang,
         org_id=org.org_id,
@@ -133,6 +138,8 @@ def org_reedit(id):
         email=org.email,
         pgp_key=org.pgp_key,
         website=org.website,
+        private=org.private,
+        active=org.active,
         image=org.image,
 
     )
@@ -140,7 +147,7 @@ def org_reedit(id):
     org.current = False
     db.session.add(org)
     db.session.commit()
-    return redirect(url_for_admin('org_edit', id=new_org.org_id))
+    return new_org
 
 
 @app.route('/admin/org_delete/<id>', methods=['POST'])
@@ -191,21 +198,22 @@ def org_state(id, state):
     org.status = state
     db.session.add(org)
     db.session.commit()
-    if lang == 'en':
-        update_translations(id)
     return redirect(url_for_admin('org_preview', id=id))
 
 
-def update_translations(id):
-    org = Organisation.query.filter_by(
-        org_id=id, status='publish', lang='en'
-    ).first()
+def trans_need_update(org):
+    # FIXME trigger updates needed for trans
+    pass
 
-    trans = Organisation.query.filter_by(org_id=id)
-    trans = trans.filter(db.not_(Organisation.lang == 'en'))
-    trans = trans.filter(db.or_(
-        Organisation.status == 'publish', Organisation.current == True
-    ))
+
+def update_translations(org):
+    trans = Organisation.query.filter_by(org_id=org.org_id)
+    trans = trans.filter(db.not_(Organisation.id == org.id))
+    trans = trans.filter(
+        db.or_(
+            Organisation.status == 'publish', Organisation.current == True
+        )
+    )
 
     for tran in trans:
         tran.address = org.address
@@ -214,6 +222,8 @@ def update_translations(id):
         tran.email = org.email
         tran.pgp_key = org.pgp_key
         tran.website = org.website
+        tran.active = org.active
+        tran.private = org.private
         tran.image = org.image
         db.session.add(tran)
     db.session.commit()
@@ -224,14 +234,21 @@ def org(id):
     lang = get_admin_lang()
     lang = request.environ['LANG']
     org = Organisation.query.filter_by(
-        org_id=id, lang=lang, status='publish'
-    ).first()
+        org_id=id, lang=lang, status='publish', active=True
+    )
+
+    org = org.first()
     if not org:
         org = Organisation.query.filter_by(
-            org_id=id, lang='en', status='publish'
+            org_id=id, lang='en', status='publish', active=True
         ).first()
         if not org:
             abort(404)
+
+    # only show public orgs
+    if not bool(request.user) and org.private:
+        abort(403)
+
     cat_codes = org_cat_codes(lang, id)
     return render_template('admin/org.html',
                            org=org,
@@ -294,33 +311,6 @@ def get_trans(id):
     return results
 
 
-@app.route('/admin/org_trans/<id>', methods=['POST'])
-def org_trans(id):
-    lang = get_admin_lang()
-    permission_content(lang)
-    org = Organisation.query.filter_by(org_id=id, lang='en').first()
-    if not org:
-        abort(404)
-    exists = Organisation.query.filter_by(org_id=org.org_id, lang=lang).first()
-    if exists:
-        abort(403)
-    trans = Organisation(lang=lang)
-    trans.status = 'edit'
-    trans.org_id = org.org_id
-
-    trans.address=org.address
-    trans.contact=org.contact
-    trans.phone=org.phone
-    trans.email=org.email
-    trans.pgp_key=org.pgp_key
-    trans.website=org.website
-    trans.image = org.image
-
-    db.session.add(trans)
-    db.session.commit()
-    return redirect(url_for_admin('org_edit', id=trans.org_id))
-
-
 @app.route('/admin/org')
 def org_list():
     set_menu()
@@ -375,21 +365,35 @@ def list_status():
 def org_search():
     lang = request.environ['LANG']
     cats = all_codes(lang, 'org')
+    codes_list = cat_codes(lang, 'org')
 
 
-    orgs = Organisation.query.filter_by(lang=lang, status='publish')
+    orgs = Organisation.query.filter_by(
+        lang=lang, status='publish', active=True
+    )
 
+    # only show public orgs
+    if not bool(request.user):
+        orgs = orgs.filter_by(private=False)
+
+    search_codes = set()
     for field, _null in request.args.items():
         if field == 'Filter':
             continue
-        c = db.session.query(OrgCodes.org_id).filter_by(code=field)
-        orgs = orgs.filter(Organisation.org_id.in_(c))
+        search_codes.add(field)
+
+    for codes in codes_list:
+        union = set(codes) & search_codes
+        if union:
+            c = db.session.query(OrgCodes.org_id).filter(OrgCodes.code.in_(list(union)))
+            orgs = orgs.filter(Organisation.org_id.in_(c))
 
     count = orgs.count()
-
     orgs = orgs.all()
 
-    return render_template('org_search.html', cats=cats, orgs=orgs, count=count)
+    return render_template(
+        'org_search.html', cats=cats, orgs=orgs, count=count
+    )
 
 
 def get_trans(id):

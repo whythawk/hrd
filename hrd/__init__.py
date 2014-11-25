@@ -4,63 +4,61 @@ import urllib
 
 from flask import Flask, request, abort
 from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.babel import Babel
 from werkzeug.wsgi import DispatcherMiddleware
 
 from flaskbb_shim import get_flaskbb
 
+# Import our config
+try:
+    import config.production as config
+except ImportError:
+    import config.default as config
 
+
+language_list = config.LANGUAGE_LIST
 DIR = os.path.dirname(os.path.realpath(__file__))
 
-# FIXME need config file
-secret_key = "ddSecretKeyForSessionSigning"
 
 app = Flask(__name__)
-app.debug = True
-app.secret_key = secret_key
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
-app.config['UPLOAD_FOLDER'] = os.path.join(DIR, 'files')
-
+app.debug = config.DEBUG
+app.secret_key = config.SECRET_KEY
+app.config['SQLALCHEMY_DATABASE_URI'] = config.DB_CONNECTION
+app.config['UPLOAD_FOLDER'] = os.path.join(DIR, config.UPLOAD_FOLDER)
+app.config['BABEL_DEFAULT_LOCALE'] = 'en'
 
 if not os.path.isdir(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
 
 db = SQLAlchemy(app)
+babel = Babel(app)
 
-DEBUG = False
+def get_locale():
+    return request.environ['LANG']
+
+babel.localeselector(get_locale)
+
+DEBUG = config.DEBUG
 
 default_url_for = app.jinja_env.globals['url_for']
 
-language_list = [
-    ('en', u'English', 'ltr'),
-    ('fr', u'français', 'ltr'),
-    ('es', u'español', 'ltr'),
-    ('ar', u'العربية', 'rtl'),
-    # ('zh', u'中文', 'ltr'),
-    ('ru', u'русский', 'ltr'),
-]
 
 lang_dir = {}
-for code, name, dir_ in language_list:
+for code, name, dir_, active in language_list:
     lang_dir[code] = dir_
 
 
 lang_name = {}
-for code, name, dir_ in language_list:
+for code, name, dir_, active in language_list:
     lang_name[code] = name
 
 
 lang_codes = []
-for code, name, dir_ in language_list:
+for code, name, dir_, active in language_list:
     lang_codes.append(code)
 
 
-permission_list = [
-    ('sys_admin', 'System administrator'),
-    ('content_manage', 'Content managment'),
-    ('translator', 'Content translation'),
-    ('user_admin', 'User administrator'),
-    ('user_manage', 'User management'),
-]
+permission_list = config.PERMISSIONS
 
 
 def permission(permission):
@@ -145,6 +143,7 @@ def get_int(field, default):
         value = default
     return value
 
+import migrate
 import helpers
 import models
 import views
@@ -165,7 +164,7 @@ class I18nMiddleware(object):
         self.app = app
         self.default_locale = 'en'
         locale_list = []
-        for code, lang, _dir in language_list:
+        for code, lang, _dir, active in language_list:
             locale_list.append(code)
         self.locale_list = locale_list
 

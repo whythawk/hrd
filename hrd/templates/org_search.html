@@ -14,8 +14,8 @@
         <div class="row col-xs-12">
             <!-- Search filter column begins ============================= -->
             <div class="search-filter-col blue-left-border red-panel-bkg col-xs-12 col-sm-6 col-md-4 hrd-padded-20">
-                <div class="column-label">Organizations</div>
-                <h3 class="">Filter list...</h3>
+                <div class="column-label">{{ _('Organizations') }}</div>
+                <h3 class="">{{ _('Filter list...') }}</h3>
                 <div class="clearfix">
                     <div class="filter-reset pull-right text-right"><a onclick="clear_all()">{{ _('Clear selection') }}</a></div>
                 </div>
@@ -34,14 +34,14 @@
                         </details>
                     </div>
 {% endfor %}
-                    <div class="row pull-right"><input class="hrd-padded-10" type="submit" value="Filter" name="Filter"></div>
+<div class="row pull-right"><input class="hrd-padded-10" type="submit" value="{{ _('Filter') }}" name="Filter"></div>
                 </form>
             </div>
             <!-- /Search filter column ends ============================= -->
             <!-- Search results column begins ============================= -->
             <div class="search-results-col col-xs-12 col-sm-6 col-md-8 pull-right">
-                <h2>Search results<br /><br /></h2>
-                <div class="no-of-records">{{ count }} records</div>
+                <h2>{{ _('Search results') }}<br /><br /></h2>
+                <div class="no-of-records">{{ ngettext('{count} record', '{count} records', count).format(count=count) }}</div>
                 <!-- Top pagination begins ============================= -->
                 <div class="col-xs-12 pagination-top"><ul class="pagination pull-right">
                     <li class="active"><a href="" alt="">1</a></li>
