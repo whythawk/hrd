@@ -47,7 +47,7 @@
         <div class="org-cat-alert">
         <h5>{{ code.title }}
         {% if not code.active %}
-          <small>Inactive</small>
+            <small><span class="label label-null">Inactive</span></small>
         {% endif %}
         </h5>
             {{ form.action_link('edit', url_for_admin('code_edit', id=code.code_id, cat_type=cat_type), icon='pencil', class='btn-xs') }}
@@ -70,9 +70,9 @@
         <div class="org-cat-alert bg-danger">
         <h5>{{ code.title }}
             {% if not code.active %}
-            <small>Inactive</small>
+            <small><span class="label label-null">Inactive</span></small>
             {% endif %}
-            <small>Missing</small>
+            <small><span class="label label-null">Missing</span></small>
         </h5>
             {{ form.action('Create', url_for_admin('code_trans', id=code.code_id, cat_type=cat_type), icon='plus', class='btn-xs btn-success') }}
         </div>
@@ -87,7 +87,7 @@
   {% for cat in missing_cat %}
   <div class="alert col-xs-12 org-cat-top-level alert-danger"><h5>
         {{ cat.title }}
-        <small>Missing</small>
+        <small><span class="label label-null">Missing</span></small>
     </h5>
         {{ form.action('Create', url_for_admin('category_trans', id=cat.category_id, cat_type=cat_type), icon='plus', class='btn-xs btn-success') }}
     </div>
