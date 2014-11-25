@@ -26,6 +26,8 @@
     </head>
 
     <body>
+
+
 <div class="header container red-left-border">
     <div class="row">
         <div class="hrd_logo col-xs-5 col-sm-3 col-md-2">
@@ -49,41 +51,10 @@
     <div class="navbar-collapse collapse">
         <div class="navbar navbar-default navbar-static-top col-md-12 container" role="navigation">
             <div id="menu-wrapper container">
-                {#
-{% block menu %}
-    <ul class="navbar-nav nav-mega">
-        {{ menu_item(_('Home'), url_for('cms_page2')) }}
-        {% if user %}
-            {{ menu_item(_('Resources'), '#') }}
-            {{ menu_item(_('Search'), url_for('org_search')) }}
-        {% endif %}
-        {{ menu_item(_('News'), url_for('cms_page2', id='news')) }}
-        {{ menu_item(_('About Us'), url_for('cms_page2', id='about')) }}
-        {{ menu_item(_('HRDs'), url_for('cms_page2', id='hrds')) }}
-        {{ menu_item(_('Get involved'), url_for('cms_page2', id='get_involved')) }}
 
-    {% block user_bar %}
-        {{ user_menu() }}
-    {% endblock %}
-{% endblock %}
-#}
-        <div id="wrap">
-        {% block navigation %}
+
+    <ul class="navbar-nav nav-mega">
         {%- from "macros.html" import topnav with context -%}
-        <!-- Navigation -->
-            <nav class="navbar navbar-default navbar-static-top">
-                <div>
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="/">FlaskBB</a>
-                    </div>
-                    <div class="collapse navbar-collapse navbar-ex1-collapse">
-                        <ul class="nav navbar-nav">
                             {{ emit_event("before-first-navigation-element") | safe }}
 
                             {# active_forum_nav is set in {forum, category, topic}.html and new_{topic, post}.html #}
@@ -93,6 +64,8 @@
 
                             {{ emit_event("after-last-navigation-element") | safe }}
                         </ul>
+
+
 
                     {% if current_user and current_user.is_authenticated() %}
                         <div class="btn-group navbar-btn navbar-right" style="padding-left: 15px; margin-right: -10px">
@@ -139,23 +112,40 @@
                             </ul>
                         </div>
                     {% endif %}
-                    </div><!-- nav-collapse -->
-                </div><!-- container -->
-            </nav> <!-- navbar navbar-inverse -->
-    </div></div></div></div>
-            {% endblock %}
-            <div class="wrap">
+                {#
+{% block menu %}
+    <ul class="navbar-nav nav-mega">
+        {{ menu_item(_('Home'), url_for('cms_page2')) }}
+        {% if user %}
+            {{ menu_item(_('Resources'), '#') }}
+            {{ menu_item(_('Search'), url_for('org_search')) }}
+        {% endif %}
+        {{ menu_item(_('News'), url_for('cms_page2', id='news')) }}
+        {{ menu_item(_('About Us'), url_for('cms_page2', id='about')) }}
+        {{ menu_item(_('HRDs'), url_for('cms_page2', id='hrds')) }}
+        {{ menu_item(_('Get involved'), url_for('cms_page2', id='get_involved')) }}
+
+    {% block user_bar %}
+        {{ user_menu() }}
+    {% endblock %}
+{% endblock %}
+#}
+</div></div></div>
+<!-- /Nav ends =============================================== -->
+</div>
+<!-- /Header ends =============================================== -->
                 <br/>
 
             <div class="container forum-container">
+    <div class="panel col-xs-12">
                 {% block messages %}
                     {% include 'flashed_messages.html' %}
                 {% endblock %}
 
                 {% block content %}
                 {% endblock %}
+    </div>
             </div> <!-- /container -->
-        </div> <!-- End wrap -->
 
             {% block footer %}
 <br/>
