@@ -17,10 +17,10 @@
   {% for page in pages %}
   <div class="alert col-xs-12 alert-{% if page.status != 'publish' %}warning{% else %}null{% endif %}">
       <h4>
-        {% if not page.active %}<small>Inactive</small>{% endif %}
-        {% if page.private %}<small>Private</small>{% endif %}
+        {% if not page.active %}<small><span class="label label-danger">Inactive</span></small>{% endif %}
+        {% if page.private %}<small><span class="label label-success">Private</span></small>{% endif %}
         {{ page.title }}
-        <small>{{ cms_state_nice_name(page.status) }}</small>
+        <small><span class="label label-default">{{ cms_state_nice_name(page.status) }}</span></small>
         <span class="small pull-right">{{ page.url }}</span>
       </h4>
       {% if page.status == 'edit' %}
