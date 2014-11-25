@@ -54,7 +54,7 @@
                 <article class="search-result{% if loop.index == 1 %} first{% elif loop.index == loop.length %} last{% endif %}">
                     <div class="excerpt">
                         <h3 class="search-result-title"><a href="{{ url_for('org', id=org.org_id) }}" title="">{{ org.name }}</a></h3>
-                        <p class="search-result-body">{{ org.description }}</p>
+                        <p class="search-result-body">{{ org.description|truncate(500) }}</p>
 
                     </div>
                     {#
