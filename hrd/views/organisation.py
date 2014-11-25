@@ -3,6 +3,7 @@ import uuid
 
 from flask import (render_template, request, abort, redirect,
                    send_from_directory)
+from flask import _request_ctx_stack
 
 from hrd import (app, db, url_for_admin, get_admin_lang, get_bool,
                  permission, permission_content, get_str, lang_codes)
@@ -289,6 +290,9 @@ def org_preview(id):
             abort(404)
     translations = get_trans(id)
     cat_codes = org_cat_codes(lang, id)
+    ctx = _request_ctx_stack.top
+    if ctx:
+        ctx.babel_locale = lang
     return render_template('admin/org_preview.html', org=org,
                            cat_codes=cat_codes,
                            translations=translations)

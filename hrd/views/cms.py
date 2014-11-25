@@ -3,6 +3,7 @@ import os.path
 
 from flask import (render_template, request, abort, redirect,
                    send_from_directory)
+from flask import _request_ctx_stack
 
 from hrd import (app, db, url_for_admin, get_admin_lang, get_bool,
                  permission, permission_content, get_str, lang_codes)
@@ -220,6 +221,9 @@ def cms_preview(id):
             abort(404)
         page = None
     translations = get_trans(id)
+    ctx = _request_ctx_stack.top
+    if ctx:
+        ctx.babel_locale = lang
     return render_template('admin/cms_preview.html',
                            page=page,
                            translations=translations)
