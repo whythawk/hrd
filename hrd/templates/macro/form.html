@@ -19,6 +19,15 @@
 {%- endmacro %}
 
 
+{% macro info_bar(info='') %}
+  <div class="row alert alert-success">
+    <div class="col-xs-12">
+      <h4>{{ info }}</h4>
+  </div>
+  </div>
+{%- endmacro %}
+
+
 {%- macro input(name, id='', label='', value='', placeholder='', trans='') %}
 {% call form_control(name=name, label=label, trans=trans) -%}
     <input id="{{ id or name }}" class="form-control" type="text" name="{{ name }}" value="{{ value|sn }}" placeholder="{{ placeholder }}" />

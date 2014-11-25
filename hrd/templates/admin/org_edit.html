@@ -21,6 +21,7 @@
           {{ form.input('name', label='Name', value=org.name, trans=trans) }}
       {{ form.textarea('description', label='Description', value=org.description, trans=trans, rows=10) }}
     {% if not trans %}
+      {{ form.info_bar('The following fields will be take immediate effect when saved') }}
       {% call form.form_control(name='logo', label='Logo', trans=trans) -%}
         <input type="file" name="logo"/>
       {% endcall %}
