@@ -45,12 +45,19 @@ def get_flaskbb(app, path):
     set_translations(flaskbb)
 
     flaskbb.theme_manager = app.theme_manager
-    flaskbb.jinja_env.globals['lang_list'] = app.jinja_env.globals['lang_list']
-    flaskbb.jinja_env.globals['current_lang'] = app.jinja_env.globals['current_lang']
-    flaskbb.jinja_env.globals['lang_pick'] = app.jinja_env.globals['lang_pick']
-    flaskbb.jinja_env.globals['menu_class'] = app.jinja_env.globals['menu_class']
-    flaskbb.jinja_env.globals['sub_menu_item'] = app.jinja_env.globals['sub_menu_item']
-    flaskbb.jinja_env.globals['has_perm'] = app.jinja_env.globals['has_perm']
+
+    helpers = [
+        'lang_list',
+        'current_lang',
+        'lang_pick',
+        'menu_class',
+        'sub_menu_item',
+        'has_perm',
+    ]
+
+    for helper in helpers:
+        flaskbb.jinja_env.globals[helper] = app.jinja_env.globals[helper]
+
     block_routes(flaskbb)
     return flaskbb
 
