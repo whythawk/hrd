@@ -28,13 +28,20 @@
 
 {% block menu %}
     <ul class="navbar-nav nav-mega">
-        {{ menu_item(_('Home'), url_for('cms_page2')) }}
-            {{ menu_item(_('Resources'), '#') }}
-            {{ menu_item(_('Search'), url_for('org_search')) }}
-        {{ menu_item(_('News'), url_for('cms_page2', id='news')) }}
-        {{ menu_item(_('About Us'), url_for('cms_page2', id='about')) }}
-        {{ menu_item(_('HRDs'), url_for('cms_page2', id='hrds')) }}
-        {{ menu_item(_('Get involved'), url_for('cms_page2', id='get_involved')) }}
+        {% for m in get_menu_items(current_lang()) %}
+          {% set logged_in = get_user_id() %}
+          {% if not m.private or logged_in %}
+            {% if m.item == 'orgs' %}
+              {{ menu_item(m.title, url_for('org_search')) }}
+            {% elif m.item == 'res' %}
+              {{ menu_item(m.title, '#') }}
+            {% elif m.item == '/' %}
+              {{ menu_item(m.title, url_for('cms_page2')) }}
+            {% else %}
+              {{ menu_item(m.title, url_for('cms_page2', id=m.item[1:])) }}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
 
     {% block user_bar %}
         {{ user_menu() }}

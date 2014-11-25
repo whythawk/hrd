@@ -1,4 +1,4 @@
-from flask import render_template, request, abort, redirect, url_for
+from flask import render_template, request, abort, redirect
 
 from hrd import (app, db, url_for_admin, get_admin_lang, get_bool,
                  get_int, lang_codes)
@@ -21,7 +21,7 @@ def category_new(cat_type):
     category.cat_type = cat_type
     db.session.add(category)
     db.session.commit()
-    return redirect(url_for('category_edit',
+    return redirect(url_for_admin('category_edit',
                             id=category.category_id,
                             cat_type=cat_type))
 
@@ -173,7 +173,7 @@ def category_list(cat_type):
     categories = Category.query.filter_by(
         lang=lang, current=True, cat_type=cat_type
     )
-    categories = categories.order_by('title')
+    categories = categories.order_by('"order"', 'title')
     all_ = all_codes(lang, cat_type)
     if lang == 'en':
         missing_cat = []
@@ -247,7 +247,7 @@ def code_new(category_id, cat_type):
     code.category_id = category_id
     db.session.add(code)
     db.session.commit()
-    return redirect(url_for('code_edit', id=code.code_id, cat_type=cat_type))
+    return redirect(url_for_admin('code_edit', id=code.code_id, cat_type=cat_type))
 
 
 @app.route('/admin/category_delete/<cat_type>/<category_id>', methods=['POST'])

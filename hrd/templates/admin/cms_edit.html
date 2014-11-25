@@ -11,7 +11,7 @@
         {{ form.input('title', label='Title', value=page.title, placeholder='Title', trans=trans) }}
         {{ form.ckeditor('content', label='Content', value=page.content, trans=trans) }}
         {% if not trans %}
-          {{ form.info_bar('The following fields will be take immediate effect when saved') }}
+          {{ form.info_bar('The following fields will take immediate effect when saved') }}
           {% call form.form_control(name='logo', label='Image', trans=trans) -%}
             <input type="file" name="logo"/>
           {% endcall %}

@@ -1,0 +1,101 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Menu items{% endblock %}
+
+{% block content %}
+
+ {{ form.translations_bar(status) }}
+  {# cat listing #}
+ <div class="alert col-xs-12 org-cat-list">
+{# new cat #}
+  {% if lang =='en' %}
+  <div class="alert col-xs-12 org-cat-list alert-null">
+<h4>{{ _('Create a new menu item') }}</h4>
+    {{ form.action('New menu item', url_for('menu_new'), class='btn-primary btn-success pull-right', icon='plus') }}
+        </div>
+
+  {% endif %}
+  <ul>
+    {% for menu_item in menu_items %}
+    {# category start #}
+    <li class="alert col-xs-12 org-cat-top-level alert-null">
+        <h4>{{ menu_item.title }}
+        {% if not menu_item.active %}
+        <small>Inactive</small>
+        {% endif %}
+        </h4>
+
+        {{ form.action_link('Edit', url_for_admin('menu_edit', id=menu_item.menu_id), icon='pencil') }}
+        {% if lang =='en' %}
+        {#     {{ form.action('New menu item', url_for('menu_new', id=menu_item.menu_id), class='btn-primary btn-success', icon='plus') }}
+        #}
+          {{ form.action('Delete',
+          url_for('menu_delete', id=menu_item.menu_id),
+          class='btn-danger pull-right',
+          icon='remove',
+          onsubmit='return confirm("Are you sure you want to delete this menu item?\\n\\nThis action cannot be undone")'
+          ) }}
+
+        {% endif %}
+
+
+          <ul>
+              {#
+        {% for code in cat.codes %}
+
+        {# code start #}
+              {#
+      <li class="col-xs-12">
+        <div class="org-cat-alert">
+        <h5>{{ code.title }}
+        {% if not code.active %}
+          <small>Inactive</small>
+        {% endif %}
+        </h5>
+            {{ form.action_link('edit', url_for_admin('code_edit', id=code.code_id, cat_type=cat_type), icon='pencil', class='btn-xs') }}
+            {% if lang =='en' %}
+            {{ form.action('Delete',
+            url_for('code_delete', code_id=code.code_id, cat_type=cat_type),
+            class='btn-xs btn-danger',
+            icon='remove',
+            onsubmit='return confirm("Are you sure you want to delete this code?\\n\\nThis action cannot be undone")'
+            ) }}
+            {% endif %}
+            </div>
+          </li>
+        {# code end #}
+
+              {#
+        {% endfor %}
+
+        {% for code in m_codes[cat.category_id] %}
+        <li class="col-xs-12">
+        <div class="org-cat-alert bg-danger">
+        <h5>{{ code.title }}
+            {% if not code.active %}
+            <small>Inactive</small>
+            {% endif %}
+            <small>Missing</small>
+        </h5>
+            {{ form.action('Create', url_for_admin('code_trans', id=code.code_id, cat_type=cat_type), icon='plus', class='btn-xs btn-success') }}
+        </div>
+        </li>
+        {% endfor %}
+        #}
+    </ul>
+    </li>
+    {# category end #}
+  {% endfor %}
+  </ul>
+
+  {% for menuitem in missing %}
+  <div class="alert col-xs-12 org-cat-top-level alert-danger"><h5>
+        {{ menuitem.title }}
+        <small>Missing</small>
+    </h5>
+        {{ form.action('Create', url_for_admin('menu_edit', id=menuitem.menu_id), icon='plus', class='btn-xs btn-success') }}
+    </div>
+    {% endfor %}
+  </div>
+{#  {{ form.code_list(all) }} #}
+{% endblock %}

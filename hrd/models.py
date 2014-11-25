@@ -58,6 +58,21 @@ class Category(db.Model):
         return "<Category %s>" % self.title
 
 
+class MenuItem(db.Model):
+    id = db.Column(db.String(50), primary_key=True, default=make_uuid)
+    menu_id = db.Column(db.String(50), default=make_uuid)
+    parent_menu_id = db.Column(db.String(50))
+    title = db.Column(db.String(250))
+    item = db.Column(db.String(250))
+    lang = db.Column(db.String(2), primary_key=True)
+    active = db.Column(db.Boolean(), default=False)
+    private = db.Column(db.Boolean(), default=False)
+    order = db.Column(db.Integer(), default=99)
+
+    def __repr__(self):
+        return "<MenuItem %s>" % self.title
+
+
 class Organisation(db.Model):
     id = db.Column(db.String(50), primary_key=True, default=make_uuid)
     org_id = db.Column(db.String(50), default=make_uuid)
