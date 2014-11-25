@@ -20,7 +20,7 @@
         {% if not page.active %}<small>Inactive</small>{% endif %}
         {% if page.private %}<small>Private</small>{% endif %}
         {{ page.title }}
-        <small>{{ page.status }}</small>
+        <small>{{ cms_state_nice_name(page.status) }}</small>
         <span class="small pull-right">{{ page.url }}</span>
       </h4>
       {% if page.status == 'edit' %}

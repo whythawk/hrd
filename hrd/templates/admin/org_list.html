@@ -18,7 +18,7 @@
             {% if not org.active %}<small>Inactive</small>{% endif %}
             {% if org.private %}<small>Private</small>{% endif %}
             {{ org.name }}
-            <small>{{ org.status }}</small>
+            <small>{{ cms_state_nice_name(org.status) }}</small>
         </h4>
 
         {{ form.action_link('Edit', url_for_admin('org_edit', id=org.org_id), icon='pencil') }}
