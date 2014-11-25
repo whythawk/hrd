@@ -1,5 +1,5 @@
 from passlib.hash import sha512_crypt as passlib
-from flask import render_template, request, abort, redirect, session
+from flask import render_template, request, abort, redirect
 
 
 from hrd import (app, db, url_for_admin, get_str, url_for,
