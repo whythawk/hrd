@@ -127,7 +127,8 @@ def menu_edit(id):
             lang='en', active=True, status='publish'
         )
         for i in menu_items:
-            options.append({'value': i.url, 'name': 'Page: %s' %i.title})
+            options.append({'value': i.url, 'name': 'Page: %s ~ %s'
+                            % (i.title, i.url)})
     elif menu_item.lang == 'en':
         menu_item = MenuItem()
     return render_template('admin/menu_edit.html', menuitem=menu_item,

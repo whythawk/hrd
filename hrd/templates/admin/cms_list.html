@@ -17,10 +17,10 @@
   {% for page in pages %}
   <div class="alert col-xs-12 alert-{% if page.status != 'publish' %}warning{% else %}null{% endif %}">
       <h4>
-        {% if not page.active %}<small><span class="label label-danger">Inactive</span></small>{% endif %}
-        {% if page.private %}<small><span class="label label-success">Private</span></small>{% endif %}
         {{ page.title }}
         <small><span class="label label-default">{{ cms_state_nice_name(page.status) }}</span></small>
+        {% if not page.active %}<small><span class="label label-null">Inactive</span></small>{% endif %}
+        {% if page.private %}<small><span class="label label-null">Private</span></small>{% endif %}
         <span class="small pull-right">{{ page.url }}</span>
       </h4>
       {% if page.status == 'edit' %}
@@ -51,7 +51,7 @@
     <div class="alert col-xs-12 alert-danger">
       <h4>
         {{ page.title }}
-        <small>Missing</small>
+        <small><span class="label label-null">Missing</span></small>
         <span class="small pull-right">{{ page.url }}</span>
       </h4>
       {{ form.action('Create', url_for_admin('cms_edit', id=page.page_id), icon='plus', class='btn-success') }}
