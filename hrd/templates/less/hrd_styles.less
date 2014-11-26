@@ -67,10 +67,12 @@ Import Bootstrap LESS and Site Specific LESS
     padding-left: 0;
     padding-right: 0;
     margin-bottom: 25px;
+
 }
 
 .hrd_logo {
     //margin-left: 30px;
+
 }
 
 .sitetitle {
@@ -412,7 +414,7 @@ Import Bootstrap LESS and Site Specific LESS
 
 .label-null {
     background-color: none;
-    border: 1px solid darken(@gray-lighter, 5%);
+    border: 1px solid @gray-light;
     color: @gray-light;
 }
 
@@ -422,6 +424,11 @@ Import Bootstrap LESS and Site Specific LESS
     right: 0;
 }
 
+h4 .label, h5 .label {
+    display: inline-block;
+    font-size: 60%;
+}
+
 
 // Edit page elements
 
@@ -429,10 +436,19 @@ Import Bootstrap LESS and Site Specific LESS
     padding: 7px 50px;
 }
 
+.show-uploaded-img {
+    max-width: 400px;
+    height: auto;
+}
+
 .display-en {
     padding: 16px 12px;
     //box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
     border: 1px dotted @gray-light2;
+}
+
+.bold-checkbox-label {
+    font-weight: 700;
 }
 
 
@@ -450,7 +466,7 @@ Import Bootstrap LESS and Site Specific LESS
     }
 }
 
- // Org edit page category chooser for SM -devices
+ // Org edit page category chooser for XS - devices
 
     .org-choose-list {
         summary { 
@@ -473,7 +489,53 @@ Import Bootstrap LESS and Site Specific LESS
         }
     }
 
+//
+// ADMIN pages coloring 
+// --------------------------------------------------
 
+// Adjustments for admin pages
+body.admin{
+    background-color: darken(@body-bg, 40%);
+    
+    // Menu adjustments
+    
+    .navbar-nav > li.active > a {
+        border-color: @gray-darker;   
+    }
+    
+    .nav-mega {
+        border-top: 2px solid @gray-darker;
+    }
+
+    .nav-mega li a:hover, .nav-mega li.active a:hover { 
+        background-color: @gray-lighter;
+        color: @gray-dark;
+    }
+    
+    .nav-mega li div {
+	    background-color: @gray-lighter;
+    }
+    
+    .nav-mega li div a{
+        color: @gray-dark !important;
+    }
+    
+    .nav-mega li div a:hover {
+        background-color: darken(@gray-lighter, 10%);
+    }
+    
+    
+    // Heading adjustments
+    h1 {
+        //color: @gray-darker;
+    }
+    
+    .admin-title {
+       float: right;
+        color: @gray-light;
+    }
+
+}
 
 //
 // Nav mega menu resets for all sizes
@@ -784,10 +846,15 @@ Import Bootstrap LESS and Site Specific LESS
 // MD breakpoint
 @media (min-width: 992px) {
     .sitetitle {
-        margin-top: 20px;
+        margin-top: 35px;
         margin-left: -20px;
         font-size: @font-size-h3;
         padding-right: 50px;
+    }
+    
+    .admin-title {
+        text-align: right;
+        outline: 1px solid red;
     }
 
     /* Menu Container */
@@ -812,48 +879,4 @@ Import Bootstrap LESS and Site Specific LESS
     .nav-mega {
         left: 0;
     }    
-}
-
-
-//
-// ADMIN pages coloring 
-// --------------------------------------------------
-
-// Adjustments for admin pages
-body.admin{
-    background-color: darken(@body-bg, 40%);
-    
-    // Menu adjustments
-    
-    .navbar-nav > li.active > a {
-        border-color: @gray-darker;   
-    }
-    
-    .nav-mega {
-        border-top: 2px solid @gray-darker;
-    }
-
-    .nav-mega li a:hover, .nav-mega li.active a:hover { 
-        background-color: @gray-lighter;
-        color: @gray-dark;
-    }
-    
-    .nav-mega li div {
-	    background-color: @gray-lighter;
-    }
-    
-    .nav-mega li div a{
-        color: @gray-dark !important;
-    }
-    
-    .nav-mega li div a:hover {
-        background-color: darken(@gray-lighter, 10%);
-    }
-    
-    
-    // Heading adjustments
-    h1 {
-        //color: @gray-darker;
-    }
-
 }
