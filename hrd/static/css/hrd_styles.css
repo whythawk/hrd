@@ -6465,7 +6465,6 @@ button.close {
 }
 h4 .label,
 h5 .label {
-  display: inline-block;
   font-size: 60%;
 }
 .btn-save {
@@ -6479,13 +6478,12 @@ h5 .label {
   padding: 16px 12px;
   border: 1px dotted #cccccc;
 }
-.bold-checkbox-label {
+label.bold-checkbox-label {
   font-weight: 700;
 }
 .org-choose-list {
-  margin-top: 10px;
+  margin-bottom: 10px;
   border-bottom: 1px #cccccc solid;
-  padding-bottom: 10px;
 }
 .org-choose-list label {
   font-size: 12px;
@@ -6533,9 +6531,9 @@ body.admin .nav-mega li div a {
 body.admin .nav-mega li div a:hover {
   background-color: #d5d5d5;
 }
-body.admin .admin-title {
-  float: right;
-  color: #777777;
+body.admin .admin-title h3 {
+  text-align: right;
+  padding-right: 20px;
 }
 /* Reset */
 .nav-mega,
@@ -6781,10 +6779,6 @@ body.admin .admin-title {
     margin-left: -20px;
     font-size: 24px;
     padding-right: 50px;
-  }
-  .admin-title {
-    text-align: right;
-    outline: 1px solid red;
   }
   /* Menu Container */
   .nav-mega {

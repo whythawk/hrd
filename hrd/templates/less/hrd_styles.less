@@ -425,10 +425,8 @@ Import Bootstrap LESS and Site Specific LESS
 }
 
 h4 .label, h5 .label {
-    display: inline-block;
     font-size: 60%;
 }
-
 
 // Edit page elements
 
@@ -447,7 +445,7 @@ h4 .label, h5 .label {
     border: 1px dotted @gray-light2;
 }
 
-.bold-checkbox-label {
+label.bold-checkbox-label {
     font-weight: 700;
 }
 
@@ -455,9 +453,8 @@ h4 .label, h5 .label {
 // Category edit page elements
 
 .org-choose-list {
-    margin-top: 10px;
+    margin-bottom: 10px;
     border-bottom: 1px @gray-light2 solid;
-    padding-bottom: 10px;
     label {
         font-size: 12px;
     }
@@ -524,15 +521,9 @@ body.admin{
         background-color: darken(@gray-lighter, 10%);
     }
     
-    
-    // Heading adjustments
-    h1 {
-        //color: @gray-darker;
-    }
-    
-    .admin-title {
-       float: right;
-        color: @gray-light;
+    .admin-title h3 {
+        text-align: right;
+        padding-right: 20px;
     }
 
 }
@@ -589,9 +580,7 @@ body.admin{
     .header {
         height: 175px;
     }
-    
-   
-    
+        
     .nav-mega {
         float: right;
         margin-right: 15px;
@@ -850,11 +839,6 @@ body.admin{
         margin-left: -20px;
         font-size: @font-size-h3;
         padding-right: 50px;
-    }
-    
-    .admin-title {
-        text-align: right;
-        outline: 1px solid red;
     }
 
     /* Menu Container */
