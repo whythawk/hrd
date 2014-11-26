@@ -6465,7 +6465,6 @@ button.close {
 }
 h4 .label,
 h5 .label {
-  display: inline-block;
   font-size: 60%;
 }
 .btn-save {
@@ -6479,7 +6478,7 @@ h5 .label {
   padding: 16px 12px;
   border: 1px dotted #cccccc;
 }
-.bold-checkbox-label {
+label.bold-checkbox-label {
   font-weight: 700;
 }
 .org-choose-list {
