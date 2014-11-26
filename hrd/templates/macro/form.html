@@ -79,6 +79,27 @@
 {% endmacro %}
 
 
+{% macro file_upload(name, id='', label='',value='', thumbnail='', info='') %}
+{% call form_control(name='logo', label='', trans=trans) -%}
+    <div class="col-xs-12 col-sm-6">
+        <div class="form-group">
+          <label for="{{ name }}">{{ label }}
+            <small>{{ info }}</small>
+            </label>
+            <input type="file" name="{{ name }}">
+        </div>
+    </div>
+    {% if value %}
+    <div class="col-xs-12 col-sm-6">
+        <label>Current
+        </label>
+        <img src="{{ thumbnail }}" class="img-responsive show-uploaded-img" alt="">
+    </div>
+    {% endif %}
+{% endcall %}
+{% endmacro %}
+
+
 {% macro submit(name='', id='', label='Submit', value='', class='') %}
 {% call form_control(name=name, label='') %}
 <button type="submit" class="btn btn-primary pull-right {{ class }}" value="" />
