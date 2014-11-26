@@ -6482,9 +6482,8 @@ label.bold-checkbox-label {
   font-weight: 700;
 }
 .org-choose-list {
-  margin-top: 10px;
+  margin-bottom: 10px;
   border-bottom: 1px #cccccc solid;
-  padding-bottom: 10px;
 }
 .org-choose-list label {
   font-size: 12px;
