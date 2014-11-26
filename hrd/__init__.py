@@ -42,6 +42,13 @@ DEBUG = config.DEBUG
 
 default_url_for = app.jinja_env.globals['url_for']
 
+_truncate = app.jinja_env.filters['truncate']
+def truncate(s, length=255, killwords=False, end='...'):
+    if not s:
+        return ''
+    return _truncate(s, length=length, killwords=killwords, end=end)
+app.jinja_env.filters.update({'truncate': truncate})
+
 
 lang_dir = {}
 for code, name, dir_, active in language_list:

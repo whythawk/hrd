@@ -43,18 +43,15 @@
                 <h2>{{ _('Search results') }}<br /><br /></h2>
                 <div class="no-of-records">{{ ngettext('{count} record', '{count} records', count).format(count=count) }}</div>
                 <!-- Top pagination begins ============================= -->
-                <div class="col-xs-12 pagination-top"><ul class="pagination pull-right">
-                    <li class="active"><a href="" alt="">1</a></li>
-                    <li><a href="" alt="">2</a></li>
-                    <li><a href="" alt="">3</a></li>
-                    </ul></div>
+                {% import '/macro/general.html' as general %}
+                {{ general.pager(pages, page, 'pagination-top') }}
                 <!-- /Top pagination ends ============================= -->
                 {% for org in orgs %}
                 <!-- Search result row begins ============================= -->
                 <article class="search-result{% if loop.index == 1 %} first{% elif loop.index == loop.length %} last{% endif %}">
                     <div class="excerpt">
                         <h3 class="search-result-title"><a href="{{ url_for('org', id=org.org_id) }}" title="">{{ org.name }}</a></h3>
-                        <p class="search-result-body">{{ org.description }}</p>
+                        <p class="search-result-body">{{ org.description|truncate(500) }}</p>
 
                     </div>
                     {#
@@ -78,13 +75,7 @@
                 <!-- /Search result row ends ============================= -->
                 {% endfor %}
                 <!-- Bottom pagination begins ============================= -->
-                <div class="col-xs-12 pagination-bottom">
-                    <ul class="pagination pull-right">
-                        <li class="active"><a href="" alt="">1</a></li>
-                        <li><a href="" alt="">2</a></li>
-                        <li><a href="" alt="">3</a></li>
-                    </ul>
-                </div>
+                {{ general.pager(pages, page, 'pagination-bottom') }}
                 <!-- /Bottom pagination ends ============================= -->
             </div>
             <!-- Search results column ends ============================= -->

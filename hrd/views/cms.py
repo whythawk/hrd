@@ -5,7 +5,7 @@ from flask import (render_template, request, abort, redirect,
                    send_from_directory)
 from flask import _request_ctx_stack
 
-from hrd import (app, db, url_for_admin, get_admin_lang, get_bool,
+from hrd import (app, db, url_for_admin, get_admin_lang, get_bool, config,
                  permission, permission_content, get_str, lang_codes)
 from hrd.models import Cms
 
@@ -18,12 +18,12 @@ def admin():
 @app.route('/admin/cms_logo/<type>/<id>')
 def cms_logo(type, id):
     if type == 'live':
-        org = Cms.query.filter_by(
+        page = Cms.query.filter_by(
             page_id=id, lang='en', status='publish'
         ).first()
     else:
-        org = Cms.query.filter_by(page_id=id, lang='en', current=True).first()
-    return send_from_directory(app.config['UPLOAD_FOLDER'], org.image)
+        page = Cms.query.filter_by(page_id=id, lang='en', current=True).first()
+    return send_from_directory(app.config['UPLOAD_FOLDER'], page.image)
 
 
 @app.route('/admin/cms_edit/<id>', methods=['GET', 'POST'])
@@ -31,6 +31,7 @@ def cms_edit(id):
     set_menu()
     lang = get_admin_lang()
     permission_content(lang)
+    errors = []
     page = Cms.query.filter_by(page_id=id, lang=lang, current=True)
     page = page.first()
     if not page and lang != 'en':
@@ -57,22 +58,46 @@ def cms_edit(id):
         if lang == 'en':
             page.active = get_bool('active')
             page.private = get_bool('private')
-            page.url = get_str('url')
+
+            url = get_str('url')
+            if url:
+                check = Cms.query.filter(Cms.page_id != id, Cms.url == url)
+                check = check.filter(db.or_(
+                    Cms.status == 'publish', Cms.current == True
+                ))
+                if check.count():
+                    errors.append(
+                        'The url is already used by another page choose ' + \
+                        'a new url or change the url of the existing page ' + \
+                        'first. The url has been reset in this form.'
+                    )
+                else:
+                    page.url = url
+
+            if get_bool('logo_remove'):
+                page.image = None
 
             logo = request.files['logo']
             if logo:
                 extension = os.path.splitext(logo.filename)[1]
-                filename = unicode(uuid.uuid4())
-                if extension:
+                if extension and extension.lower() in config.ALLOWED_IMAGE_TYPES:
+                    filename = unicode(uuid.uuid4())
                     filename += extension
-                logo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                page.image = filename
+                    logo.save(
+                        os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                    )
+                    page.image = filename
+                else:
+                    errors.append(
+                        'The image uploaded is not of an allowed type'
+                    )
 
         db.session.add(page)
         db.session.commit()
         if lang == 'en':
             update_translations(page)
-        return redirect(url_for_admin('cms_preview', id=id))
+        if not errors:
+            return redirect(url_for_admin('cms_preview', id=id))
     if lang != 'en':
         trans = Cms.query.filter_by(page_id=id, lang='en',
                                     current=True).first()
@@ -82,7 +107,7 @@ def cms_edit(id):
         page = {}
     translations = get_trans(id)
     return render_template('admin/cms_edit.html', page=page, trans=trans,
-                           translations=translations)
+                           translations=translations, errors=errors)
 
 
 def trans_need_update(page):

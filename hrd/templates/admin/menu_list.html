@@ -21,7 +21,7 @@
     <li class="alert col-xs-12 org-cat-top-level alert-null">
         <h4>{{ menu_item.title }}
         {% if not menu_item.active %}
-        <small><span class="label label-null">Inactive</span></small>
+        <span class="label label-null">Inactive</span>
         {% endif %}
         </h4>
 
@@ -89,10 +89,10 @@
   </ul>
 
   {% for menuitem in missing %}
-  <div class="alert col-xs-12 org-cat-top-level alert-danger"><h5>
+  <div class="alert col-xs-12 org-cat-top-level alert-danger"><h4>
         {{ menuitem.title }}
-        <small><span class="label label-null">Missing</span></small>
-    </h5>
+        <span class="label label-null">Missing</span>
+    </h4>
         {{ form.action('Create', url_for_admin('menu_edit', id=menuitem.menu_id), icon='plus', class='btn-xs btn-success') }}
     </div>
     {% endfor %}

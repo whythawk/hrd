@@ -1,0 +1,13 @@
+
+{% macro pager(pages=0, current=0, class='') %}
+<div class="col-xs-12 {{ class }}">
+  {% set base_url = url_clean(qs='page') %}
+  <ul class="pagination pull-right">
+    {% for page in range(pages) %}
+    <li{% if page == current %} class="active"{% endif %}>
+      <a href="{{ base_url }}&page={{ page }}">{{ page + 1 }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endmacro %}

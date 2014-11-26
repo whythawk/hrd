@@ -103,6 +103,19 @@ def get_trans_state(value):
         return 'old-translation'
     return ''
 
+def url_clean(qs):
+    url = request.environ['CURRENT_URL']
+    from urllib import urlencode
+    from urlparse import urlparse, urlunparse, parse_qs
+
+    u = urlparse(url)
+    query = parse_qs(u.query)
+    query.pop(qs, None)
+    u = u._replace(query=urlencode(query, True))
+    return urlunparse(u)
+
+
+
 
 STATE_NICE_NAME = {
     'edit': 'Needs updating',
@@ -138,4 +151,5 @@ hrd.app.jinja_env.globals.update(
     get_trans_state=get_trans_state,
     get_menu_items=views.menu.get_menu_items,
     cms_state_nice_name=cms_state_nice_name,
+    url_clean=url_clean,
 )

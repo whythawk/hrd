@@ -42,10 +42,10 @@
 {%- endmacro %}
 
 
-{%- macro checkbox(name, id='', label='', value='') %}
+{%- macro checkbox(name, id='', label='', value='', label_class='') %}
 {% call form_control(name=name, label='', trans=trans) -%}
   <div class="checkbox">
-    <label>
+    <label class="{{ label_class }}">
 <input id="{{ id or name }}" type="checkbox" name="{{ name }}" value="True" {% if value %}checked{% endif %} />
 {{ label }}
   </label>
@@ -75,6 +75,34 @@
         <option value="{{ o.value }}" {% if value==o.value %}selected="selected" {% endif %}>{{ o.name }}</option>
       {% endfor %}
     </select>
+{% endcall %}
+{% endmacro %}
+
+
+{% macro file_upload(name, id='', label='',value='', thumbnail='', info='') %}
+{% call form_control(name='logo', label='', trans=trans) -%}
+    <div class="col-xs-12 col-sm-6">
+        <div class="form-group">
+          <label for="{{ name }}">{{ label }}
+            <small>{{ info }}</small>
+            </label>
+            <input type="file" name="{{ name }}">
+        </div>
+    </div>
+    {% if value %}
+    <div class="col-xs-12 col-sm-6">
+        <label>Current
+        </label>
+        <img src="{{ thumbnail }}" class="img-responsive show-uploaded-img" alt="">
+        <div class="checkbox">
+            <label class="bold-checkbox-label">
+              <input type="checkbox" name="{{ name }}_remove" value="True">
+                Remove existing
+            </label>
+        </div>
+
+    </div>
+    {% endif %}
 {% endcall %}
 {% endmacro %}
 
@@ -173,4 +201,14 @@
       </ul>
     </div>
   {% endif %}
+{% endmacro %}
+
+
+{% macro errors(errors) %}
+{% for error in errors %}
+<div class="alert alert-danger" role="alert">
+  <span class="glyphicon glyphicon-flash"></span>
+  {{ error }}
+</div>
+{% endfor %}
 {% endmacro %}

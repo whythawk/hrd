@@ -17,6 +17,10 @@ PERMISSIONS = [
     ('user_manage', 'User management'),
 ]
 
+ALLOWED_IMAGE_TYPES = ['.gif', '.png', '.jpeg', '.jpg']
+
+ORG_PER_PAGE = 10
+
 DEBUG = True
 
 # code, local language name, direction, active
