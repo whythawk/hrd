@@ -71,6 +71,11 @@ def cms_edit(id):
                         'a new url or change the url of the existing page ' + \
                         'first. The url has been reset in this form.'
                     )
+                elif url in config.DISALLOWED_URLS:
+                    errors.append(
+                        'The url provided is not allowed please choose ' + \
+                        'a new one. The url has been reset in this form.'
+                    )
                 else:
                     page.url = url
 

@@ -94,6 +94,7 @@ def get_trans_state(value):
         return 'old-translation'
     return ''
 
+
 def url_clean(qs):
     url = request.environ['CURRENT_URL']
     from urllib import urlencode
@@ -106,6 +107,8 @@ def url_clean(qs):
     return urlunparse(u)
 
 
+def none_to_empty_str(arg):
+    return arg or ''
 
 
 STATE_NICE_NAME = {
@@ -143,4 +146,5 @@ hrd.app.jinja_env.globals.update(
     get_menu_items=views.menu.get_menu_items,
     cms_state_nice_name=cms_state_nice_name,
     url_clean=url_clean,
+    none_to_empty_str=none_to_empty_str,
 )
