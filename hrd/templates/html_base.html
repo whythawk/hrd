@@ -61,7 +61,7 @@
     <script src="/static/js/details-shim.js"></script>
   </head>
 
-  <body{% block body_class %}{% endblock %}>
+  <body {{ lang_html_body()|safe }} {% block body_class %}{% endblock %}>
       {% block page %}
 
       {% endblock %}
