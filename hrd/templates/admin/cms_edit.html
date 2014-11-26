@@ -14,8 +14,8 @@
           {{ form.info_bar('The following fields will take immediate effect when saved') }}
           {{ form.file_upload('logo', label='Image',value=page.image, thumbnail=url_for('cms_logo', id=page.page_id, type='live'), info='Max. size 600 pixels wide. Filetypes: GIF, JPEG, PNG') }}
             {{ form.input('url', label='Url', value=page.url, placeholder='Custom url') }}
-            {{ form.checkbox('active', label='Active', value=page.active) }}
-            {{ form.checkbox('private', label='Private', value=page.private) }}
+            {{ form.checkbox('active', label='Active', value=page.active, label_class='bold-checkbox-label') }}
+            {{ form.checkbox('private', label='Private', value=page.private, label_class='bold-checkbox-label') }}
         {% endif %}
         {{ form.save(label='Save') }}
     </form>

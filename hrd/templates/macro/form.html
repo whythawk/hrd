@@ -42,10 +42,10 @@
 {%- endmacro %}
 
 
-{%- macro checkbox(name, id='', label='', value='') %}
+{%- macro checkbox(name, id='', label='', value='', label_class='') %}
 {% call form_control(name=name, label='', trans=trans) -%}
   <div class="checkbox">
-    <label>
+    <label class="{{ label_class }}">
 <input id="{{ id or name }}" type="checkbox" name="{{ name }}" value="True" {% if value %}checked{% endif %} />
 {{ label }}
   </label>
@@ -95,7 +95,7 @@
         </label>
         <img src="{{ thumbnail }}" class="img-responsive show-uploaded-img" alt="">
         <div class="checkbox">
-            <label>
+            <label class="bold-checkbox-label">
               <input type="checkbox" name="{{ name }}_remove" value="True">
                 Remove existing
             </label>
