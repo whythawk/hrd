@@ -18,12 +18,12 @@ def admin():
 @app.route('/admin/cms_logo/<type>/<id>')
 def cms_logo(type, id):
     if type == 'live':
-        org = Cms.query.filter_by(
+        page = Cms.query.filter_by(
             page_id=id, lang='en', status='publish'
         ).first()
     else:
-        org = Cms.query.filter_by(page_id=id, lang='en', current=True).first()
-    return send_from_directory(app.config['UPLOAD_FOLDER'], org.image)
+        page = Cms.query.filter_by(page_id=id, lang='en', current=True).first()
+    return send_from_directory(app.config['UPLOAD_FOLDER'], page.image)
 
 
 @app.route('/admin/cms_edit/<id>', methods=['GET', 'POST'])
