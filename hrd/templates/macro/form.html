@@ -94,6 +94,13 @@
         <label>Current
         </label>
         <img src="{{ thumbnail }}" class="img-responsive show-uploaded-img" alt="">
+        <div class="checkbox">
+            <label>
+              <input type="checkbox" name="{{ name }}_remove" value="True">
+                Remove existing
+            </label>
+        </div>
+
     </div>
     {% endif %}
 {% endcall %}

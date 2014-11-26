@@ -74,6 +74,9 @@ def org_edit(id):
                     filename += extension
                 logo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 org.image = filename
+            if get_bool('logo_remove'):
+                org.image = None
+
 
         db.session.add(org)
         if lang == 'en':

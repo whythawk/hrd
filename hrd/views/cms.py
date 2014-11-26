@@ -67,6 +67,8 @@ def cms_edit(id):
                     filename += extension
                 logo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 page.image = filename
+            if get_bool('logo_remove'):
+                page.image = None
 
         db.session.add(page)
         db.session.commit()
