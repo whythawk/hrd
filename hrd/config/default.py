@@ -19,6 +19,14 @@ PERMISSIONS = [
 
 ALLOWED_IMAGE_TYPES = ['.gif', '.png', '.jpeg', '.jpg']
 
+DISALLOWED_URLS = [
+    '/forum',
+    '/admin',
+    '/user',
+    '/resources',
+    '/organisations',
+]
+
 ORG_PER_PAGE = 10
 
 DEBUG = True
