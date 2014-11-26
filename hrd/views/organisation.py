@@ -11,6 +11,9 @@ from hrd.models import Organisation, OrgCodes
 from hrd.views.codes import all_codes, cat_codes
 
 
+ORG_PER_PAGE = 5
+
+
 @app.route('/admin/org_logo/<type>/<id>')
 def org_logo(type, id):
     if type == 'live':
@@ -394,12 +397,28 @@ def org_search():
             c = db.session.query(OrgCodes.org_id).filter(OrgCodes.code.in_(list(union)))
             orgs = orgs.filter(Organisation.org_id.in_(c))
 
+    orgs = orgs.order_by('name')
+
     count = orgs.count()
+    try:
+        page = int(request.args.get('page', 0))
+    except ValueError:
+        page = 0
+    pages = page_num(count, ORG_PER_PAGE)
+
+    orgs = orgs.limit(ORG_PER_PAGE).offset(page * ORG_PER_PAGE)
     orgs = orgs.all()
 
+
     return render_template(
-        'org_search.html', cats=cats, orgs=orgs, count=count
+        'org_search.html', cats=cats, orgs=orgs, count=count, page=page, pages=pages
     )
+
+
+def page_num(count, number_per_page):
+    if count % number_per_page:
+        return (count / number_per_page) + 1
+    return count / number_per_page
 
 
 def get_trans(id):
