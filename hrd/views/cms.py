@@ -58,6 +58,7 @@ def cms_edit(id):
         if lang == 'en':
             page.active = get_bool('active')
             page.private = get_bool('private')
+
             url = get_str('url')
             if url:
                 check = Cms.query.filter(Cms.page_id != id, Cms.url == url)
@@ -73,6 +74,9 @@ def cms_edit(id):
                 else:
                     page.url = url
 
+            if get_bool('logo_remove'):
+                page.image = None
+
             logo = request.files['logo']
             if logo:
                 extension = os.path.splitext(logo.filename)[1]
@@ -87,8 +91,7 @@ def cms_edit(id):
                     errors.append(
                         'The image uploaded is not of an allowed type'
                     )
-            if get_bool('logo_remove'):
-                page.image = None
+
         db.session.add(page)
         db.session.commit()
         if lang == 'en':

@@ -65,6 +65,9 @@ def org_edit(id):
             org.private = get_bool('private')
             org.active = get_bool('active')
 
+            if get_bool('logo_remove'):
+                org.image = None
+
             logo = request.files['logo']
             if logo:
                 extension = os.path.splitext(logo.filename)[1]
@@ -77,8 +80,6 @@ def org_edit(id):
                     errors.append(
                         'The image uploaded is not of an allowed type'
                     )
-            if get_bool('logo_remove'):
-                org.image = None
 
 
         db.session.add(org)
