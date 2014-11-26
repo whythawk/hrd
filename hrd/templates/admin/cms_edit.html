@@ -8,6 +8,7 @@
 <script type="text/javascript" src="/static/ckeditor/ckeditor.js"></script>
     <form method="POST" role="form" enctype="multipart/form-data">
         {{ form.save(label='Save') }}
+        {{ form.errors(errors) }}
         {{ form.input('title', label='Title', value=page.title, placeholder='Title', trans=trans) }}
         {{ form.ckeditor('content', label='Content', value=page.content, trans=trans) }}
         {% if not trans %}

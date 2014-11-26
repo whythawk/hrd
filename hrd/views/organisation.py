@@ -30,6 +30,7 @@ def org_edit(id):
     set_menu()
     lang = get_admin_lang()
     permission_content(lang)
+    errors = []
     org = Organisation.query.filter_by(
         org_id=id, lang=lang, current=True
     ).first()
@@ -72,6 +73,10 @@ def org_edit(id):
                     filename += extension
                     logo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                     org.image = filename
+                else:
+                    errors.append(
+                        'The image uploaded is not of an allowed type'
+                    )
             if get_bool('logo_remove'):
                 org.image = None
 
@@ -105,7 +110,8 @@ def org_edit(id):
         db.session.commit()
         if lang == 'en':
             update_translations(org)
-        return redirect(url_for_admin('org_preview', id=id))
+        if not errors:
+            return redirect(url_for_admin('org_preview', id=id))
     if lang != 'en':
         trans = Organisation.query.filter_by(
             org_id=org.org_id, lang='en', current=True
@@ -125,7 +131,7 @@ def org_edit(id):
     if lang != org.lang:
         org = {}
     return render_template('admin/org_edit.html', org=org, trans=trans,
-                           codes=codes, current=current,
+                           codes=codes, current=current, errors=errors,
                            translations=translations)
 
 

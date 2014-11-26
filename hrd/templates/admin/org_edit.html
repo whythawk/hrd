@@ -17,6 +17,7 @@
  {{ form.translations_bar(translations) }}
     <form method="POST" role="form" enctype="multipart/form-data">
           {{ form.save(label='Save ') }}
+        {{ form.errors(errors) }}
     {# FIXME Needs lang and dir coding in #}
           {{ form.input('name', label='Name', value=org.name, trans=trans) }}
       {{ form.textarea('description', label='Description', value=org.description, trans=trans, rows=10) }}

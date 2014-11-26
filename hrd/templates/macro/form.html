@@ -202,3 +202,13 @@
     </div>
   {% endif %}
 {% endmacro %}
+
+
+{% macro errors(errors) %}
+{% for error in errors %}
+<div class="alert alert-danger" role="alert">
+  <span class="glyphicon glyphicon-flash"></span>
+  {{ error }}
+</div>
+{% endfor %}
+{% endmacro %}
