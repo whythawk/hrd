@@ -22,7 +22,7 @@
       {{ form.textarea('description', label='Description', value=org.description, trans=trans, rows=10) }}
     {% if not trans %}
       {{ form.info_bar('The following fields will take immediate effect when saved') }}
-      {{ form.file_upload('logo', label='Logo',value=org.image, thumbnail=url_for('org_logo', id=org.org_id, type='live'), info='Max. size 600 pixels wide. Filetypes: GIF, JPEG, PNG') }}
+      {{ form.file_upload('logo', label='Logo',value=org.image, thumbnail=url_for('org_logo', id=org.org_id, type='live') + '?' + org.image, info='Max. size 600 pixels wide. Filetypes: GIF, JPEG, PNG') }}
       {{ form.textarea('address', label='Address', value=org.address, trans=trans) }}
       {{ form.input('contact', label='Contact', value=org.contact, trans=trans) }}
       {{ form.input('phone', label='Phone', value=org.phone, trans=trans) }}

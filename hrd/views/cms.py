@@ -5,7 +5,7 @@ from flask import (render_template, request, abort, redirect,
                    send_from_directory)
 from flask import _request_ctx_stack
 
-from hrd import (app, db, url_for_admin, get_admin_lang, get_bool,
+from hrd import (app, db, url_for_admin, get_admin_lang, get_bool, config,
                  permission, permission_content, get_str, lang_codes)
 from hrd.models import Cms
 
@@ -62,11 +62,13 @@ def cms_edit(id):
             logo = request.files['logo']
             if logo:
                 extension = os.path.splitext(logo.filename)[1]
-                filename = unicode(uuid.uuid4())
-                if extension:
+                if extension and extension.lower() in config.ALLOWED_IMAGE_TYPES:
+                    filename = unicode(uuid.uuid4())
                     filename += extension
-                logo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                page.image = filename
+                    logo.save(
+                        os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                    )
+                    page.image = filename
             if get_bool('logo_remove'):
                 page.image = None
 

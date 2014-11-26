@@ -5,13 +5,11 @@ from flask import (render_template, request, abort, redirect,
                    send_from_directory)
 from flask import _request_ctx_stack
 
-from hrd import (app, db, url_for_admin, get_admin_lang, get_bool,
+from hrd import (app, db, url_for_admin, get_admin_lang, get_bool, config,
                  permission, permission_content, get_str, lang_codes)
 from hrd.models import Organisation, OrgCodes
 from hrd.views.codes import all_codes, cat_codes
 
-
-ORG_PER_PAGE = 5
 
 
 @app.route('/admin/org_logo/<type>/<id>')
@@ -69,11 +67,11 @@ def org_edit(id):
             logo = request.files['logo']
             if logo:
                 extension = os.path.splitext(logo.filename)[1]
-                filename = unicode(uuid.uuid4())
-                if extension:
+                if extension and extension.lower() in config.ALLOWED_IMAGE_TYPES:
+                    filename = unicode(uuid.uuid4())
                     filename += extension
-                logo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                org.image = filename
+                    logo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    org.image = filename
             if get_bool('logo_remove'):
                 org.image = None
 
@@ -407,9 +405,9 @@ def org_search():
         page = int(request.args.get('page', 0))
     except ValueError:
         page = 0
-    pages = page_num(count, ORG_PER_PAGE)
+    pages = page_num(count, config.ORG_PER_PAGE)
 
-    orgs = orgs.limit(ORG_PER_PAGE).offset(page * ORG_PER_PAGE)
+    orgs = orgs.limit(config.ORG_PER_PAGE).offset(page * config.ORG_PER_PAGE)
     orgs = orgs.all()
 
 
