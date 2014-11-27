@@ -43,11 +43,13 @@
     <!-- /Organization description column ends ============================= -->
     <!-- Organization detail column begins ============================= -->
     <div class="org-detail-col col-xs-12 col-sm-6 col-md-4">
+      {% if cat_codes %}
         <h2>{{ _('Detail') }}<br /><br /></h2>
         {% for cat, codes in cat_codes %}
           <p><strong>{{ cat }}</strong><br />
           {{ codes }}</p>
         {% endfor %}
+        {% endif %}
     </div>
     <!-- /Organization detail column ends ============================= -->
 </div> <!-- /row -->
