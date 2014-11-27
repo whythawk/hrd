@@ -13,7 +13,7 @@
         {{ form.textarea('description', label='description', value=code.description, trans=trans) }}
         {% if not trans %}
             {{ form.input('order', label='Order', value=code.order) }}
-            {{ form.checkbox('active', label='Active', value=code.active) }}
+            {{ form.checkbox('active', label='Active', value=code.active, label_class='bold-checkbox-label') }}
         {% endif %}
     {{ form.save(label='Save') }}
   </form>

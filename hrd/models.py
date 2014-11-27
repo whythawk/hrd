@@ -34,7 +34,7 @@ class Code(db.Model):
     lang = db.Column(db.String(2), primary_key=True)
     status = db.Column(db.String(10))
     current = db.Column(db.Boolean(), default=True)
-    active = db.Column(db.Boolean(), default=True)
+    active = db.Column(db.Boolean(), default=False)
     public = db.Column(db.Boolean(), default=True)
     order = db.Column(db.Integer(), default=99)
 
@@ -51,7 +51,7 @@ class Category(db.Model):
     status = db.Column(db.String(10))
     cat_type = db.Column(db.String(10))
     current = db.Column(db.Boolean(), default=True)
-    active = db.Column(db.Boolean(), default=True)
+    active = db.Column(db.Boolean(), default=False)
     order = db.Column(db.Integer(), default=99)
 
     def __repr__(self):
