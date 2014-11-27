@@ -20,6 +20,7 @@
           {{ form.input('name', label='Name', value=resource.name, trans=trans) }}
       {{ form.textarea('description', label='Description', value=resource.description, trans=trans, rows=10) }}
             {{ form.dropdown('lang', label='Language', value=resource.lang, options=options) }}
+          {{ form.input('url', label='Web url', value=resource.url, trans=trans) }}
       {{ form.file_upload('file', label='File',value=resource.file, filename=resource.filename, link=url_for('resource_file', id=resource.resource_id, type='live') + '?' + none_to_empty_str(resource.file)) }}
 
       {{ form.checkbox('active', label='Active', value=resource.active, label_class='bold-checkbox-label') }}

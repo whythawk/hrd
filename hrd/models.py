@@ -116,6 +116,7 @@ class Resource(db.Model):
     name = db.Column(db.String(250))
     description = db.Column(db.Text())
     published = db.Column(db.Boolean(), default=False)
+    url = db.Column(db.String(1024))
     file = db.Column(db.String(50))
     filename = db.Column(db.String(250))
     file_type = db.Column(db.String(250))
