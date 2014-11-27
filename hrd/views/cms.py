@@ -71,6 +71,11 @@ def cms_edit(id):
                         'a new url or change the url of the existing page ' + \
                         'first. The url has been reset in this form.'
                     )
+                elif url in config.DISALLOWED_URLS:
+                    errors.append(
+                        'The url provided is not allowed please choose ' + \
+                        'a new one. The url has been reset in this form.'
+                    )
                 else:
                     page.url = url
 
@@ -131,8 +136,9 @@ def page_reedit(page):
         published=True
     )
     db.session.add(new_page)
-    page.current = False
-    db.session.add(page)
+    if lang == page.lang:
+        page.current = False
+        db.session.add(page)
     db.session.commit()
     return new_page
 
@@ -273,6 +279,7 @@ def cms_list():
         trans = db.session.query(Cms.page_id).filter_by(lang=lang)
         missing = db.session.query(Cms).filter_by(lang='en', current=True)
         missing = missing.filter(db.not_(Cms.page_id.in_(trans)))
+        missing = missing.order_by('title')
     status = list_status()
     return render_template('admin/cms_list.html', pages=pages, lang=lang,
                            missing=missing, trans=trans, status=status)

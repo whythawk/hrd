@@ -103,6 +103,7 @@ def get_trans_state(value):
         return 'old-translation'
     return ''
 
+
 def url_clean(qs):
     url = request.environ['CURRENT_URL']
     from urllib import urlencode
@@ -112,9 +113,14 @@ def url_clean(qs):
     query = parse_qs(u.query)
     query.pop(qs, None)
     u = u._replace(query=urlencode(query, True))
-    return urlunparse(u)
+    url = urlunparse(u)
+    if '?' not in url:
+        url += '?'
+    return url
 
 
+def none_to_empty_str(arg):
+    return arg or ''
 
 
 STATE_NICE_NAME = {
@@ -135,6 +141,7 @@ hrd.app.jinja_env.globals.update(
     url_for_fixed=hrd.url_for_fixed,
     get_admin_lang=hrd.get_admin_lang,
     lang_html=hrd.lang_html,
+    lang_html_body=hrd.lang_html_body,
     lang_pick=hrd.lang_pick,
     get_username=username,
     get_user_id=user_id,
@@ -152,4 +159,5 @@ hrd.app.jinja_env.globals.update(
     get_menu_items=views.menu.get_menu_items,
     cms_state_nice_name=cms_state_nice_name,
     url_clean=url_clean,
+    none_to_empty_str=none_to_empty_str,
 )
