@@ -1,0 +1,92 @@
+{% extends 'body_base.html' %}
+
+{% import '/macro/form.html' as form %}
+
+{% block container_class %}search-content{% endblock %}
+
+{% block content %}
+<script>
+    function clear_all(){
+        $('.search-filter-col').find(':checkbox').prop('checked', false);
+    }
+</script>
+        <h1>{{ _('Search: Resources') }}<br /><br /></h1>
+        <div class="row col-xs-12">
+            <!-- Search filter column begins ============================= -->
+            <div class="search-filter-col blue-left-border red-panel-bkg col-xs-12 col-sm-6 col-md-4 hrd-padded-20">
+                <div class="column-label">{{ _('Resources') }}</div>
+                <form action="" method="">
+                <h3 class="">{{ _('Language') }}</h3>
+                <div class="row">
+                        <details class="first last" open="open">
+                             <label>
+                                <input class="" type="checkbox" name="all_languages" id="all_languages" value="true"{% if request.args.get('all_languages') %} checked="checked"{% endif %}>
+                                <div class="search-filter-item">{{ _('Show resources in any language') }}</div>
+                            </label>
+                        </details>
+                </div>
+                <h3 class="">{{ _('Filter list...') }}</h3>
+                <div class="clearfix">
+                    <div class="filter-reset pull-right text-right"><a onclick="clear_all()">{{ _('Clear selection') }}</a></div>
+                </div>
+
+{% for cat in cats if cat.active %}
+                    <div class="row">
+                        <details class="{% if loop.index == 1 %}first{% elif loop.index == loop.length %}last{% endif %}" {% if search_subset(cat.codes, request.args) %}open="open"{% endif %}>
+                        <summary class="search-filter-title">{{ cat.title }}</summary>
+        {% for code in cat.codes if code.active %}
+                            <label>
+                                <input class="" type="checkbox" name="{{ code.code }}" id="{{ code.code }}" value="true"{% if request.args.get(code.code) %} checked="checked"{% endif %}>
+                                <div class="search-filter-item">{{ code.title }}</div>
+                            </label>
+        {% endfor %}
+                        </details>
+                    </div>
+{% endfor %}
+<div class="row pull-right"><input class="hrd-padded-10" type="submit" value="{{ _('Filter') }}" name="Filter"></div>
+                </form>
+            </div>
+            <!-- /Search filter column ends ============================= -->
+            <!-- Search results column begins ============================= -->
+            <div class="search-results-col col-xs-12 col-sm-6 col-md-8 pull-right">
+                <h2>{{ _('Search results') }}<br /><br /></h2>
+                <div class="no-of-records">{{ ngettext('{count} record', '{count} records', count).format(count=count) }}</div>
+                <!-- Top pagination begins ============================= -->
+                {% import '/macro/general.html' as general %}
+                {{ general.pager(pages, page, 'pagination-top') }}
+                <!-- /Top pagination ends ============================= -->
+                {% for resource in resources %}
+                <!-- Search result row begins ============================= -->
+                <article class="search-result{% if loop.index == 1 %} first{% elif loop.index == loop.length %} last{% endif %}">
+                    <div class="excerpt">
+                        <h3 class="search-result-title"><a href="{{ url_for('resource', id=resource.resource_id) }}" title="">{{ resource.name }}</a></h3>
+                        <p class="search-result-body">{{ resource.description|truncate(500) }}</p>
+
+                    </div>
+                    {#
+                    <div class="col-xs-6 col-sm-6 col-md-3">
+                        <!-- Search logo --><a href="{{ url_for('resource', id=resource.resource_id) }}" title="Logo" class="logo"><img src="/static/images/logo.png" alt="Logo" /></a>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-8 pull-right">
+                        <!-- Search meta tags begins ============================= -->
+                        <ul class="search-meta list-inline">
+                            {% for code in codes %}
+                            <li><small><a>{{ code }}</a></small></li>
+                            {% endfor %}
+                        </ul>
+                        <!-- /Search meta tags ends ============================= -->
+                    </div>
+                    #}
+                    <span class="clearfix borda"></span>
+                    <div class="col-md-5 view-detail pull-right"><a href="{{ url_for('resource', id=resource.resource_id) }}" title="View detail">{{ _("Go to resourceanisation's page") }}</a></div>
+                    <span class="clearfix borda"></span>
+                </article>
+                <!-- /Search result row ends ============================= -->
+                {% endfor %}
+                <!-- Bottom pagination begins ============================= -->
+                {{ general.pager(pages, page, 'pagination-bottom') }}
+                <!-- /Bottom pagination ends ============================= -->
+            </div>
+            <!-- Search results column ends ============================= -->
+        </div> <!-- /row -->
+{% endblock %}
