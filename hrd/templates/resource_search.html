@@ -18,12 +18,10 @@
                 <form action="" method="">
                 <h3 class="">{{ _('Language') }}</h3>
                 <div class="row">
-                        <details class="first last" open="open">
-                             <label>
-                                <input class="" type="checkbox" name="all_languages" id="all_languages" value="true"{% if request.args.get('all_languages') %} checked="checked"{% endif %}>
-                                <div class="search-filter-item">{{ _('Show resources in any language') }}</div>
-                            </label>
-                        </details>
+                 <label>
+                    <input class="" type="checkbox" name="all_languages" id="all_languages" value="true"{% if request.args.get('all_languages') %} checked="checked"{% endif %}>
+                    <div class="search-filter-item">{{ _('Show resources in any language') }}</div>
+                </label>
                 </div>
                 <h3 class="">{{ _('Filter list...') }}</h3>
                 <div class="clearfix">
