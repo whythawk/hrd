@@ -104,7 +104,10 @@ def url_clean(qs):
     query = parse_qs(u.query)
     query.pop(qs, None)
     u = u._replace(query=urlencode(query, True))
-    return urlunparse(u)
+    url = urlunparse(u)
+    if '?' not in url:
+        url += '?'
+    return url
 
 
 def none_to_empty_str(arg):
