@@ -1,0 +1,40 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Organization{% endblock %}
+
+{% block content %}
+
+<script>
+    function select_all(that){
+        $(that).parent().next('div').find(':checkbox').prop('checked', true);
+    }
+
+    function clear_all(that){
+        $(that).parent().next('div').find(':checkbox').prop('checked', false);
+    }
+</script>
+    <h1>Edit: Resource<br /><br /></h1>
+    <form method="POST" role="form" enctype="multipart/form-data">
+          {{ form.save(label='Save ') }}
+        {{ form.errors(errors) }}
+          {{ form.input('name', label='Name', value=resource.name, trans=trans) }}
+      {{ form.textarea('description', label='Description', value=resource.description, trans=trans, rows=10) }}
+            {{ form.dropdown('lang', label='Language', value=resource.lang, options=options) }}
+      {{ form.file_upload('file', label='File',value=resource.file, filename=resource.filename, link=url_for('resource_file', id=resource.resource_id, type='live') + '?' + none_to_empty_str(resource.file)) }}
+
+      {{ form.checkbox('active', label='Active', value=resource.active, label_class='bold-checkbox-label') }}
+      {{ form.checkbox('private', label='Private', value=resource.private, label_class='bold-checkbox-label') }}
+      {% for cat in codes if cat.active %}
+         <details class="col-xs-12 resource-choose-list" open="open"> <summary class="h3">{{ cat.title }}</summary>
+         <div><a onclick="select_all(this)">select all</a> | <a onclick="clear_all(this)">clear all</a></div>
+         <div>
+        {% for code in cat.codes if code.active %}
+        <div class="checkbox"> <label> <input value="True" type="checkbox" name="{{ code.code }}"{% if code.code in current %} checked="checked"{% endif %}>{{ code.title }}</label> </div>
+        {% endfor %}
+    </div>
+        </details>
+      {% endfor %}
+          {{ form.save(label='Save') }}
+    </form>
+  {{ form.code_list(all) }}
+{% endblock %}

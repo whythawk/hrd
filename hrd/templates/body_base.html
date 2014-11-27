@@ -34,7 +34,7 @@
             {% if m.item == 'orgs' %}
               {{ menu_item(m.title, url_for('org_search')) }}
             {% elif m.item == 'res' %}
-              {{ menu_item(m.title, '#') }}
+              {{ menu_item(m.title, url_for('resource_search')) }}
             {% elif m.item == '/' %}
               {{ menu_item(m.title, url_for('cms_page2')) }}
             {% else %}

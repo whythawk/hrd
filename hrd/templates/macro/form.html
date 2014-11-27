@@ -79,7 +79,7 @@
 {% endmacro %}
 
 
-{% macro file_upload(name, id='', label='',value='', thumbnail='', info='') %}
+{% macro file_upload(name, id='', label='',value='', thumbnail='', info='', filename='', link='') %}
 {% call form_control(name='logo', label='', trans=trans) -%}
     <div class="col-xs-12 col-sm-6">
         <div class="form-group">
@@ -93,7 +93,15 @@
     <div class="col-xs-12 col-sm-6">
         <label>Current
         </label>
+        {% if thumbnail %}
         <img src="{{ thumbnail }}" class="img-responsive show-uploaded-img" alt="">
+        {% endif %}
+        {% if link %}
+        <p>
+        <span>{{ filename }}</span><br/>
+      <a href="{{ link }}" download="{{ filename }}">{{ _('Download') }}</a>
+      </p>
+        {% endif %}
         <div class="checkbox">
             <label class="bold-checkbox-label">
               <input type="checkbox" name="{{ name }}_remove" value="True">

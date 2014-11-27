@@ -3,6 +3,7 @@
 import re
 
 from flask import request
+from babel.numbers import format_number as _format_number
 
 import hrd
 import views.menu
@@ -110,6 +111,12 @@ def url_clean(qs):
 def none_to_empty_str(arg):
     return arg or ''
 
+def format_number(arg):
+    if arg is None:
+        return 'Unknown'
+    lang = request.environ['LANG']
+    return _format_number(arg, locale=lang)
+
 
 STATE_NICE_NAME = {
     'edit': 'Needs updating',
@@ -147,4 +154,5 @@ hrd.app.jinja_env.globals.update(
     cms_state_nice_name=cms_state_nice_name,
     url_clean=url_clean,
     none_to_empty_str=none_to_empty_str,
+    format_number=format_number,
 )

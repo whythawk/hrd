@@ -105,6 +105,32 @@ class OrgCodes(db.Model):
         return "<OrgCode %s %s>" % (self.org_id, self.code)
 
 
+class Resource(db.Model):
+    id = db.Column(db.String(50), primary_key=True, default=make_uuid)
+    resource_id = db.Column(db.String(50), default=make_uuid)
+    lang = db.Column(db.String(2), primary_key=True)
+    status = db.Column(db.String(10))
+    current = db.Column(db.Boolean(), default=True)
+    active = db.Column(db.Boolean(), default=True)
+    private = db.Column(db.Boolean(), default=True)
+    name = db.Column(db.String(250))
+    description = db.Column(db.Text())
+    published = db.Column(db.Boolean(), default=False)
+    file = db.Column(db.String(50))
+    filename = db.Column(db.String(250))
+    file_type = db.Column(db.String(250))
+    file_size = db.Column(db.Integer())
+    mime_type = db.Column(db.String(250))
+    mime_encoding = db.Column(db.String(250))
+
+class ResourceCodes(db.Model):
+    resource_id = db.Column(db.String(50), primary_key=True)
+    code = db.Column(db.String(50), primary_key=True)
+
+    def __repr__(self):
+        return "<ResourseCode %s %s>" % (self.resource_id, self.code)
+
+
 class User(db.Model):
     id = db.Column(db.String(50), primary_key=True, default=make_uuid)
     name = db.Column(db.String(250))

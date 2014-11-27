@@ -1,0 +1,9 @@
+{% extends 'body_base.html' %}
+
+{% block title %}resource.title{% endblock %}
+
+{% block container_class %}resource-content{% endblock %}
+
+{% block content %}
+  {% include '/resource_content.html' with context %}
+{% endblock %}

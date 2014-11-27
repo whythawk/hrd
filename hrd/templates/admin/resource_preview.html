@@ -1,0 +1,28 @@
+{% extends 'admin/base.html' %}
+
+{% import '/macro/form.html' as form %}
+
+{% block name %}{{ resource.title }}{% endblock %}
+
+{% block content %}
+      <div class="well col-xs-12">
+          <h3 class="preview-title">Resource preview</h3>
+          <a href="{{ url_for_admin('resource_list') }}">Resource list</a>
+      <div class="pull-right">
+      {% if resource.status == 'publish' %}
+          {{ form.action('Edit', url_for_admin('resource_edit', id=resource.resource_id), icon='pencil') }}
+      {% else %}
+          {{ form.action_link('Edit', url_for_admin('resource_edit', id=resource.resource_id), icon='pencil') }}
+      {% endif %}
+      {% if resource.status == 'edit' %}
+          {{ form.action('Send for approval', url_for_admin('resource_state', state='approve', id=resource.resource_id)) }}
+      {% elif resource.status == 'approve' %}
+          {{ form.action('Approve', url_for_admin('resource_state', state='approved', id=resource.resource_id)) }}
+      {% elif resource.status == 'approved' %}
+          {{ form.action('Publish', url_for_admin('resource_state', state='publish', id=resource.resource_id)) }}
+      {% endif %}
+      </div>
+      </div>
+
+  {% include '/resource_content.html' with context %}
+{% endblock %}
