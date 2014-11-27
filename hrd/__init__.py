@@ -104,7 +104,7 @@ def lang_html():
 
 def lang_html_body():
     lang = request.environ['LANG']
-    return 'dir="%s"' % lang_dir[lang]
+    return 'class="%s"' % lang_dir[lang]
 
 def lang_pick(lang):
     current_url = request.environ['CURRENT_URL']
