@@ -63,22 +63,8 @@
                         <p class="search-result-body">{{ resource.description|truncate(500) }}</p>
 
                     </div>
-                    {#
-                    <div class="col-xs-6 col-sm-6 col-md-3">
-                        <!-- Search logo --><a href="{{ url_for('resource', id=resource.resource_id) }}" title="Logo" class="logo"><img src="/static/images/logo.png" alt="Logo" /></a>
-                    </div>
-                    <div class="col-xs-12 col-sm-12 col-md-8 pull-right">
-                        <!-- Search meta tags begins ============================= -->
-                        <ul class="search-meta list-inline">
-                            {% for code in codes %}
-                            <li><small><a>{{ code }}</a></small></li>
-                            {% endfor %}
-                        </ul>
-                        <!-- /Search meta tags ends ============================= -->
-                    </div>
-                    #}
                     <span class="clearfix borda"></span>
-                    <div class="col-md-5 view-detail pull-right"><a href="{{ url_for('resource', id=resource.resource_id) }}" title="View detail">{{ _("Go to resourceanisation's page") }}</a></div>
+                    <div class="col-md-5 view-detail pull-right"><a href="{{ url_for('resource', id=resource.resource_id) }}" title="View detail">{{ _("Go to resource's page") }}</a></div>
                     <span class="clearfix borda"></span>
                 </article>
                 <!-- /Search result row ends ============================= -->
