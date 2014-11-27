@@ -4,6 +4,7 @@ import re
 
 from flask import request
 from babel.numbers import format_number as _format_number
+from babel import Locale
 
 import hrd
 import views.menu
@@ -114,6 +115,13 @@ def url_clean(qs):
 def none_to_empty_str(arg):
     return arg or ''
 
+
+def locale_language_name(language_code):
+    l = Locale.parse(language_code)
+    lang = request.environ['LANG']
+    return l.get_display_name(lang)
+
+
 def format_number(arg):
     if arg is None:
         return 'Unknown'
@@ -158,4 +166,5 @@ hrd.app.jinja_env.globals.update(
     url_clean=url_clean,
     none_to_empty_str=none_to_empty_str,
     format_number=format_number,
+    locale_language_name=locale_language_name,
 )

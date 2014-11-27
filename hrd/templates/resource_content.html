@@ -11,6 +11,13 @@
           </div>  #}
         <!-- /Organization logo block ends ============================= -->
         <!-- Organization contacts column begins ============================= -->
+        <div class="contact-details-col blue-left-border grey-panel-bkg hrd-padded-20">
+            <h3 class=""><a href="#" title="">{{ _('Resource info') }}</a></h3>
+            <p class=""><strong>{{ _('Language') }}</strong><br />
+            {{ locale_language_name(resource.lang) }}
+                </p>
+        </div>
+        </br>
         {% if resource.url %}
         <div class="contact-details-col blue-left-border grey-panel-bkg hrd-padded-20">
             <h3 class=""><a href="#" title="">{{ _('Online info') }}</a></h3>
@@ -18,6 +25,7 @@
             <a href="{{ resource.url }}" target="_blank" style="word-wrap: break-word;">{{ resource.url }}</a>
                 </p>
         </div>
+        </br>
         {% endif %}
         {% if resource.file %}
         <div class="contact-details-col blue-left-border grey-panel-bkg hrd-padded-20">
