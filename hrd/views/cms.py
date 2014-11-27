@@ -279,6 +279,7 @@ def cms_list():
         trans = db.session.query(Cms.page_id).filter_by(lang=lang)
         missing = db.session.query(Cms).filter_by(lang='en', current=True)
         missing = missing.filter(db.not_(Cms.page_id.in_(trans)))
+        missing = missing.order_by('title')
     status = list_status()
     return render_template('admin/cms_list.html', pages=pages, lang=lang,
                            missing=missing, trans=trans, status=status)
