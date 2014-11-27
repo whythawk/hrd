@@ -136,8 +136,9 @@ def page_reedit(page):
         published=True
     )
     db.session.add(new_page)
-    page.current = False
-    db.session.add(page)
+    if lang == page.lang:
+        page.current = False
+        db.session.add(page)
     db.session.commit()
     return new_page
 

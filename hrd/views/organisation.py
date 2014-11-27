@@ -145,6 +145,7 @@ def org_reedit(org):
         name=org.name,
         status='edit',
         published=True,
+        current=True,
 
         address=org.address,
         contact=org.contact,
@@ -158,8 +159,9 @@ def org_reedit(org):
 
     )
     db.session.add(new_org)
-    org.current = False
-    db.session.add(org)
+    if lang == org.lang:
+        org.current = False
+        db.session.add(org)
     db.session.commit()
     return new_org
 
