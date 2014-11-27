@@ -67,13 +67,13 @@
     </div>
     <div class="panel col-xs-12">
         {% if resource.file %}
-          <div class="col-md-3 view-detail pull-right">
-    <a href="{{ url_for('resource_file', id=resource.resource_id, type='preview') }}?{{ resource.file}}" download="{{ resource.filename }}">{{ _('Download') }}</a>
+          <div class="col-md-3 pull-right">
+    <a class="view-download-btn" href="{{ url_for('resource_file', id=resource.resource_id, type='preview') }}?{{ resource.file}}" download="{{ resource.filename }}">{{ _('Download') }}</a>
           </div>
         {% endif %}
         {% if resource.url %}
-          <div class="col-md-3 view-detail pull-right">
-            <a href="{{ resource.url }}" target="_blank" style="word-wrap: break-word;">{{ _('Visit resource') }}</a>
+          <div class="col-md-3 pull-right">
+            <a class="view-download-btn" href="{{ resource.url }}" target="_blank" style="word-wrap: break-word;">{{ _('Visit resource') }}</a>
           </div>
         {% endif %}
     </div>
