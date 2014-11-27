@@ -145,6 +145,7 @@ def org_reedit(org):
         name=org.name,
         status='edit',
         published=True,
+        current=True,
 
         address=org.address,
         contact=org.contact,
@@ -158,8 +159,9 @@ def org_reedit(org):
 
     )
     db.session.add(new_org)
-    org.current = False
-    db.session.add(org)
+    if lang == org.lang:
+        org.current = False
+        db.session.add(org)
     db.session.commit()
     return new_org
 
@@ -352,6 +354,7 @@ def org_list():
             lang='en', current=True
         )
         missing = missing.filter(db.not_(Organisation.org_id.in_(trans)))
+        missing = missing.order_by('name')
     status = list_status()
     return render_template('admin/org_list.html', orgs=orgs, lang=lang,
                            missing=missing, trans=trans, status=status)
