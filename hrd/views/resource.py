@@ -61,10 +61,26 @@ def resource_edit(id):
 
         resource.url = fix_url(get_str('url'))
 
-        if get_bool('logo_remove'):
+        if get_bool('file_remove'):
             resource.file = None
 
         logo = request.files['file']
+
+        if not (resource.url or logo or resource.file):
+            errors.append(
+                'A resource must either have a url or an uploaded file.'
+            )
+        if (logo or resource.file) and resource.url:
+            errors.append(
+                'A resource must either have a url or be an uploaded file ' + \
+                'not both.'
+            )
+            if logo:
+                errors.append(
+                    'Uploaded file has been discarded remove the ' + \
+                    'web url and re-upload.'
+                )
+            logo = None
         if logo:
             extension = os.path.splitext(logo.filename)[1]
             if extension: # and extension.lower() in config.ALLOWED_RESOURCES:
