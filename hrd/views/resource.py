@@ -1,4 +1,5 @@
 import os.path
+from urlparse import urlparse
 import uuid
 
 import magic
@@ -28,6 +29,15 @@ def resource_file(type, id):
     return send_from_directory(app.config['UPLOAD_FOLDER'], resource.file)
 
 
+def fix_url(url):
+    if not url:
+        return url
+    o = urlparse(url)
+    if o.scheme:
+        return url
+    return 'http://%s' % url
+
+
 @app.route('/admin/resource_edit/<id>', methods=['GET', 'POST'])
 def resource_edit(id):
     set_menu()
@@ -49,7 +59,7 @@ def resource_edit(id):
         resource.private = get_bool('private')
         resource.active = get_bool('active')
 
-        resource.url = get_str('url')
+        resource.url = fix_url(get_str('url'))
 
         if get_bool('logo_remove'):
             resource.file = None
