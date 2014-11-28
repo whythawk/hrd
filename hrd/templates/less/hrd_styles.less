@@ -71,13 +71,14 @@ Import Bootstrap LESS and Site Specific LESS
 }
 
 .hrd_logo {
-    //margin-left: 30px;
+    margin-right: 0x;
 
 }
 
 .sitetitle {
     margin-top: 30px;
-    margin-left: -20px;
+    margin-left: 0;
+    padding-right: 30px;
     font-weight: 500;
     font-size: @font-size-h4;
 }
@@ -85,6 +86,7 @@ Import Bootstrap LESS and Site Specific LESS
 .eu_logo img {
         max-width: 100%;
         height: auto;
+        float: right;
     }
 
 .container { 
@@ -189,6 +191,10 @@ Import Bootstrap LESS and Site Specific LESS
     //margin: 0;
 }
 
+.all-langs {
+    padding-left: 20px;
+}
+
 .search-filter-col label.last {
     border-bottom: none;
 }
@@ -246,14 +252,13 @@ Import Bootstrap LESS and Site Specific LESS
     color: lighten(@brand-secondary, 40%);
 }
 
-.view-detail {
+.view-download-btn {
     border-left: 4px solid @brand-secondary;
     padding: 0 5px 0 10px;
     font-weight: 700;
-}
-
-.view-detail a {
     color: @brand-secondary;
+    display: inline-block;
+    float: right;
 }
 
 .search-meta li a {
@@ -298,6 +303,14 @@ Import Bootstrap LESS and Site Specific LESS
 
 .org-logo-col {
     margin-bottom: 20px;
+}
+
+//
+// View org page items
+// --------------------------------------------------
+
+.contact-details-col h3, .resource-description-col h2, .resource-detail-col h2, .org-description-col h2, .org-detail-col h2 {
+    margin-top: 0;
 }
 
 //
@@ -402,6 +415,23 @@ Import Bootstrap LESS and Site Specific LESS
         margin-bottom: 0px;
     }
 }
+
+//
+// ARABIC pages adjustments
+// --------------------------------------------------
+
+body[dir="rtl"] {
+    .page-list-url {
+        display: inline-block;
+        left: 0;
+        outline: 1px solid red;
+    }
+    
+    
+}
+
+
+
 
 //
 // New null alert class
@@ -524,6 +554,7 @@ body.admin{
     .admin-title h3 {
         text-align: right;
         padding-right: 20px;
+        color: @gray-light !important;
     }
 
 }
@@ -568,7 +599,7 @@ body.admin{
     }
     
     button.navbar-toggle {
-        margin-top: -5px;
+        margin-top: -10px;
         display: block; 
         width: 40px;
         height: 40px;

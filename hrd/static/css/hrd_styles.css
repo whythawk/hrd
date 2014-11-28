@@ -6202,15 +6202,20 @@ button.close {
   padding-right: 0;
   margin-bottom: 25px;
 }
+.hrd_logo {
+  margin-right: 0x;
+}
 .sitetitle {
   margin-top: 30px;
-  margin-left: -20px;
+  margin-left: 0;
+  padding-right: 30px;
   font-weight: 500;
   font-size: 18px;
 }
 .eu_logo img {
   max-width: 100%;
   height: auto;
+  float: right;
 }
 .container {
   padding-left: 0;
@@ -6290,6 +6295,9 @@ button.close {
   top: -2px;
   left: 0;
 }
+.all-langs {
+  padding-left: 20px;
+}
 .search-filter-col label.last {
   border-bottom: none;
 }
@@ -6335,13 +6343,13 @@ button.close {
 .no-of-records {
   color: #87a9ed;
 }
-.view-detail {
+.view-download-btn {
   border-left: 4px solid #163f92;
   padding: 0 5px 0 10px;
   font-weight: 700;
-}
-.view-detail a {
   color: #163f92;
+  display: inline-block;
+  float: right;
 }
 .search-meta li a {
   display: inline-block;
@@ -6381,6 +6389,13 @@ button.close {
 }
 .org-logo-col {
   margin-bottom: 20px;
+}
+.contact-details-col h3,
+.resource-description-col h2,
+.resource-detail-col h2,
+.org-description-col h2,
+.org-detail-col h2 {
+  margin-top: 0;
 }
 .login-form .btn {
   background-color: #163f92;
@@ -6450,6 +6465,11 @@ button.close {
 }
 .org-cat-alert form {
   margin-bottom: 0px;
+}
+body[dir="rtl"] .page-list-url {
+  display: inline-block;
+  left: 0;
+  outline: 1px solid red;
 }
 .alert-null {
   background-color: #eeeeee;
@@ -6534,6 +6554,7 @@ body.admin .nav-mega li div a:hover {
 body.admin .admin-title h3 {
   text-align: right;
   padding-right: 20px;
+  color: #777777 !important;
 }
 /* Reset */
 .nav-mega,
@@ -6562,7 +6583,7 @@ body.admin .admin-title h3 {
     height: 43px;
   }
   button.navbar-toggle {
-    margin-top: -5px;
+    margin-top: -10px;
     display: block;
     width: 40px;
     height: 40px;
