@@ -142,6 +142,8 @@ def category_trans(id, cat_type):
     trans.status = 'edit'
     trans.category_id = id
     trans.cat_type = cat_type
+    trans.order = category.order
+    trans.active = category.active
     db.session.add(trans)
     db.session.commit()
     return redirect(url_for_admin('category_edit', id=id, cat_type=cat_type))
@@ -160,6 +162,8 @@ def code_trans(id, cat_type):
     trans.status = 'edit'
     trans.code_id = id
     trans.category_id = code.category_id
+    trans.order = code.order
+    trans.active = code.active
     db.session.add(trans)
     db.session.commit()
     return redirect(url_for_admin('code_edit', id=id, cat_type=cat_type))
