@@ -5,6 +5,9 @@ import urllib
 from flask import Flask, request, abort
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.babel import Babel
+from werkzeug.wsgi import DispatcherMiddleware
+
+from flaskbb_shim import get_flaskbb
 
 # Import our config
 try:
@@ -206,5 +209,14 @@ class I18nMiddleware(object):
                 environ['CURRENT_URL'] = path_info
         return self.app(environ, start_response)
 
+flaskbb = get_flaskbb(app, __path__[0])
+flaskbb.jinja_env.globals['url_for'] = url_for
+flaskbb.jinja_env.globals['url_for_fixed'] = url_for_fixed
+
+app.login_manager = flaskbb.login_manager
+
+app = DispatcherMiddleware(app, {
+    '/forum': flaskbb
+})
 
 app = I18nMiddleware(app)

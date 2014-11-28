@@ -5,9 +5,11 @@ import re
 from flask import request
 from babel.numbers import format_number as _format_number
 from babel import Locale
+from flask.ext.login import current_user
 
 import hrd
 import views.menu
+import views.user
 
 
 # for fake translations
@@ -44,9 +46,12 @@ def mangle(value):
 
 
 def username():
-    user = request.user
+    user = current_user
     if user:
-        return user.name
+        try:
+            return user.username
+        except:
+            pass
     return False
 
 
@@ -58,6 +63,10 @@ def user_id():
 
 
 def has_perm(permission):
+    try:
+        request.permission
+    except AttributeError:
+        request.permissions = views.user.get_users_permissions(current_user)
     if permission in request.permissions:
         return True
     if 'sys_admin' in request.permissions:
@@ -151,6 +160,7 @@ hrd.app.jinja_env.globals.update(
     lang_pick=hrd.lang_pick,
     get_username=username,
     get_user_id=user_id,
+    current_user=current_user,
     lang_list=hrd.lang_list,
     current_lang=hrd.current_lang,
     current_lang_name=hrd.current_lang_name,

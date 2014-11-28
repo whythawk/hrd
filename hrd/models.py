@@ -132,14 +132,14 @@ class ResourceCodes(db.Model):
         return "<ResourseCode %s %s>" % (self.resource_id, self.code)
 
 
-class User(db.Model):
-    id = db.Column(db.String(50), primary_key=True, default=make_uuid)
-    name = db.Column(db.String(250))
-    password = db.Column(db.String(250))
-    active = db.Column(db.Boolean(), default=True)
+from flaskbb.user.models import User, Guest
 
-    def __repr__(self):
-        return "<User %s>" % self.name
+
+#class User(db.Model):
+#    id = db.Column(db.String(50), primary_key=True, default=make_uuid)
+#    name = db.Column(db.String(250))
+#    password = db.Column(db.String(250))
+#    active = db.Column(db.Boolean(), default=True)
 
 
 class UserPerms(db.Model):
@@ -148,6 +148,14 @@ class UserPerms(db.Model):
 
     def __repr__(self):
         return "<UserPerm %s %s>" % (self.user_id, self.permission)
+
+
+class UserPermsBB(db.Model):
+    user_id = db.Column(db.Integer, primary_key=True)
+    permission = db.Column(db.String(50), primary_key=True)
+
+    def __repr__(self):
+        return "<UserPermBB %s %s>" % (self.user_id, self.permission)
 
 
 class Translation(db.Model):

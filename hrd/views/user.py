@@ -1,25 +1,30 @@
 from passlib.hash import sha512_crypt as passlib
-from flask import render_template, request, abort, redirect, session
+from flask import render_template, request, abort, redirect
 
 
 from hrd import (app, db, url_for_admin, get_str, url_for,
                  get_bool, permission_list)
-from hrd.models import User, UserPerms
+from hrd.models import User, UserPermsBB
+
+from flask.ext.login import (current_user, login_user, login_required,
+                             logout_user, confirm_login, login_fresh)
 
 
 @app.before_request
 def before_request():
-    user_id = session.get('user')
     request.user = None
     request.permissions = []
-    if user_id:
-        user = User.query.filter_by(id=user_id, active=True).first()
-        if user:
-            request.user = user
-            request.permissions = [
-                p.permission
-                for p in UserPerms.query.filter_by(user_id=user_id).all()
-            ]
+    user = current_user
+    if user.is_authenticated():
+        request.user = user
+        request.permissions = get_users_permissions(user)
+
+
+def get_users_permissions(user):
+    return [
+        p.permission
+        for p in UserPermsBB.query.filter_by(user_id=user.id).all()
+    ]
 
 
 def password_verify(password, p_hash):
@@ -37,9 +42,9 @@ def login():
         username = get_str('name')
         password = get_str('password')
         if username and password:
-            user = User.query.filter_by(name=username).first()
-            if user and password_verify(password, user.password):
-                session['user'] = user.id
+            user = User.query.filter_by(username=username).first()
+            if user and user.check_password(password):
+                login_user(user)
                 return redirect(url_for('cms_page2'))
 
     return render_template('user/login.html', username=username)
@@ -47,9 +52,7 @@ def login():
 
 @app.route('/logout')
 def logout():
-    # remove the username from the session if it's there
-    session.pop('user', None)
-    session.clear()
+    logout_user()
     return redirect(url_for('cms_page2'))
 
 
@@ -104,4 +107,4 @@ def autocreate_admin():
         db.session.commit()
 
 
-autocreate_admin()
+#autocreate_admin()

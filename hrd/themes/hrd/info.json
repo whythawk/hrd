@@ -1,0 +1,9 @@
+{
+    "application": "hrd",
+    "identifier": "hrd",
+    "name": "flaskbb_theme",
+    "author": "sh4nks",
+    "license": "BSD/Apache 2.0 (Bootstrap)",
+    "description": "The default Bootstrap3 theme",
+    "version": "1.0.0"
+}
