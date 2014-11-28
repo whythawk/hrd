@@ -18,6 +18,7 @@
         {{ menu_item('Resources', url_for_admin('resource_list')) }}
         {{ menu_item('Resource categories', url_for_admin('category_list', cat_type='res')) }}
         {{ menu_item('Menu Items', url_for_admin('menu_list')) }}
+        {{ menu_item('Translations', url_for_admin('translation_list')) }}
 
     {% block user_bar %}
         {{ user_menu(show_extras=false) }}

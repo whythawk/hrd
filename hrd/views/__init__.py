@@ -5,3 +5,4 @@ import hrd.views.organisation
 import hrd.views.resource
 import hrd.views.general
 import hrd.views.menu
+import hrd.views.translation

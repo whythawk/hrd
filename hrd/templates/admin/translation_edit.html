@@ -1,0 +1,60 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Menu items{% endblock %}
+
+{% block content %}
+  <h1>Edit: Translation<br /><br /></h1>
+  <form role="form" method="POST">
+        {{ form.save(label='Save') }}
+        {{ form.errors(errors) }}
+  <div class="row alert alert-success">
+    <div class="col-xs-12">
+  <h4>English</h4>
+  <p>
+  <strong>{{ translation.string }}</strong>
+  </p>
+  {% if translation.plural %}
+  <p>
+  <h4>Plural</h4>
+  <strong>{{ translation.plural }}</strong>
+  </p>
+  <h4>Plural rule</h4>
+  <p>
+  <strong>{{ rule }}</strong>
+  </p>
+  {% endif %}
+  </div>
+  </div>
+  {% if metadata %}
+
+  <div class="row alert alert-warning">
+    <div class="col-xs-12">
+  <h4>This translation contains metadata. It will be replaced by actual content.</h4>
+  <p>you must keep the metadata in your translation. the metadata item(s) are:
+  <strong>{{ metadata }}</strong>
+  </p>
+  </div>
+  </div>
+  {% endif %}
+        {{ form.input('trans0', label='Translation[0]', value=translation.trans0, placeholder='Translation', trans=trans) }}
+        {% if plurals > 1 %}
+        {{ form.input('trans1', label='Translation[1]', value=translation.trans1, placeholder='Translation', trans=trans) }}
+        {% endif %}
+        {% if plurals > 2 %}
+        {{ form.input('trans2', label='Translation[2]', value=translation.trans2, placeholder='Translation', trans=trans) }}
+        {% endif %}
+        {% if plurals > 3 %}
+        {{ form.input('trans3', label='Translation[3]', value=translation.trans3, placeholder='Translation', trans=trans) }}
+        {% endif %}
+        {% if plurals > 4 %}
+        {{ form.input('trans4', label='Translation[4]', value=translation.trans4, placeholder='Translation', trans=trans) }}
+        {% endif %}
+        {% if plurals > 5 %}
+        {{ form.input('trans5', label='Translation[5]', value=translation.trans5, placeholder='Translation', trans=trans) }}
+        {% endif %}
+        {% if plurals > 6 %}
+        {{ form.input('trans6', label='Translation[6]', value=translation.trans6, placeholder='Translation', trans=trans) }}
+        {% endif %}
+    {{ form.save(label='Save') }}
+  </form>
+{% endblock %}
