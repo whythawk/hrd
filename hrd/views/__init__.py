@@ -4,3 +4,4 @@ import hrd.views.user
 import hrd.views.organisation
 import hrd.views.general
 import hrd.views.menu
+import hrd.views.translation

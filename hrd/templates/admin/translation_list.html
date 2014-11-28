@@ -1,0 +1,46 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Mtranslations{% endblock %}
+
+{% block content %}
+
+  <div class="alert col-xs-12 alert-success"><h4>
+          These are text strings that need to be translated.  It may take a while before the changes become active.
+      </div>
+ {{ form.translations_bar(status, exclude=['en']) }}
+  {# cat listing #}
+ <div class="alert col-xs-12 org-cat-list">
+{# new cat #}
+  <ul>
+
+  {% for key, value in missing.items() %}
+  <div class="alert col-xs-12 alert-danger"><h4>
+          {{ key[0] }}{% if key[1] %} / {{ key[1] }}{% endif %}
+        <span class="label label-null">Missing</span>
+    </h4>
+        {{ form.action('Create', url_for_admin('translation_edit', id=value), icon='plus', class='btn-xs btn-success') }}
+    </div>
+    {% endfor %}
+
+    {% for tran in translations %}
+    {# category start #}
+    <div class="alert col-xs-12 alert-null">
+    <h4>
+        {{ tran.string }}{% if tran.plural %} / {{ tran.plural }}{% endif %}<br/>
+        {{ tran.trans0 }}
+        {% if tran.trans1 %} / {{ tran.trans1 }}{% endif %}
+        {% if tran.trans2 %} / {{ tran.trans2 }}{% endif %}
+        {% if tran.trans3 %} / {{ tran.trans3 }}{% endif %}
+        {% if tran.trans4 %} / {{ tran.trans4 }}{% endif %}
+        {% if tran.trans5 %} / {{ tran.trans5 }}{% endif %}
+        </h4>
+
+        {{ form.action_link('Edit', url_for_admin('translation_edit', id=tran.id), icon='pencil') }}
+
+    </div>
+  {% endfor %}
+    </div>
+  </ul>
+
+{#  {{ form.code_list(all) }} #}
+{% endblock %}

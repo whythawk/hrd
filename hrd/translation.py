@@ -58,13 +58,13 @@ def get_translations(quiet=True):
         sql = """
             SELECT active FROM translation
             WHERE
-            lang = 'en' and id=? and plural=?;
+            lang = 'en' and string=? and plural=?;
         """
 
         result = conn.execute(sql, values).first()
         if result is None:
             sql = """
-                INSERT INTO translation (id, plural, lang, active)
+                INSERT INTO translation (string, plural, lang, active)
                 VALUES (?, ?, 'en', 1);
             """
             conn.execute(sql, values)
@@ -73,7 +73,7 @@ def get_translations(quiet=True):
                 UPDATE translation
                 SET active = 1
                 WHERE
-                lang = 'en' and id=? and plural=?;
+                lang = 'en' and string=? and plural=?;
             """
             conn.execute(sql, values)
 
@@ -123,7 +123,7 @@ def create_fake_trans(lang):
     result = conn.execute(sql, lang)
 
     sql = """
-        SELECT DISTINCT id, plural FROM translation
+        SELECT DISTINCT string, plural FROM translation
         WHERE lang = 'en' and active=1;
     """
 
@@ -131,11 +131,11 @@ def create_fake_trans(lang):
     values = []
     for row in result:
         values.append(
-            (row.id, row.plural, lang, mangle(row.id), mangle(row.plural))
+            (row.string, row.plural, lang, mangle(row.string), mangle(row.plural))
         )
 
     sql = """
-        INSERT INTO translation (id, plural, lang, active, trans1, trans2)
+        INSERT INTO translation (string, plural, lang, active, trans0, trans1)
         VALUES (?, ?, ?, 1, ?, ?);
     """
     for value in values:
@@ -154,12 +154,14 @@ def create_i18n_files(lang, quiet=True):
 
     for row in result:
         if row.plural:
-            key = (row.id, row.plural)
+            key = (row.string, row.plural)
             values = [
+                row.trans0,
                 row.trans1,
                 row.trans2,
                 row.trans3,
                 row.trans4,
+                row.trans5,
             ]
             value = []
             for v in values:
@@ -171,8 +173,8 @@ def create_i18n_files(lang, quiet=True):
                 value = tuple(value)
 
         else:
-            key = row.id
-            value = row.trans1
+            key = row.string
+            value = row.trans0
         catalog.add(key, value)
 
     path = os.path.join(DIR, 'translations', lang, 'LC_MESSAGES')
@@ -208,8 +210,9 @@ def create_all_i18n_files(quiet=True):
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
-        get_translations(quiet=False)
         create_all_i18n_files(quiet=False)
     else:
+        if sys.argv[1] == 'extract' and len(sys.argv) == 2:
+            get_translations(quiet=False)
         if sys.argv[1] == 'mangle' and len(sys.argv) == 3:
             create_fake_trans(sys.argv[2])
