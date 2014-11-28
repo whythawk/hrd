@@ -1,0 +1,26 @@
+
+{%- macro menu_item(text, href, force_right=false, content='', class='', icon='') %}
+  <li{{ menu_class(href, force_right, class)|safe }}>
+  <a href="{{ href }}">
+    {% if icon %}<span class="glyphicon glyphicon-{{ icon }}"></span>{% endif %}
+    {{ text }}{% if content %}<span class="caret"></span>{% endif %}</a>
+  {{ content|safe }}</li>
+{%- endmacro -%}
+{%- macro user_menu(show_extras=true) %}
+      {% set user = current_user %}
+      {% if user %}
+        {% set my_content = '<div>' +
+          sub_menu_item(_('Log out'), url_for_fixed('/logout'), force_right=true) +
+          '</div>' %}
+        {{ menu_item(user.username, '#', force_right=true, content=my_content, class='logged-in', icon='user') }}
+
+      {% if show_extras %}
+        {% if has_perm('translator') %}
+            {{ menu_item(_('Admin'), url_for_fixed('/admin'), force_right=true) }}
+        {% endif %}
+        {% endif %}
+      {% else %}
+        {{ menu_item(_('Log in'), url_for_fixed('/login'), force_right=true) }}
+      {% endif %}
+                </ul>
+{%- endmacro -%}
