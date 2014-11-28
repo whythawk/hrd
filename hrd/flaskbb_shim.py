@@ -6,7 +6,8 @@ from flask.ext.themes2 import Themes, render_theme_template
 from flask.ext.babel import Babel
 
 from flaskbb import create_app
-from flaskbb.configs.development import DevelopmentConfig as bb_config
+from flaskbb.configs.default import DefaultConfig as bb_config
+
 
 
 def set_translations(app):
