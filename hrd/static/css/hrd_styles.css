@@ -6203,14 +6203,14 @@ button.close {
   margin-bottom: 25px;
 }
 .sitetitle {
-  margin-top: 30px;
-  margin-left: -20px;
+  margin-top: 40px 0 0 -40px;
   font-weight: 500;
   font-size: 18px;
 }
 .eu_logo img {
   max-width: 100%;
   height: auto;
+  float: right;
 }
 .container {
   padding-left: 0;
@@ -6532,7 +6532,8 @@ body.admin .nav-mega li div a:hover {
   background-color: #d5d5d5;
 }
 body.admin .admin-title h3 {
-  text-align: right;
+  display: inline-block;
+  float: right;
   padding-right: 20px;
 }
 /* Reset */
@@ -6555,6 +6556,10 @@ body.admin .admin-title h3 {
   list-style: none;
 }
 @media (max-width: 768px) {
+  .sitetitle {
+    margin: 40px 0 0 -60px;
+    padding: 0 50px 0 0;
+  }
   .navbar-header {
     margin: 0;
     padding: 0;
@@ -6639,8 +6644,16 @@ body.admin .admin-title h3 {
     height: 233px;
   }
   .sitetitle {
-    margin-left: -40px;
-    padding-right: 80px;
+    margin: 40px 0 0 -60px;
+    padding: 0 50px 0 0;
+  }
+  .admin-title h3 {
+    padding: 20px 30px 0 0;
+    font-size: 24px;
+    font-weight: 500;
+    display: inline-block;
+    float: right;
+    color: #777777;
   }
   /* Menu Container */
   .nav-mega {
@@ -6779,6 +6792,10 @@ body.admin .admin-title h3 {
     margin-left: -20px;
     font-size: 24px;
     padding-right: 50px;
+  }
+  .admin-title h3 {
+    padding: 30px 50px 0 0;
+    font-size: 30px;
   }
   /* Menu Container */
   .nav-mega {

@@ -76,8 +76,7 @@ Import Bootstrap LESS and Site Specific LESS
 }
 
 .sitetitle {
-    margin-top: 30px;
-    margin-left: -20px;
+    margin-top: 40px 0 0 -40px;
     font-weight: 500;
     font-size: @font-size-h4;
 }
@@ -85,6 +84,7 @@ Import Bootstrap LESS and Site Specific LESS
 .eu_logo img {
         max-width: 100%;
         height: auto;
+        float: right;
     }
 
 .container { 
@@ -522,7 +522,8 @@ body.admin{
     }
     
     .admin-title h3 {
-        text-align: right;
+        display: inline-block;
+        float: right;
         padding-right: 20px;
     }
 
@@ -559,6 +560,10 @@ body.admin{
 // SM specific menu styling reverse breakpoint
 @media (max-width: 768px) { 
     
+.sitetitle {
+        margin: 40px 0 0 -60px;
+        padding: 0 50px 0 0;
+    }
     
     .navbar-header {
         margin: 0;
@@ -667,9 +672,18 @@ body.admin{
     }
     
     .sitetitle {
-        margin-left: -40px;
-        padding-right: 80px;
+        margin: 40px 0 0 -60px;
+        padding: 0 50px 0 0;
     }
+    
+   .admin-title h3 {
+        padding: 20px 30px 0 0;
+        font-size: @font-size-h3;
+        font-weight: 500;
+        display: inline-block;
+        float: right;
+        color: @gray-light;
+    } 
 
     /* Menu Container */
     .nav-mega {
@@ -839,6 +853,11 @@ body.admin{
         margin-left: -20px;
         font-size: @font-size-h3;
         padding-right: 50px;
+    }
+    
+    .admin-title h3 {
+        padding: 30px 50px 0 0;
+        font-size: @font-size-h2;
     }
 
     /* Menu Container */
