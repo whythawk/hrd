@@ -58,9 +58,9 @@
                             {{ emit_event("before-first-navigation-element") | safe }}
 
                             {# active_forum_nav is set in {forum, category, topic}.html and new_{topic, post}.html #}
-                            {{ topnav(endpoint='forum.index', name='Forum', icon='fa fa-comment', active=active_forum_nav) }}
-                            {{ topnav(endpoint='forum.memberlist', name='Memberlist', icon='fa fa-user') }}
-                            {{ topnav(endpoint='forum.search', name='Search', icon='fa fa-search') }}
+                            {{ topnav(endpoint='forum.index', name=_('Forum'), icon='fa fa-comment', active=active_forum_nav) }}
+                            {{ topnav(endpoint='forum.memberlist', name=_('Memberlist'), icon='fa fa-user') }}
+                            {{ topnav(endpoint='forum.search', name=_('Search'), icon='fa fa-search') }}
 
                             {{ emit_event("after-last-navigation-element") | safe }}
 
@@ -122,7 +122,7 @@
 <!-- /Header ends =============================================== -->
 
             <div class="container forum-container">
-              <div class="panel">
+              <div class="container panel">
                 {% block messages %}
                     {% include 'flashed_messages.html' %}
                 {% endblock %}

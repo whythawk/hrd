@@ -1,0 +1,83 @@
+{% set page_title = "Users" %}
+{% set active_management_user_nav=True %}
+
+{% extends 'body_base.html' %}
+{% block content %}
+                    {% include 'flashed_messages.html' %}
+{% from 'bb_macros.html' import render_pagination, render_field, group_field, navlink with context %}
+
+<div class="col-md-3">
+    <ul class="nav nav-pills nav-stacked">
+        {{ navlink('user_manage', _("Manage Users")) }}
+        {#{ navlink('management.banned_users', 'Banned Users') }#}
+
+        {% if current_user|is_admin %}
+            {{ navlink('user_add', _("Add User")) }}
+        {% endif %}
+    </ul>
+</div><!--/.col-md-3 -->
+
+<div class="col-md-9">
+    <legend>{{ _('Manage Users') }}</legend>
+
+    <div class="pull-left" style="padding-bottom: 10px">
+        {{ render_pagination(users, url_for('user_manage')) }}
+    </div><!-- /.col-pull-left -->
+    <div class="pull-right" style="padding-bottom: 10px">
+        <form role="form" method="post">
+            <div class="input-group">
+                {{ search_form.hidden_tag() }}
+                {{ group_field(search_form.search_query) }}
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit">{{ _('Search') }}</button>
+                </span>
+            </div>
+        </form>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>{{ _('Username') }}</th>
+                <th>{{ _('Posts') }}</th>
+                <th>{{ _('Date registered') }}</th>
+                <th>{{ _('Group') }}</th>
+                <th>{{ _('Manage') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users.items %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td><a href="{{ url_for('user_profile', username=user.username) }}">{{ user.username }}</a></td>
+                    <td>{{ user.post_count }}</td>
+                    <td>{{ user.date_joined|format_date('%b %d %Y') }}</td>
+                    <td>{{ user.primary_group.name }}</td>
+                    <td>
+                        {% if current_user|can_edit_user and not user|is_admin or current_user|is_admin %}
+                        <a href="{{ url_for('user_edit', user_id = user.id) }}">{{ _('Edit') }}</a>
+                        {% endif %}
+
+                        {#    {% if current_user|can_ban_user and not user.permissions['banned'] %}
+                        | <a href="{{ url_for('management.ban_user', user_id = user.id) }}">{{ _('Ban') }}</a>
+                        {% endif %}  #}
+
+
+                        {% if current_user|is_admin %}
+                        | <a href="{{ url_for('user_delete', user_id = user.id) }}" 
+                            onclick="return confirm('Are you sure you want to delete this user?\n\nThis action cannot be undone')">{{ _('Delete') }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">
+                        {{ _('No users found matching your search query') }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

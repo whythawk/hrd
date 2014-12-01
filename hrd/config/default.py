@@ -12,9 +12,9 @@ UPLOAD_FOLDER = 'files'
 PERMISSIONS = [
     ('sys_admin', 'System administrator'),
     ('content_manage', 'Content managment'),
-    ('translator', 'Content translation'),
-    ('user_admin', 'User administrator'),
-    ('user_manage', 'User management'),
+  #  ('translator', 'Content translation'),
+  #  ('user_admin', 'User administrator'),
+  #  ('user_manage', 'User management'),
 ]
 
 ALLOWED_IMAGE_TYPES = ['.gif', '.png', '.jpeg', '.jpg']

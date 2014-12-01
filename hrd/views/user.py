@@ -1,10 +1,16 @@
+
 from passlib.hash import sha512_crypt as passlib
 from flask import render_template, request, abort, redirect
 
+import flaskbb.user.views as bb_user
+from flask.ext.babel import _
+from hrd.bb import user_forms, forum_forms
 
 from hrd import (app, db, url_for_admin, get_str, url_for,
                  get_bool, permission_list)
-from hrd.models import User, UserPermsBB
+from hrd.models import User, UserPerms
+
+from flaskbb.user.models import Group
 
 from flask.ext.login import (current_user, login_user, login_required,
                              logout_user, confirm_login, login_fresh)
@@ -21,10 +27,13 @@ def before_request():
 
 
 def get_users_permissions(user):
-    return [
-        p.permission
-        for p in UserPermsBB.query.filter_by(user_id=user.id).all()
-    ]
+    try:
+        return [
+            p.permission
+            for p in UserPerms.query.filter_by(user_id=user.id).all()
+        ]
+    except:
+        return []
 
 
 def password_verify(password, p_hash):
@@ -35,7 +44,7 @@ def password_encrypt(value):
     return passlib.encrypt(value)
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/user/login', methods=['GET', 'POST'])
 def login():
     username = ''
     if request.method == 'POST':
@@ -50,14 +59,14 @@ def login():
     return render_template('user/login.html', username=username)
 
 
-@app.route('/logout')
+@app.route('/user/logout')
 def logout():
     logout_user()
     return redirect(url_for('cms_page2'))
 
 
 @app.route('/user/edit/<id>', methods=['GET', 'POST'])
-def user_edit(id):
+def user_edit_old(id):
     user = User.query.filter_by(id=id).first()
     perms = permission_list
     if not user:
@@ -93,18 +102,149 @@ def user_edit(id):
                            user_perms=user_perms)
 
 
-def autocreate_admin():
-    admin = User.query.filter_by().first()
-    if not admin:
-        user = User(
-            name='admin',
-            password=password_encrypt('admin'),
-        )
-        db.session.add(user)
-        db.session.commit()
-        perm = UserPerms(user_id=user.id, permission='sys_admin')
-        db.session.add(perm)
-        db.session.commit()
+@app.route('/user/profile', methods=['GET', 'POST'])
+def user_profile():
+    form = user_forms.ChangeUserDetailsForm(obj=current_user)
+
+    if form.validate_on_submit():
+        form.populate_obj(current_user)
+        current_user.save()
+
+        bb_user.flash(_("Your details have been updated!"), "success")
+
+    return render_template("user/change_user_details.html", form=form)
 
 
-#autocreate_admin()
+@app.route("/user/password", methods=["POST", "GET"])
+def user_change_password():
+    form = user_forms.ChangePasswordForm()
+    if form.validate_on_submit():
+        current_user.password = form.new_password.data
+        current_user.save()
+
+        bb_user.flash(_("Your password have been updated!"), "success")
+    return render_template("user/change_password.html", form=form)
+
+
+
+@app.route("/user/email", methods=["POST", "GET"])
+def user_change_email():
+    form = user_forms.ChangeEmailForm(current_user)
+    if form.validate_on_submit():
+        current_user.email = form.new_email.data
+        current_user.save()
+
+        bb_user.flash(_("Your email have been updated!"), "success")
+    return render_template("user/change_email.html", form=form)
+
+
+
+@app.route("/user/manage", methods=['GET', 'POST'])
+def user_manage():
+    page = request.args.get("page", 1, type=int)
+    search_form = forum_forms.UserSearchForm()
+
+    if search_form.validate():
+        users = search_form.get_results().\
+            paginate(page, app.bb.config['USERS_PER_PAGE'], False)
+        return render_template("user/users.html", users=users,
+                               search_form=search_form)
+
+    users = User.query. \
+        order_by(User.id.asc()).\
+        paginate(page, app.bb.config['USERS_PER_PAGE'], False)
+
+    return render_template("user/users.html", users=users,
+                           search_form=search_form)
+
+
+
+@app.route("/user/<int:user_id>/edit", methods=["GET", "POST"])
+def user_edit(user_id):
+    user = User.query.filter_by(id=user_id).first_or_404()
+
+#    if not can_edit_user(current_user):
+#        bb_user.flash("You are not allowed to edit this user.", "danger")
+#        return redirect(url_for("management.users"))
+
+    secondary_group_query = Group.query.filter(
+        db.not_(Group.id == user.primary_group_id),
+        db.not_(Group.banned == True),
+        db.not_(Group.guest == True))
+
+    form = user_forms.EditUserForm(user)
+    form.secondary_groups.query = secondary_group_query
+    if form.validate_on_submit():
+        form.populate_obj(user)
+        user.primary_group_id = form.primary_group.data.id
+
+       # Don't override the password
+        if form.password.data:
+            user.password = form.password.data
+
+        user.save(groups=form.secondary_groups.data)
+
+        update_user_perms(user)
+
+        bb_user.flash("User successfully edited", "success")
+        return redirect(url_for("user_edit", user_id=user.id))
+
+    perms = permission_list
+    user_perms = get_user_perms(user_id)
+    return render_template("user/user_form.html", form=form, perms=perms,
+                           user_perms=user_perms, title=_("Edit User"))
+
+def update_user_perms(user):
+    perms = permission_list
+    # permissions
+    p_in = []
+    p_out = []
+    for perm, rest in perms:
+        if get_bool(perm):
+            p_in.append(perm)
+        else:
+            p_out.append(perm)
+    current = [
+        p.permission for p in UserPerms.query.filter_by(user_id=user.id).all()
+    ]
+    for perm in p_in:
+        if perm not in current:
+            perm = UserPerms(user_id=user.id, permission=perm)
+            db.session.add(perm)
+    for perm in p_out:
+        UserPerms.query.filter_by(user_id=user.id, permission=perm).delete()
+    db.session.commit()
+    if 'sys_admin' in p_in:
+        user.primary_group_id = 1
+    else:
+        user.primary_group_id = 4
+    user.save()
+
+def get_user_perms(id):
+    user_perms = [
+        p.permission for p in UserPerms.query.filter_by(user_id=id).all()
+    ]
+    return user_perms
+
+
+
+@app.route("/user/<int:user_id>/delete")
+def user_delete(user_id):
+    user = User.query.filter_by(id=user_id).first_or_404()
+    user.delete()
+    bb_user.flash("User successfully deleted", "success")
+    return redirect(url_for("user_manage"))
+
+
+@app.route("/user/add", methods=["GET", "POST"])
+def user_add():
+    form = user_forms.AddUserForm()
+    if form.validate_on_submit():
+        user = form.save()
+        update_user_perms(user)
+        bb_user.flash("User successfully added.", "success")
+        return redirect(url_for("user_manage"))
+
+    perms = permission_list
+    return render_template("user/user_form.html", form=form, perms=perms,
+                           title=_("Add User"))

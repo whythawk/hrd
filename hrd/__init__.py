@@ -5,6 +5,7 @@ import urllib
 from flask import Flask, request, abort
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.babel import Babel
+
 from werkzeug.wsgi import DispatcherMiddleware
 
 from flaskbb_shim import get_flaskbb
@@ -104,7 +105,7 @@ def lang_html():
 
 def lang_html_body():
     lang = request.environ['LANG']
-    return 'class="%s"' % lang_dir[lang]
+    return lang_dir[lang]
 
 def lang_pick(lang):
     current_url = request.environ['CURRENT_URL']
@@ -209,11 +210,17 @@ class I18nMiddleware(object):
                 environ['CURRENT_URL'] = path_info
         return self.app(environ, start_response)
 
-flaskbb = get_flaskbb(app, __path__[0])
+flaskbb = get_flaskbb(app, __path__[0], url_for)
 flaskbb.jinja_env.globals['url_for'] = url_for
 flaskbb.jinja_env.globals['url_for_fixed'] = url_for_fixed
+app.jinja_env.filters['format_date'] = flaskbb.jinja_env.filters['format_date']
+app.jinja_env.filters['can_edit_user'] = flaskbb.jinja_env.filters['can_edit_user']
+app.jinja_env.filters['can_ban_user'] = flaskbb.jinja_env.filters['can_ban_user']
+app.jinja_env.filters['is_admin'] = flaskbb.jinja_env.filters['is_admin']
+app.extensions['cache'] = flaskbb.extensions['cache']
 
 app.login_manager = flaskbb.login_manager
+app.bb = flaskbb
 
 app = DispatcherMiddleware(app, {
     '/forum': flaskbb

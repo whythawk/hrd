@@ -10,13 +10,18 @@
       {% set user = current_user %}
       {% if user %}
         {% set my_content = '<div>' +
-          sub_menu_item(_('Log out'), url_for_fixed('/logout'), force_right=true) +
+          sub_menu_item(_('Log out'), url_for_fixed('/user/logout'), force_right=true) +
+          sub_menu_item(_('My account'), url_for_fixed('/user/profile'), force_right=true) +
           '</div>' %}
         {{ menu_item(user.username, '#', force_right=true, content=my_content, class='logged-in', icon='user') }}
 
       {% if show_extras %}
         {% if has_perm('translator') %}
-            {{ menu_item(_('Admin'), url_for_fixed('/admin'), force_right=true) }}
+        {% set my_content = '<div>' +
+          sub_menu_item(_('Content'), url_for_fixed('/admin'), force_right=true) +
+          sub_menu_item(_('Users'), url_for_fixed('/user/manage'), force_right=true) +
+          '</div>' %}
+            {{ menu_item(_('Admin'), '#', force_right=true, content=my_content) }}
         {% endif %}
         {% endif %}
       {% else %}

@@ -17,7 +17,7 @@ try:
 except ImportError:
     import config.default as config
 
-engine = sa.create_engine(config.DB_CONNECTION, echo=False)
+engine = sa.create_engine(config.DB_CONNECTION)
 conn = engine.connect()
 
 DIR = os.path.dirname(os.path.realpath(__file__))
@@ -25,23 +25,35 @@ DIR = os.path.dirname(os.path.realpath(__file__))
 
 def get_translations(quiet=True):
     ''' Extract translations put in db and create mo file'''
-    sql = "UPDATE translation SET active=0 WHERE lang='en';"
+    sql = "UPDATE translation SET active='0' WHERE lang='en';"
     engine.execute(sql)
 
     method_map = [
         ('**/templates/**.html', 'jinja2'),
-        ('**/themes/**.html', 'jinja2'),
         ('**.py', 'python')
     ]
+    options_map = {
+        '**/themes/hrd/**.html': {'extensions':'jinja2.ext.autoescape'}
+    }
 
     if not quiet:
         print 'Extracting translations'
 
-    extracted = extract.extract_from_dir('.', method_map=method_map)
+    extracted = extract.extract_from_dir('.', method_map=method_map,options_map = options_map)
 
     DIR = os.path.dirname(os.path.realpath(__file__))
 
     catalog = Catalog(project='hrd')
+
+    sql = """
+        SELECT max(id) FROM translation;
+    """
+
+    result = conn.execute(sql).first()
+
+    max_id = result[0]
+    if not max_id:
+        max_id = 0
 
     for filename, lineno, message, comments, context in extracted:
         filepath = os.path.normpath(os.path.join(DIR, filename))
@@ -55,25 +67,27 @@ def get_translations(quiet=True):
         else:
             values = (message, '')
 
+
         sql = """
             SELECT active FROM translation
             WHERE
-            lang = 'en' and string=? and plural=?;
+            lang = 'en' and "string" = %s and plural = %s;
         """
 
         result = conn.execute(sql, values).first()
         if result is None:
             sql = """
-                INSERT INTO translation (string, plural, lang, active)
-                VALUES (?, ?, 'en', 1);
+                INSERT INTO translation (id, string, plural, lang, active)
+                VALUES (%s, %s, %s, 'en', '1');
             """
-            conn.execute(sql, values)
+            max_id += 1
+            conn.execute(sql, (max_id,) + values)
         elif result[0] == 0:
             sql = """
                 UPDATE translation
-                SET active = 1
+                SET active = '1'
                 WHERE
-                lang = 'en' and string=? and plural=?;
+                lang = 'en' and string=%s and plural=%s;
             """
             conn.execute(sql, values)
 
@@ -119,24 +133,35 @@ def mangle(value):
 
 
 def create_fake_trans(lang):
-    sql = "DELETE FROM translation WHERE lang = ?"
+    sql = "DELETE FROM translation WHERE lang = %s"
     result = conn.execute(sql, lang)
 
     sql = """
+        SELECT max(id) FROM translation;
+    """
+
+    result = conn.execute(sql).first()
+
+    max_id = result[0]
+    if not max_id:
+        max_id = 0
+
+    sql = """
         SELECT DISTINCT string, plural FROM translation
-        WHERE lang = 'en' and active=1;
+        WHERE lang = 'en' and active='1';
     """
 
     result = conn.execute(sql)
     values = []
     for row in result:
+        max_id += 1
         values.append(
-            (row.string, row.plural, lang, mangle(row.string), mangle(row.plural))
+            (max_id, row.string, row.plural, lang, mangle(row.string), mangle(row.plural))
         )
 
     sql = """
-        INSERT INTO translation (string, plural, lang, active, trans0, trans1)
-        VALUES (?, ?, ?, 1, ?, ?);
+        INSERT INTO translation (id, string, plural, lang, active, trans0, trans1)
+        VALUES (%s, %s, %s, %s, '1', %s, %s);
     """
     for value in values:
         conn.execute(sql, value)
@@ -145,7 +170,7 @@ def create_fake_trans(lang):
 def create_i18n_files(lang, quiet=True):
     sql = """
         SELECT * FROM translation
-        WHERE lang = ? and active=1;
+        WHERE lang = %s and active='1';
     """
 
     result = conn.execute(sql, lang)

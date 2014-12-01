@@ -142,15 +142,8 @@ from flaskbb.user.models import User, Guest
 #    active = db.Column(db.Boolean(), default=True)
 
 
+
 class UserPerms(db.Model):
-    user_id = db.Column(db.String(50), primary_key=True)
-    permission = db.Column(db.String(50), primary_key=True)
-
-    def __repr__(self):
-        return "<UserPerm %s %s>" % (self.user_id, self.permission)
-
-
-class UserPermsBB(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     permission = db.Column(db.String(50), primary_key=True)
 
