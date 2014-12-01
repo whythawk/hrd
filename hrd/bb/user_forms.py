@@ -182,7 +182,6 @@ class UserForm(Form):
     primary_group = QuerySelectField(
         _("Primary Group"),
         query_factory=select_primary_group,
-        default=4,
         get_label="name")
 
     secondary_groups = QuerySelectMultipleField(

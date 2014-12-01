@@ -38,7 +38,7 @@
             {{ horizontal_field(form.notes, rows=12, div_class="col-sm-9") }}
 
             <h4>Permissions</h4>
-
+            <input type="hidden" name="primary_group" value="4"/>
             {% import 'macro/form.html' as form %}
     {% for perm, name in perms %}
     {{ form.checkbox(perm, label=_(name), value=perm in user_perms) }}
