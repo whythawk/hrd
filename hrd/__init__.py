@@ -210,10 +210,21 @@ class I18nMiddleware(object):
 flaskbb = get_flaskbb(app, __path__[0], url_for)
 flaskbb.jinja_env.globals['url_for'] = url_for
 flaskbb.jinja_env.globals['url_for_fixed'] = url_for_fixed
-app.jinja_env.filters['format_date'] = flaskbb.jinja_env.filters['format_date']
-app.jinja_env.filters['can_edit_user'] = flaskbb.jinja_env.filters['can_edit_user']
-app.jinja_env.filters['can_ban_user'] = flaskbb.jinja_env.filters['can_ban_user']
-app.jinja_env.filters['is_admin'] = flaskbb.jinja_env.filters['is_admin']
+
+filters = [
+    'format_date',
+    'can_edit_user',
+    'can_ban_user',
+    'is_admin',
+
+    'time_since',
+    'is_online',
+    'markup',
+]
+
+for f in filters:
+    app.jinja_env.filters[f] = flaskbb.jinja_env.filters[f]
+
 app.extensions['cache'] = flaskbb.extensions['cache']
 
 app.login_manager = flaskbb.login_manager
