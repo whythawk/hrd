@@ -65,35 +65,6 @@ def logout():
     return redirect(url_for('cms_page2'))
 
 
-@app.route('/user/edit/<id>', methods=['GET', 'POST'])
-def user_edit_old(id):
-    user = User.query.filter_by(id=id).first()
-    perms = permission_list
-    if not user:
-        abort(404)
-    if request.method == 'POST':
-        user.name = get_str('name')
-        db.session.add(user)
-        # permissions
-        p_in = []
-        p_out = []
-        for perm, rest in perms:
-            if get_bool(perm):
-                p_in.append(perm)
-            else:
-                p_out.append(perm)
-        current = [
-            p.permission for p in UserPerms.query.filter_by(user_id=id).all()
-        ]
-        for perm in p_in:
-            if perm not in current:
-                perm = UserPerms(user_id=id, permission=perm)
-                db.session.add(perm)
-        for perm in p_out:
-            UserPerms.query.filter_by(user_id=id, permission=perm).delete()
-
-        db.session.commit()
-        return redirect(url_for_admin('user_edit', id=id))
 
     user_perms = [
         p.permission for p in UserPerms.query.filter_by(user_id=id).all()
