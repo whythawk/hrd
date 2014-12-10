@@ -188,7 +188,7 @@
 
 
 {% macro translations_bar(trans={}, exclude=[]) %}
-  {% if has_perm('translator') %}
+  {% if has_perm('content_manage') %}
     <div class="col-xs-12 col-md-12 clearfix">
       <ul id="" class="nav nav-tabs nav-justified" data-tabs="" role="tablist">
     {% for code, lang, dir, active in lang_list() %}

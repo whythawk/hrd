@@ -76,10 +76,7 @@ def permission(permission):
 
 
 def permission_content(lang):
-    if lang == 'en':
-        permission('content_manage')
-    else:
-        permission('translation')
+    permission('content_manage')
 
 
 def lang_list():
