@@ -46,6 +46,17 @@
                 {% import '/macro/general.html' as general %}
                 {{ general.pager(pages, page, 'pagination-top') }}
                 <!-- /Top pagination ends ============================= -->
+                {% if not orgs %}
+
+<div class="well col-xs-12">
+   <h1>
+     <span class="glyphicon glyphicon-search"></span>
+     {{ _('No results') }}
+     <br /><br />
+     <small>{{ _('Adjust your search to be less specific.') }}</small>
+    </h1>
+</div>
+                {% else %}
                 {% for org in orgs %}
                 <!-- Search result row begins ============================= -->
                 <article class="search-result{% if loop.index == 1 %} first{% elif loop.index == loop.length %} last{% endif %}">
@@ -61,6 +72,7 @@
                 </article>
                 <!-- /Search result row ends ============================= -->
                 {% endfor %}
+                {% endif %}
                 <!-- Bottom pagination begins ============================= -->
                 {{ general.pager(pages, page, 'pagination-bottom') }}
                 <!-- /Bottom pagination ends ============================= -->
