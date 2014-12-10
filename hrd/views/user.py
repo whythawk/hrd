@@ -103,7 +103,7 @@ def user_edit_old(id):
 
 
 @app.route('/user/profile', methods=['GET', 'POST'])
-def user_profile():
+def user_my_profile():
     form = user_forms.ChangeUserDetailsForm(obj=current_user)
 
     if form.validate_on_submit():
