@@ -30,7 +30,8 @@
 
 {% for cat in cats if cat.active %}
                     <div class="row">
-                        <details class="{% if loop.index == 1 %}first{% elif loop.index == loop.length %}last{% endif %}" {% if search_subset(cat.codes, request.args) %}open="open"{% endif %}>
+                        {# <details class="{% if loop.index == 1 %}first{% elif loop.index == loop.length %}last{% endif %}" {% if search_subset(cat.codes, request.args) %}open="open"{% endif %}> #}
+                        <details class="{% if loop.index == 1 %}first{% elif loop.index == loop.length %}last{% endif %}" open="open">
                         <summary class="search-filter-title">{{ cat.title }}</summary>
         {% for code in cat.codes if code.active %}
                             <label>
