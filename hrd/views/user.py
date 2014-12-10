@@ -7,7 +7,7 @@ from flask.ext.babel import _
 from hrd.bb import user_forms, forum_forms
 
 from hrd import (app, db, url_for_admin, get_str, url_for,
-                 get_bool, permission_list)
+                 get_bool, permission_list, permission)
 from hrd.models import User, UserPerms
 
 from flaskbb.user.models import Group
@@ -65,12 +65,11 @@ def logout():
     return redirect(url_for('cms_page2'))
 
 
+@app.route("/user/profile/<username>")
+def user_profile(username):
+    user = User.query.filter_by(username=username).first_or_404()
 
-    user_perms = [
-        p.permission for p in UserPerms.query.filter_by(user_id=id).all()
-    ]
-    return render_template('user/edit.html', user=user, perms=perms,
-                           user_perms=user_perms)
+    return render_template("user/profile.html", _user=user)
 
 
 @app.route('/user/profile', methods=['GET', 'POST'])
@@ -88,6 +87,7 @@ def user_my_profile():
 
 @app.route("/user/password", methods=["POST", "GET"])
 def user_change_password():
+    permission('user_manage')
     form = user_forms.ChangePasswordForm()
     if form.validate_on_submit():
         current_user.password = form.new_password.data
@@ -100,6 +100,7 @@ def user_change_password():
 
 @app.route("/user/email", methods=["POST", "GET"])
 def user_change_email():
+    permission('user_manage')
     form = user_forms.ChangeEmailForm(current_user)
     if form.validate_on_submit():
         current_user.email = form.new_email.data
@@ -112,6 +113,7 @@ def user_change_email():
 
 @app.route("/user/manage", methods=['GET', 'POST'])
 def user_manage():
+    permission('user_manage')
     page = request.args.get("page", 1, type=int)
     search_form = forum_forms.UserSearchForm()
 
@@ -132,6 +134,7 @@ def user_manage():
 
 @app.route("/user/<int:user_id>/edit", methods=["GET", "POST"])
 def user_edit(user_id):
+    permission('user_manage')
     user = User.query.filter_by(id=user_id).first_or_404()
 
 #    if not can_edit_user(current_user):
@@ -201,6 +204,7 @@ def get_user_perms(id):
 
 @app.route("/user/<int:user_id>/delete")
 def user_delete(user_id):
+    permission('user_manage')
     user = User.query.filter_by(id=user_id).first_or_404()
     user.delete()
     bb_user.flash("User successfully deleted", "success")
@@ -209,6 +213,7 @@ def user_delete(user_id):
 
 @app.route("/user/add", methods=["GET", "POST"])
 def user_add():
+    permission('user_manage')
     form = user_forms.AddUserForm()
     if form.validate_on_submit():
         user = form.save()
