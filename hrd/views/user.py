@@ -87,7 +87,6 @@ def user_my_profile():
 
 @app.route("/user/password", methods=["POST", "GET"])
 def user_change_password():
-    permission('user_manage')
     form = user_forms.ChangePasswordForm()
     if form.validate_on_submit():
         current_user.password = form.new_password.data
@@ -100,7 +99,6 @@ def user_change_password():
 
 @app.route("/user/email", methods=["POST", "GET"])
 def user_change_email():
-    permission('user_manage')
     form = user_forms.ChangeEmailForm(current_user)
     if form.validate_on_submit():
         current_user.email = form.new_email.data
