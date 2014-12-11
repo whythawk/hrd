@@ -30,6 +30,7 @@ def translation_list():
     status = list_status()
     return render_template('admin/translation_list.html',
                            translations=translations,
+                           lang=lang,
                            status=status,
                            missing=missing)
 

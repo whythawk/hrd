@@ -10,6 +10,9 @@
  {{ form.translations_bar(status, exclude=['en']) }}
   {# cat listing #}
  <div class="alert col-xs-12 org-cat-list">
+     {% if lang=='en' %}
+     <h3> There are no English translations needed.  Please select a language from the above tabs.</h3>
+     {% else %}
 {# new cat #}
   <ul>
 
@@ -41,6 +44,8 @@
   {% endfor %}
     </div>
   </ul>
+  {% endif %}
+  </div>
 
 {#  {{ form.code_list(all) }} #}
 {% endblock %}
