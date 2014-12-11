@@ -51,6 +51,13 @@ def truncate(s, length=255, killwords=False, end='...'):
 app.jinja_env.filters.update({'truncate': truncate})
 
 
+# Capitalize the language names for consistency/client desires
+_language_list = []
+for code, name, dir_, active in language_list:
+    _language_list.append(( code, name.title(), dir_, active))
+language_list = _language_list
+
+
 lang_dir = {}
 for code, name, dir_, active in language_list:
     lang_dir[code] = dir_
