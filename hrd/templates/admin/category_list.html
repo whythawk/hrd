@@ -19,6 +19,7 @@
     {% for cat in all %}
     {# category start #}
     <li class="alert col-xs-12 org-cat-top-level alert-null">
+    <details><summary>
         <h4>{{ cat.title }}
         {% if not cat.active %}
         <span class="label label-null">Inactive</span>
@@ -37,8 +38,7 @@
           ) }}
 
         {% endif %}
-
-
+        </summary>
           <ul>
         {% for code in cat.codes %}
 
@@ -64,7 +64,7 @@
         {# code end #}
 
         {% endfor %}
-
+        </summary>
         {% for code in m_codes[cat.category_id] %}
         <li class="col-xs-12">
         <div class="org-cat-alert bg-danger">
