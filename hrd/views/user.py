@@ -21,9 +21,12 @@ def before_request():
     request.user = None
     request.permissions = []
     user = current_user
-    if user.is_authenticated():
-        request.user = user
-        request.permissions = get_users_permissions(user)
+    try:
+        if user.is_authenticated():
+            request.user = user
+            request.permissions = get_users_permissions(user)
+    except:
+        logout_user()
 
 
 def get_users_permissions(user):
