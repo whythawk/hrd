@@ -102,6 +102,9 @@ def current_admin_lang():
     return lang_name[get_admin_lang()]
 
 
+def current_admin_lang_dir():
+    return lang_dir[get_admin_lang()]
+
 def lang_html():
     lang = request.environ['LANG']
     return 'lang="%s" dir="%s"' % (lang, lang_dir[lang])

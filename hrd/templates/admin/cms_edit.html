@@ -34,5 +34,6 @@
 	{ name: 'tools', items: [ 'Source', '-','Maximize'] }
 ];
      CKEDITOR.replace( 'content', {height: '400px'} );
+      CKEDITOR.config.contentsLangDirection = '{{ get_admin_lang_dir() }}';
 </script>
 {% endblock %}

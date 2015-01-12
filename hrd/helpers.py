@@ -157,6 +157,7 @@ hrd.app.jinja_env.globals.update(
     url_for=hrd.url_for,
     url_for_fixed=hrd.url_for_fixed,
     get_admin_lang=hrd.get_admin_lang,
+    get_admin_lang_dir=hrd.current_admin_lang_dir,
     lang_html=hrd.lang_html,
     lang_html_body=hrd.lang_html_body,
     lang_pick=hrd.lang_pick,
