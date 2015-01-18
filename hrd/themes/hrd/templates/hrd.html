@@ -28,6 +28,11 @@
             sub_menu_item(_('Users'), url_for_fixed('/user/manage'), force_right=true)
             %}
           {% endif %}
+          {% if has_perm('forum_admin') %}
+            {% set my_content = my_content +
+            sub_menu_item(_('Forum'), url_for_fixed('/forum/admin/forums'), force_right=true)
+            %}
+          {% endif %}
             {% set my_content = my_content + '</div>' %}
             {{ menu_item(_('Admin'), '#', force_right=true, content=my_content) }}
         {% endif %}
