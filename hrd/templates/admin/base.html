@@ -15,11 +15,13 @@
         {{ menu_item('Pages', url_for_admin('cms_list')) }}
         {{ menu_item('Organisations', url_for_admin('org_list')) }}
         {{ menu_item('Org. categories', url_for_admin('category_list', cat_type='org')) }}
-        {{ menu_item('Resources', url_for_admin('resource_list')) }}
+        {% if has_perm('content_manage') %}
+            {{ menu_item('Resources', url_for_admin('resource_list')) }}
+        {% endif %}
         {{ menu_item('Res. categories', url_for_admin('category_list', cat_type='res')) }}
         {{ menu_item('Menu Items', url_for_admin('menu_list')) }}
         {% if has_perm('translator') %}
-        {{ menu_item('Translations', url_for_admin('translation_list')) }}
+            {{ menu_item('Translations', url_for_admin('translation_list')) }}
         {% endif %}
 
     {% block user_bar %}
