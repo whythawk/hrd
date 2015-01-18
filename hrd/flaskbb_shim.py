@@ -148,6 +148,83 @@ def forum_form_hack():
 
 
 BARRED_VIEWS = [
+
+#    'forum.index',
+#    'forum.view_category',
+#    'forum.view_forum',
+#    'forum.view_topic',
+#    'forum.view_post',
+#    'forum.new_topic',
+#    'forum.delete_topic',
+#    'forum.lock_topic',
+#    'forum.unlock_topic',
+#    'forum.move_topic',
+#    'forum.merge_topic',
+#    'forum.new_post',
+#    'forum.reply_post',
+#    'forum.edit_post',
+#    'forum.delete_post',
+#    'forum.report_post',
+#    'forum.raw_post',
+#    'forum.markread',
+#    'forum.who_is_online',
+#    'forum.memberlist',
+#    'forum.topictracker',
+#    'forum.track_topic',
+#    'forum.untrack_topic',
+#    'forum.search',
+#    'user.profile',
+#    'user.view_all_topics',
+#    'user.view_all_posts',
+#    'user.settings',
+#    'user.change_password',
+#    'user.change_email',
+#    'user.change_user_details',
+#    'user.inbox',
+#    'user.view_message',
+#    'user.sent',
+#    'user.trash',
+#    'user.drafts',
+#    'user.new_message',
+#    'user.edit_message',
+#    'user.move_message',
+#    'user.restore_message',
+#    'user.delete_message',
+#    'auth.login',
+#    'auth.reauth',
+#    'auth.logout',
+#    'auth.register',
+#    'auth.forgot_password',
+#    'auth.reset_password',
+#    'management.overview',
+    'management.settings',
+    'management.users',
+    'management.edit_user',
+    'management.delete_user',
+    'management.add_user',
+#    'management.banned_users',
+#    'management.ban_user',
+#    'management.unban_user',
+#    'management.reports',
+#    'management.unread_reports',
+#    'management.report_markread',
+#    'management.groups',
+#    'management.edit_group',
+#    'management.delete_group',
+#    'management.add_group',
+#    'management.forums',
+#    'management.edit_forum',
+#    'management.delete_forum',
+#    'management.add_forum',
+#    'management.add_category',
+#    'management.edit_category',
+#    'management.delete_category',
+    'management.plugins',
+    'management.enable_plugin',
+    'management.disable_plugin',
+    'management.uninstall_plugin',
+    'management.install_plugin',
+
 ]
 
 
@@ -155,8 +232,8 @@ def block_routes(app):
     ''' remove routes for views we do not want '''
     rules = []
     for rule in app.url_map._rules:
-        # print rule.endpoint, rule.rule
         if rule.endpoint not in BARRED_VIEWS:
+            # print rule.endpoint, rule.rule
             rules.append(rule)
 
     app.url_map._rules = rules
