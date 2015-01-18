@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+import uuid
 import os
 import re
 import sys
 
+from sqlalchemy.sql import text
 import sqlalchemy as sa
 
 from babel.messages import extract
@@ -224,6 +226,59 @@ def create_i18n_files(lang, quiet=True):
     finally:
         outfile.close()
 
+def update_categories_countries():
+    sql = """
+        CREATE TABLE IF NOT EXISTS cat_translations (
+            id1 character varying(50),
+            id2 character varying(50)
+        )
+    """
+
+    result = conn.execute(sql)
+
+    countries_id = '27c406c7-951f-482d-bbd8-3229c7f9c74b'
+    relocation_id = 'bc99b20d-be07-4379-93a6-b2fcd7cdb3db'
+
+    sql = text("DELETE FROM code WHERE category_id = :id")
+    result = conn.execute(sql, id=relocation_id)
+
+    sql = text("SELECT * FROM code WHERE category_id = :id")
+    result = conn.execute(sql, id=countries_id)
+
+    for row in result:
+        print row['title']
+
+        sql = text("SELECT id2 FROM cat_translations WHERE id1 = :id")
+        ct = conn.execute(sql, id=row['code_id'])
+        new_id = None
+        for ct_row in ct:
+            new_id = ct_row['id2']
+        if not new_id:
+            new_id = str(uuid.uuid4())
+            sql = text("INSERT INTO cat_translations (id1, id2) VALUES (:id1, :id2)")
+            ct = conn.execute(sql, id1=row['code_id'], id2=new_id)
+        sql = text("""
+            INSERT INTO code (
+                id, code_id, category_id, title, description, lang, status, current, active, public, "order"
+            ) VALUES (
+                :id, :code_id, :category_id, :title, :description, :lang, :status, :current, :active, :public, :order
+            )""")
+        ct = conn.execute(
+            sql,
+            id=str(uuid.uuid4()),
+            code_id=new_id,
+            category_id=relocation_id,
+            title=row['title'],
+            description=row['description'],
+            lang=row['lang'],
+            status=row['status'],
+            current=row['current'],
+            active=row['active'],
+            public=row['public'],
+            order=row['order']
+         )
+
+
 
 def create_all_i18n_files(quiet=True):
     locales = [lang[0] for lang in config.LANGUAGE_LIST]
@@ -241,3 +296,5 @@ if __name__ == '__main__':
             get_translations(quiet=False)
         if sys.argv[1] == 'mangle' and len(sys.argv) == 3:
             create_fake_trans(sys.argv[2])
+        if sys.argv[1] == 'category_fix' and len(sys.argv) == 2:
+            update_categories_countries()
