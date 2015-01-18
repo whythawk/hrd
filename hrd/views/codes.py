@@ -1,7 +1,7 @@
 from flask import render_template, request, abort, redirect
 
 from hrd import (app, db, url_for_admin, get_admin_lang, get_bool,
-                 get_int, lang_codes)
+                 get_int, lang_codes, permission, permission_content)
 from hrd.models import Category, Code
 
 CAT_TYPES = ['org', 'res']
@@ -16,6 +16,7 @@ def check_cat_type(cat_type):
 def category_new(cat_type):
     check_cat_type(cat_type)
     lang = 'en'
+    permission_content(lang)
     category = Category(lang=lang)
     category.status = 'edit'
     category.cat_type = cat_type
@@ -30,6 +31,7 @@ def category_new(cat_type):
 def category_edit(id, cat_type):
     set_menu(cat_type)
     lang = get_admin_lang()
+    permission_content(lang)
     category = Category.query.filter_by(category_id=id, lang=lang).first()
     if not category and lang != 'en':
         category = Category.query.filter_by(category_id=id, lang='en').first()
@@ -92,6 +94,7 @@ def get_code_trans(id):
 def code_edit(id, cat_type):
     set_menu(cat_type)
     lang = get_admin_lang()
+    permission_content(lang)
     code = Code.query.filter_by(code_id=id, lang=lang).first()
     if not code and lang != 'en':
         code = Code.query.filter_by(code_id=id, lang='en').first()
@@ -131,6 +134,7 @@ def code_edit(id, cat_type):
 @app.route('/admin/category_trans/<cat_type>/<id>', methods=['POST'])
 def category_trans(id, cat_type):
     lang = get_admin_lang()
+    permission_content(lang)
     category = Category.query.filter_by(category_id=id, lang='en').first()
     if not category:
         abort(404)
@@ -152,6 +156,7 @@ def category_trans(id, cat_type):
 @app.route('/admin/code_trans/<cat_type>/<id>', methods=['POST'])
 def code_trans(id, cat_type):
     lang = get_admin_lang()
+    permission_content(lang)
     code = Code.query.filter_by(code_id=id, lang='en').first()
     if not code:
         abort(404)
@@ -174,6 +179,7 @@ def category_list(cat_type):
     set_menu(cat_type)
     check_cat_type(cat_type)
     lang = get_admin_lang()
+    permission(['content_manage', 'translator'])
     categories = Category.query.filter_by(
         lang=lang, current=True, cat_type=cat_type
     )
@@ -246,6 +252,7 @@ def list_status(cat_type):
 @app.route('/admin/code_new/<cat_type>/<category_id>', methods=['POST'])
 def code_new(category_id, cat_type):
     lang = 'en'
+    permission_content(lang)
     code = Code(lang=lang)
     code.status = 'edit'
     code.category_id = category_id
@@ -256,6 +263,7 @@ def code_new(category_id, cat_type):
 
 @app.route('/admin/category_delete/<cat_type>/<category_id>', methods=['POST'])
 def category_delete(category_id, cat_type):
+    permission('content_manage')
     # Prevent delet if there are codes for the category
     if Code.query.filter_by(category_id=category_id).all():
         return redirect(url_for_admin('category_list', cat_type=cat_type))
@@ -266,6 +274,7 @@ def category_delete(category_id, cat_type):
 
 @app.route('/admin/code_delete/<cat_type>/<code_id>', methods=['POST'])
 def code_delete(code_id, cat_type):
+    permission('content_manage')
     Code.query.filter_by(code_id=code_id).delete()
     db.session.commit()
     return redirect(url_for_admin('category_list', cat_type=cat_type))

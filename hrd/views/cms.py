@@ -264,7 +264,7 @@ def cms_preview(id):
 def cms_list():
     set_menu()
     lang = get_admin_lang()
-    permission_content(lang)
+    permission(['content_manage', 'translator'])
     pages = Cms.query.filter_by(lang=lang, current=True)
     pages = pages.order_by('title')
     for page in pages:

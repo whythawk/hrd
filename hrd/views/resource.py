@@ -10,7 +10,7 @@ from werkzeug import secure_filename
 
 
 from hrd import (app, db, url_for_admin, get_admin_lang, get_bool, config,
-                 permission, permission_content, get_str, lang_codes)
+                 permission, get_str, lang_codes)
 from hrd.models import Resource, ResourceCodes
 from hrd.views.codes import all_codes, cat_codes
 
@@ -41,7 +41,7 @@ def fix_url(url):
 @app.route('/admin/resource_edit/<id>', methods=['GET', 'POST'])
 def resource_edit(id):
     set_menu()
-    permission_content('en')
+    permission('content_manage')
     errors = []
     resource = Resource.query.filter_by(
         resource_id=id, current=True
@@ -212,7 +212,7 @@ STATES = {
 @app.route('/admin/resource_state/<id>/<state>', methods=['POST'])
 def resource_state(id, state):
     lang = get_admin_lang()
-    permission_content('en')
+    permission('content_manage')
     if state not in STATES:
         abort(403)
     resource = Resource.query.filter_by(
@@ -303,7 +303,7 @@ def resource_cat_codes(lang, id):
 def resource_preview(id):
     set_menu()
     lang = get_admin_lang()
-    permission_content('en')
+    permission('content_manage')
     resource = Resource.query.filter_by(
         resource_id=id, lang=lang, current=True
     ).first()
@@ -335,7 +335,7 @@ def get_trans(id):
 def resource_list():
     set_menu()
     lang = get_admin_lang()
-    permission_content('en')
+    permission('content_manage')
     resources = Resource.query.filter_by(lang=lang, current=True)
     resources = resources.order_by('name')
     for resource in resources:

@@ -4,6 +4,9 @@
 
 {% block content %}
  {{ form.translations_bar(trans=status) }}
+ {% if not content_trans(lang) %}
+ <h3>Select a language</h3>
+ {% else %}
   {% if lang =='en' %}
     <div class="alert new-page col-xs-12 alert-null">
 <h4>{{ 'Create a new page' }}</h4>
@@ -57,4 +60,5 @@
       {{ form.action('Create', url_for_admin('cms_edit', id=page.page_id), icon='plus', class='btn-success') }}
     </div>
   {% endfor %}
+  {% endif %}
 {% endblock %}

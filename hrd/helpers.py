@@ -169,6 +169,7 @@ hrd.app.jinja_env.globals.update(
     current_lang_name=hrd.current_lang_name,
     current_admin_lang=hrd.current_admin_lang,
     has_perm=has_perm,
+    content_trans=hrd.content_trans,
     menu_class=menu_class,
     sub_menu_item=sub_menu_item,
     debug=hrd.DEBUG,

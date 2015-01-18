@@ -16,7 +16,7 @@ from hrd.models import Translation
 def translation_list():
     set_menu()
     lang = get_admin_lang()
-    permission_content(lang)
+    permission(['content_manage', 'translator'])
     translations_en = Translation.query.filter_by(lang='en', active=True).order_by('string', 'plural')
     missing = OrderedDict()
     for t in translations_en:

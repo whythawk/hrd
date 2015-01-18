@@ -187,11 +187,12 @@
 
 
 
-{% macro translations_bar(trans={}, exclude=[]) %}
-  {% if has_perm('content_manage') %}
+{% macro translations_bar(trans={}, exclude=[], show_all=false) %}
+  {% if has_perm('content_manage') or has_perm('translator') %}
     <div class="col-xs-12 col-md-12 clearfix">
       <ul id="" class="nav nav-tabs nav-justified" data-tabs="" role="tablist">
     {% for code, lang, dir, active in lang_list() %}
+    {% if show_all or (code == 'en' and has_perm('content_manage')) or (code != 'en' and has_perm('translator')) %}
     {% if code not in exclude %}
       {% set state = get_trans_state(trans[code]) %}
       {% set active = (get_admin_lang() == code) %}
@@ -206,6 +207,7 @@
           {% endif %}
           <span lang="{{ code }}" dir="{{ dir }}">{{ lang }}</span></a>
         </li>
+      {% endif %}
       {% endif %}
       {% endfor %}
       </ul>

@@ -22,9 +22,9 @@
 
         {{ menu_item(_('Message board'), url_for_fixed('/forum'), force_right=true) }}
       {% if show_extras %}
-        {% if has_perm('content_manage') or has_perm('user_manage') %}
+        {% if has_perm('content_manage') or has_perm('user_manage') or has_perm('translator') %}
         {% set my_content = '<div>' %}
-          {% if has_perm('content_manage') %}
+          {% if has_perm('content_manage') or has_perm('translator') %}
             {% set my_content = my_content +
             sub_menu_item(_('Content'), url_for('admin'), force_right=true)
             %}

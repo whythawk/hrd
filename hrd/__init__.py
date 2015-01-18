@@ -77,13 +77,26 @@ permission_list = config.PERMISSIONS
 
 
 def permission(permission):
-    if permission not in request.permissions:
+    if isinstance(permission, basestring):
+        permission = [permission]
+    if not set(permission) & set(request.permissions):
         if 'sys_admin' not in request.permissions:
             abort(403)
 
 
 def permission_content(lang):
-    permission('content_manage')
+    if lang == 'en':
+        permission('content_manage')
+    else:
+        permission('translator')
+
+def content_trans(lang):
+    if 'sys_admin' in request.permissions:
+        return True
+    if lang == 'en':
+        return 'content_manage' in request.permissions
+    return 'translator' in request.permissions or 'content_manage' in request.permissions
+
 
 
 def lang_list():

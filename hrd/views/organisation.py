@@ -334,7 +334,7 @@ def get_trans(id):
 def org_list():
     set_menu()
     lang = get_admin_lang()
-    permission_content(lang)
+    permission(['content_manage', 'translator'])
     orgs = Organisation.query.filter_by(lang=lang, current=True)
     orgs = orgs.order_by('name')
     for org in orgs:
