@@ -81,7 +81,7 @@ def translation_edit(id):
                            rule=rule,
                            plurals=plurals,
                            errors=errors,
-                           metadata=metadata,
+                           metadata=','.join(metadata),
                            translation=translation)
 
 
