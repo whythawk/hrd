@@ -55,6 +55,7 @@
 
     <ul class="navbar-nav nav-mega">
         {%- from "macros.html" import topnav with context -%}
+        {% if user %}
                             {{ emit_event("before-first-navigation-element") | safe }}
 
                             {# active_forum_nav is set in {forum, category, topic}.html and new_{topic, post}.html #}
@@ -67,6 +68,13 @@
         {%- import theme("hrd.html") as hrd with context -%}
 
         {{ hrd.user_menu() }}
+        {% else %}
+        <li class="navbar-right">
+                            <a class="btn btn-primary" href="{{ url_for_fixed('/user/login') }}">
+                                <span class="fa fa-user"></span> Login
+                            </a>
+        </li>
+        {% endif %}
                         </ul>
                 </ul>
                 {#
