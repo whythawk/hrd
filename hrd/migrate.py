@@ -44,3 +44,17 @@ try:
     db.engine.execute(sql)
 except:
     pass
+
+
+sql = '''
+ALTER TABLE users
+    ADD ga_enabled BOOLEAN NOT NULL DEFAULT True,
+    ADD ga_key VARCHAR(50),
+    ADD reset_code VARCHAR(50),
+    ADD reset_date TIMESTAMP;
+'''
+
+try:
+    db.engine.execute(sql)
+except:
+    pass

@@ -55,7 +55,7 @@
 
     <ul class="navbar-nav nav-mega">
         {%- from "macros.html" import topnav with context -%}
-        {% if user %}
+        {% if user_logged_in() %}
                             {{ emit_event("before-first-navigation-element") | safe }}
 
                             {# active_forum_nav is set in {forum, category, topic}.html and new_{topic, post}.html #}

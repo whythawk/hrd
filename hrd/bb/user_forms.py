@@ -152,8 +152,8 @@ class UserForm(Form):
         DataRequired(message=_("A E-Mail address is required.")),
         Email(message=_("This email is invalid"))])
 
-    password = PasswordField(_("Password"), validators=[
-        Optional()])
+#    password = PasswordField(_("Password"), validators=[
+ #       Optional()])
 
     birthday = DateField(_("Birthday"), format="%d %m %Y",
                          widget=SelectDateWidget(),

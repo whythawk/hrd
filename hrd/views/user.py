@@ -1,19 +1,24 @@
+import cStringIO
 
+import qrcode
 from passlib.hash import sha512_crypt as passlib
-from flask import render_template, request, abort, redirect
+from flask import render_template, request, session, redirect, send_file, abort
+from werkzeug.wrappers import Response
 
 import flaskbb.user.views as bb_user
 from flask.ext.babel import _
 from hrd.bb import user_forms, forum_forms
 
-from hrd import (app, db, url_for_admin, get_str, url_for,
+from hrd import (app, db, url_for_admin, get_str, url_for, check_ga,
                  get_bool, permission_list, permission)
 from hrd.models import User, UserPerms
+
+from hrd import googauth
 
 from flaskbb.user.models import Group
 
 from flask.ext.login import (current_user, login_user, login_required,
-                             logout_user, confirm_login, login_fresh)
+                             logout_user, login_fresh)
 
 
 @app.before_request
@@ -22,8 +27,12 @@ def before_request():
     request.permissions = []
     user = current_user
     if user.is_authenticated():
+        ga = check_ga()
+        if ga:
+            return ga
         request.user = user
         request.permissions = get_users_permissions(user)
+
 
 
 def get_users_permissions(user):
@@ -53,6 +62,13 @@ def login():
         if username and password:
             user = User.query.filter_by(username=username).first()
             if user and user.check_password(password):
+                result = db.session.execute('SELECT ga_key FROM users WHERE id=:id',
+                                            {'id':user.id}).first()
+                print result[0]
+                if result[0]:
+                    session['ga'] = 'check'
+                else:
+                    session['ga'] = 'setup'
                 login_user(user)
                 return redirect(url_for('cms_page2'))
 
@@ -62,7 +78,90 @@ def login():
 @app.route('/user/logout')
 def logout():
     logout_user()
+    session.clear()
     return redirect(url_for('cms_page2'))
+
+
+def send_reset_email(user):
+    print user
+
+
+@app.route('/user/reset', methods=['GET', 'POST'])
+def reset_request():
+    error = ''
+    if request.method == 'POST':
+        username = get_str('name')
+        user = User.query.filter_by(username=username).first()
+        if user:
+            send_reset_email(user)
+        return render_template('user/reset_request_sent.html', error=error)
+    return render_template('user/reset_request.html', error=error)
+
+@app.route('/user/ga_setup', methods=['GET', 'POST'])
+def ga_setup():
+    user = current_user
+    result = db.session.execute('SELECT ga_key FROM users WHERE id=:id',
+                                {'id':user.id}).first()
+    if result[0]:
+        abort(403)
+    if request.method == 'POST':
+        if get_str('cancel'):
+            return logout()
+        code = str(get_str('code'))
+        key = get_str('key')
+        if googauth.verify_time_based(key, code):
+            db.session.execute('UPDATE users SET ga_key=:key WHERE id=:id',
+                               {'id':user.id, 'key': key})
+            db.session.commit()
+            session['ga'] = 'authorized'
+            return render_template('user/ga_setup_complete.html')
+        else:
+            error = _('The verification code is incorrect please try again')
+    else:
+        error = ''
+        key = googauth.generate_secret_key()
+    return render_template('user/ga_setup.html', key=key, error=error)
+
+
+@app.route('/user/ga_check', methods=['GET', 'POST'])
+def ga_check():
+    user = current_user
+    result = db.session.execute('SELECT ga_key FROM users WHERE id=:id',
+                                {'id':user.id}).first()
+    if not result[0]:
+        abort(403)
+    if request.method == 'POST':
+        if get_str('cancel'):
+            return logout()
+        user = current_user
+        key = result[0]
+        code = str(get_str('code'))
+        if googauth.verify_time_based(key, code):
+            session['ga'] = 'authorized'
+            return redirect(url_for('cms_page2'))
+        error = 'Your verification code is incorrect'
+    else:
+        error = ''
+    return render_template('user/ga_check.html', error=error)
+
+@app.route('/user/qr.svg')
+def qr_code():
+    key = request.args.get('key')
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=1,
+    )
+    data = 'otpauth://totp/Hrd?secret=%s&issuer=Hrd' % key
+    qr.add_data(data)
+    qr.make(fit=True)
+
+    img = qr.make_image()
+    img_buf = cStringIO.StringIO()
+    img.save(img_buf)
+    img_buf.seek(0)
+    return send_file(img_buf, mimetype='image/png')
 
 
 @app.route("/user/profile/<username>")

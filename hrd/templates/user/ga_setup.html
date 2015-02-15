@@ -1,0 +1,37 @@
+{% extends 'body_base.html' %}
+
+{% block title %}{{ _('Setup Authenticaton') }}{% endblock %}
+
+
+{% block user_bar %}{% endblock %}
+
+{% block container_class %}login-content{% endblock %}
+
+{% block content %}
+        <h1>{{ _('Setup Authenticaton') }}<br /><br /></h1>
+
+        <div class="row col-xs-12 col-md-4 col-md-offset-4 blue-left-border hrd-padded-20 red-panel-bkg login-form">
+            <p>{{ _('You must setup your 2 factor authentication use the following key or scan the QR code below.')}}</p>
+            {% if error %}
+            <p>{{ error }}</p>
+            {% endif %}
+            <p>{{ _('Key') }} <strong>{{ key }}</strong></p>
+            <img src="{{ url_for('qr_code', key=key) }}" />
+            <p></p>
+            <p>{{ _('Enter the 6 digit validation code')}}</p>
+            <form role="form" method="POST">
+
+            <div class="form-group">
+                <label for="name">{{ _('Verification Code') }}</label>
+                <input id="code" class="form-control" name="code" type="text">
+            </div>
+            <input type="hidden" name="key" value="{{ key }}" />
+            <button type="submit" class="btn btn-default" value="cancel" name="cancel">
+                {{ _('Cancel') }}
+            </button>
+            <button type="submit" class="btn btn-primary pull-right" value="">
+                {{ _('Continue') }}
+            </button>
+            </form>
+        </div>
+{% endblock %}

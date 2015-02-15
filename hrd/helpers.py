@@ -2,7 +2,7 @@
 
 import re
 
-from flask import request
+from flask import request, session
 from babel.numbers import format_number as _format_number
 from babel import Locale
 from flask.ext.login import current_user
@@ -61,6 +61,11 @@ def user_id():
         return user.id
     return False
 
+
+def user_logged_in():
+    if session.get('ga') == 'authorized':
+        return True
+    return False
 
 def has_perm(permission):
     try:
@@ -169,6 +174,7 @@ hrd.app.jinja_env.globals.update(
     current_lang_name=hrd.current_lang_name,
     current_admin_lang=hrd.current_admin_lang,
     has_perm=has_perm,
+    user_logged_in=user_logged_in,
     content_trans=hrd.content_trans,
     menu_class=menu_class,
     sub_menu_item=sub_menu_item,

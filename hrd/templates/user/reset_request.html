@@ -1,6 +1,6 @@
 {% extends 'body_base.html' %}
 
-{% block title %}{{ _('Login') }}{% endblock %}
+{% block title %}{{ _('Request Password Reset') }}{% endblock %}
 
 
 {% block user_bar %}{% endblock %}
@@ -8,22 +8,16 @@
 {% block container_class %}login-content{% endblock %}
 
 {% block content %}
-        <h1>{{ _('Log in') }}<br /><br /></h1>
+        <h1>{{ _('Request Password Reset') }}<br /><br /></h1>
         <div class="row col-xs-12 col-md-4 col-md-offset-4 blue-left-border hrd-padded-20 red-panel-bkg login-form"><form role="form" method="POST">
+                <p>{{ _('Enter you username and we will send you an email to reset your password') }}</p>
             <div class="form-group">
                 <label for="name">{{ _('Username') }}</label>
                 <input id="name" class="form-control" name="name" type="text">
             </div>
-            <div class="form-group">
-                <label for="password">{{ _('Password') }}</label>
-                <input id="password" class="form-control" name="password" type="password">
-            </div>
             <button type="submit" class="btn btn-primary pull-right" value="">
-                {{ _('Log in') }}
+                {{ _('Request Reset') }}
             </button>
-            <div class="form-group">
-                <a href="{{ url_for('reset_request') }}" style="color:#163F92">{{ _('Forgot password') }}</a>
-            </div>
             </form>
         </div>
 {% endblock %}

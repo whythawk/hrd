@@ -5,6 +5,7 @@ from flask import request, abort
 from flask.ext.themes2 import Themes, render_theme_template
 from flask.ext.babel import Babel
 from flask.ext.login import current_user
+from werkzeug.wrappers import Response
 
 import flaskbb.forum.forms
 from flaskbb import create_app
@@ -14,6 +15,9 @@ import flaskbb.user
 
 from hrd.bb import user_forms
 from hrd.bb import forum_forms
+
+
+import hrd
 
 
 DIR = os.path.dirname(os.path.realpath(__file__))
@@ -62,6 +66,7 @@ def get_flaskbb(app, path, url_for):
         'menu_class',
         'sub_menu_item',
         'has_perm',
+        'user_logged_in',
     ]
 
     for helper in helpers:
@@ -86,6 +91,9 @@ def get_flaskbb(app, path, url_for):
     def no_guest():
         if not current_user.is_authenticated():
             abort(403)
+        ga = hrd.check_ga()
+        if ga:
+            return ga
 
     return _flaskbb
 

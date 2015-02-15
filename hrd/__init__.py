@@ -2,7 +2,7 @@
 import os.path
 import urllib
 
-from flask import Flask, request, abort
+from flask import Flask, request, abort, session, redirect
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.babel import Babel
 
@@ -20,6 +20,8 @@ except ImportError:
 language_list = config.LANGUAGE_LIST
 DIR = os.path.dirname(os.path.realpath(__file__))
 
+GA_SETUP_URL = '/user/ga_setup'
+GA_CHECK_URL = '/user/ga_check'
 
 app = Flask(__name__)
 app.debug = config.DEBUG
@@ -174,6 +176,26 @@ def get_int(field, default):
     except ValueError:
         value = default
     return value
+
+
+def check_ga():
+    ga = session.get('ga')
+    if ga == 'authorized':
+        return
+    # prevent circular redirects
+    current_url = request.environ['CURRENT_URL']
+    if current_url.startswith('/static/') or current_url.startswith('/user/qr.svg'):
+        return
+    lang = request.environ['LANG']
+    if ga == 'setup':
+        if current_url == GA_SETUP_URL:
+            return
+        return redirect('/%s%s' % (lang, GA_SETUP_URL))
+    if ga == 'check':
+        if current_url == GA_CHECK_URL:
+            return
+        return redirect('/%s%s' % (lang, GA_CHECK_URL))
+
 
 import migrate
 import helpers
