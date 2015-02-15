@@ -179,6 +179,8 @@ def get_int(field, default):
 
 
 def check_ga():
+    if not config.GA_ENABLED:
+        return
     ga = session.get('ga')
     if ga == 'authorized':
         return
