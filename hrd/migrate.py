@@ -58,3 +58,13 @@ try:
     db.engine.execute(sql)
 except:
     pass
+
+sql = '''
+ALTER TABLE users
+    ADD organization VARCHAR(50);
+'''
+
+try:
+    db.engine.execute(sql)
+except:
+    pass

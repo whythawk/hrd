@@ -11,8 +11,9 @@ from flask.ext.babel import _
 from hrd.bb import user_forms, forum_forms
 
 from hrd import (app, db, url_for_admin, get_str, url_for, check_ga, config,
-                 get_bool, permission_list, permission, default_url_for)
-from hrd.models import User, UserPerms
+                 get_bool, permission_list, permission, default_url_for,
+                 has_permission)
+from hrd.models import User, UserPerms, Organisation
 
 from hrd import googauth
 from hrd import hrd_email
@@ -93,7 +94,20 @@ def send_reset_email(user):
     msg = _('A password reset has been requested please click on the link or paste it into your browser.  this link is valid for 24 hours.')
     msg = msg + '\n\n' + link
     sender = config.EMAIL
-    subject = 'HRD password reset request'
+    subject = _('HRD password reset request')
+    hrd_email.send_email(user.email, subject=subject, content=msg, sender=sender)
+
+
+def send_new_user(user):
+    secret_key = googauth.generate_secret_key(32)
+    db.session.execute('UPDATE users SET reset_code=:secret_key, reset_date=now() WHERE id=:id',
+                       {'id':user.id, 'secret_key': secret_key})
+    db.session.commit()
+    link = default_url_for('newuser_request_action', _external=True, key=secret_key, _scheme='https')
+    msg = _('You have been envited to join the Human Rights Defenders')
+    msg = msg + '\n\n' + link
+    sender = config.EMAIL
+    subject = _('HRD access')
     hrd_email.send_email(user.email, subject=subject, content=msg, sender=sender)
 
 
@@ -290,13 +304,10 @@ def user_edit(user_id):
         form.populate_obj(user)
         user.primary_group_id = form.primary_group.data.id
 
-       # Don't override the password
-        if form.password.data:
-            user.password = form.password.data
-
         user.save(groups=form.secondary_groups.data)
 
         update_user_perms(user)
+        update_user_org(user)
 
         bb_user.flash("User successfully edited", "success")
         return redirect(url_for("user_edit", user_id=user.id))
@@ -304,7 +315,30 @@ def user_edit(user_id):
     perms = permission_list
     user_perms = get_user_perms(user_id)
     return render_template("user/user_form.html", form=form, perms=perms,
+                           orgs=get_orgs(), current_org=get_current_org(user),
                            user_perms=user_perms, title=_("Edit User"))
+
+
+def get_current_org(user):
+    result = db.session.execute('SELECT organization FROM users WHERE id=:id',
+                                {'id':user.id}).first()
+    print result[0]
+    return result[0]
+
+
+def update_user_org(user):
+    org = get_str('org')
+    if org:
+        check = Organisation.query.filter_by(org_id=org).first()
+        if not check:
+            return
+    if not org:
+        org = None
+    db.session.execute('UPDATE users SET organization=:org WHERE id=:id',
+                       {'id':user.id, 'org': org})
+    db.session.commit()
+
+
 
 def update_user_perms(user):
     perms = permission_list
@@ -356,9 +390,20 @@ def user_add():
     if form.validate_on_submit():
         user = form.save()
         update_user_perms(user)
+        update_user_org(user)
         bb_user.flash("User successfully added.", "success")
         return redirect(url_for("user_manage"))
 
     perms = permission_list
-    return render_template("user/user_form.html", form=form, perms=perms,
+    return render_template("user/add_user_form.html", form=form, perms=perms, orgs=get_orgs(),
                            title=_("Add User"))
+
+
+def get_orgs():
+    if not has_permission('user_admin'):
+        return []
+
+    orgs = db.session.query(Organisation.org_id, Organisation.name).filter_by(lang='en', current=True)
+    orgs = orgs.order_by('name')
+    orgs = [{'value': '', 'name': 'None'}] + [{'value': v, 'name': n} for v, n in orgs]
+    return orgs

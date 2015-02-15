@@ -36,13 +36,19 @@
             #}
             {{ horizontal_field(form.signature, rows=5, div_class="col-sm-9") }}
             {{ horizontal_field(form.notes, rows=12, div_class="col-sm-9") }}
-
-            <h4>Permissions</h4>
             <input type="hidden" name="primary_group" value="4"/>
+
             {% import 'macro/form.html' as form %}
+            {% if orgs %}
+            <h4>{{ _('Organisation') }}</h4>
+            {{ form.dropdown('org', id='org', value=current_org, options=orgs) }}
+            {% endif %}
+            {% if perms %}
+            <h4>Permissions</h4>
     {% for perm, name in perms %}
     {{ form.checkbox(perm, label=_(name), value=perm in user_perms) }}
     {% endfor %}
+            {% endif %}
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-9">
                     <button type="submit" class="btn btn-success">{{ _('Save') }}</button>

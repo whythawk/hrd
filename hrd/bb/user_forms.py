@@ -24,6 +24,8 @@ from flaskbb.extensions import db
 from flaskbb.utils.widgets import SelectDateWidget
 
 
+from hrd import googauth
+
 IMG_RE = r'^[^/\\]\.(?:jpg|gif|png)'
 
 is_image = regexp(IMG_RE,
@@ -223,8 +225,47 @@ class UserForm(Form):
         return user.save()
 
 
-class AddUserForm(UserForm):
-    pass
+class AddUserForm(Form):
+    username = StringField(_("Username"), validators=[
+        DataRequired(message=_("A username is required.")),
+        is_username])
+
+    email = StringField(_("E-Mail"), validators=[
+        DataRequired(message=_("A E-Mail address is required.")),
+        Email(message=_("This email is invalid"))])
+
+
+    def validate_username(self, field):
+        if hasattr(self, "user"):
+            user = User.query.filter(
+                db.and_(User.username.like(field.data),
+                        db.not_(User.id == self.user.id)
+                        )
+            ).first()
+        else:
+            user = User.query.filter(User.username.like(field.data)).first()
+
+        if user:
+            raise ValidationError(_("This username is taken"))
+
+    def validate_email(self, field):
+        if hasattr(self, "user"):
+            user = User.query.filter(
+                db.and_(User.email.like(field.data),
+                        db.not_(User.id == self.user.id)
+                        )
+            ).first()
+        else:
+            user = User.query.filter(User.email.like(field.data)).first()
+
+        if user:
+            raise ValidationError(_("This email is taken"))
+
+    def save(self):
+        user = User(_password=googauth.generate_secret_key(64), primary_group_id=4, **self.data)
+        return user.save()
+
+
 
 
 class EditUserForm(UserForm):
