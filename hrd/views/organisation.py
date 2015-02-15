@@ -280,7 +280,7 @@ def org_cat_codes(lang, id):
     for cat in codes:
         found = []
         for code in cat['codes']:
-            if code['code_id'] in current:
+            if code['code_id'] in current and code['title']:
                 found.append(code['title'])
         if found:
             out.append((cat['title'], ', '.join(found)))
