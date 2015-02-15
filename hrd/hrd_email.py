@@ -1,8 +1,7 @@
 import smtplib
 from email.mime.text import MIMEText
 
-def send_email(recipient, subject, content):
-    sender = 'noreply@hrdrelocation.eu'
+def send_email(recipient, subject, content, sender):
     msg = MIMEText(content, 'plain', 'utf-8')
     msg['Subject'] = subject
     msg['From'] = sender
