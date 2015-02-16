@@ -63,6 +63,8 @@ def user_id():
 
 
 def user_logged_in():
+    if not hrd.config.GA_ENABLED:
+        return True
     if session.get('ga') == 'authorized':
         return True
     return False
