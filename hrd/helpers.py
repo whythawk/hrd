@@ -74,11 +74,12 @@ def has_perm(permission):
         request.permission
     except AttributeError:
         request.permissions = views.user.get_users_permissions(current_user)
-    if permission in request.permissions:
-        return True
-    if 'sys_admin' in request.permissions:
-        return True
-    return False
+    if isinstance(permission, basestring):
+        permission = [permission]
+    if not set(permission) & set(request.permissions):
+        if 'sys_admin' not in request.permissions:
+            return False
+    return True
 
 
 def search_subset(set1, set2):

@@ -85,6 +85,14 @@ def permission(permission):
         if 'sys_admin' not in request.permissions:
             abort(403)
 
+def has_permission(permission):
+    if isinstance(permission, basestring):
+        permission = [permission]
+    if not set(permission) & set(request.permissions):
+        if 'sys_admin' not in request.permissions:
+            return False
+    return True
+
 
 def permission_content(lang):
     if lang == 'en':
