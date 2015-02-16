@@ -1,0 +1,44 @@
+{% set page_title = title %}
+{% set active_management_user_nav=True %}
+
+{% extends 'body_base.html' %}
+{% block content %}
+                    {% include 'flashed_messages.html' %}
+{% from "bb_macros.html" import horizontal_field, navlink with context %}
+
+<div class="col-md-3">
+    <ul class="nav nav-pills nav-stacked">
+        {{ navlink('user_manage', _("Manage Users")) }}
+        {#{ navlink('management.banned_users', 'Banned Users') }#}
+
+        {% if current_user|is_admin %}
+            {{ navlink('user_add', _("Add User")) }}
+        {% endif %}
+    </ul>
+</div><!--/.col-md-3 -->
+
+<div class="col-md-9">
+    <form class="form-horizontal" role="form" method="post">
+        {{ form.hidden_tag() }}
+        <legend class="">{{ title }}</legend>
+            {{ horizontal_field(form.username) }}
+            {{ horizontal_field(form.email) }}
+            <input type="hidden" name="primary_group" value="4"/>
+            {% if perms %}
+            {% import 'macro/form.html' as form %}
+
+            <h4>{{ _('Organisation') }}</h4>
+            {{ form.dropdown('org', id='org', value='', options=orgs) }}
+            <h4>{{ _('Permissions') }}</h4>
+    {% for perm, name in perms %}
+    {{ form.checkbox(perm, label=_(name), value=perm in user_perms) }}
+    {% endfor %}
+    {% endif %}
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <button type="submit" class="btn btn-success">{{ _('Save') }}</button>
+                </div>
+            </div>
+    </form>
+</div>
+{% endblock %}
