@@ -197,7 +197,7 @@ def check_ga():
         return
     # prevent circular redirects
     current_url = request.environ['CURRENT_URL']
-    if current_url.startswith('/static/') or current_url.startswith('/user/qr.svg'):
+    if current_url.startswith('/static/') or current_url.startswith('/user/qr.svg?'):
         return
     lang = request.environ['LANG']
     if ga == 'setup':

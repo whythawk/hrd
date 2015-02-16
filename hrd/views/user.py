@@ -136,9 +136,9 @@ def newuser_request_action():
             db.session.execute('UPDATE users SET reset_code=NULL, reset_date=NULL WHERE id=:id',
                        {'id':result.id})
             db.session.commit()
-            return render_template("user/reset_password_complete.html")
+            return render_template("user/reset_password_complete.html", new_user=True)
 
-    return render_template("user/reset_password.html", error=error)
+    return render_template("user/reset_password.html", error=error, new_user=True)
 
 
 @app.route('/user/reset_action', methods=['GET', 'POST'])
@@ -166,9 +166,9 @@ def reset_request_action():
             db.session.execute('UPDATE users SET reset_code=NULL, reset_date=NULL WHERE id=:id',
                        {'id':result.id})
             db.session.commit()
-            return render_template("user/reset_password_complete.html")
+            return render_template("user/reset_password_complete.html", new_user=False)
 
-    return render_template("user/reset_password.html", error=error)
+    return render_template("user/reset_password.html", error=error, new_user=False)
 
 
 @app.route('/user/reset', methods=['GET', 'POST'])
