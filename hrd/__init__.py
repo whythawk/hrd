@@ -74,6 +74,9 @@ lang_codes = []
 for code, name, dir_, active in language_list:
     lang_codes.append(code)
 
+lang_picker = []
+for code, name, dir_, active in language_list:
+    lang_picker.append({'value': code, 'name': name})
 
 permission_list = config.PERMISSIONS
 

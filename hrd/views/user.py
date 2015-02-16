@@ -12,7 +12,7 @@ from hrd.bb import user_forms, forum_forms
 
 from hrd import (app, db, url_for_admin, get_str, url_for, check_ga, config,
                  get_bool, permission_list, permission, default_url_for,
-                 has_permission)
+                 has_permission, lang_picker)
 from hrd.models import User, UserPerms, Organisation
 
 from hrd import googauth
@@ -97,17 +97,48 @@ def send_reset_email(user):
     hrd_email.send_email(user.email, subject=subject, content=msg, sender=sender)
 
 
-def send_new_user(user):
+def send_new_user(user, lang):
     secret_key = googauth.generate_secret_key(32)
     db.session.execute('UPDATE users SET reset_code=:secret_key, reset_date=now() WHERE id=:id',
                        {'id':user.id, 'secret_key': secret_key})
     db.session.commit()
     link = default_url_for('newuser_request_action', _external=True, key=secret_key, _scheme='https')
-    msg = _('You have been envited to join the Human Rights Defenders')
-    msg = msg + '\n\n' + link
-    sender = config.EMAIL
-    subject = _('HRD access')
-    hrd_email.send_email(user.email, subject=subject, content=msg, sender=sender)
+    with app.test_request_context(environ_overrides={'LANG': lang}):
+        msg = _('You have been envited to join the Human Rights Defenders.')
+        msg = msg + '\n\n' + link
+        sender = config.EMAIL
+        subject = _('HRD access')
+        hrd_email.send_email(user.email, subject=subject, content=msg, sender=sender)
+
+
+@app.route('/user/register', methods=['GET', 'POST'])
+def newuser_request_action():
+    key = request.args.get('key')
+    result = db.session.execute('SELECT id, reset_date FROM users WHERE reset_code=:key',
+                                {'key': key}).first()
+    if (not result) or (datetime.datetime.now() - result.reset_date).days > 5:
+        abort(403)
+    # we are authorized
+    error = ''
+    if request.method == 'POST':
+        p1 = get_str('password1')
+        p2 = get_str('password2')
+        if not (p1 and p2):
+            error = _('Please provide a password and confirmed password')
+        elif p1 != p2:
+            error = _('Passwords do not match')
+        elif len(p1) < 6:
+            error = _('Password should be at least 6 characters long')
+        if not error:
+            user = User.query.filter_by(id=result.id).first()
+            user.password = p1
+            user.save()
+            db.session.execute('UPDATE users SET reset_code=NULL, reset_date=NULL WHERE id=:id',
+                       {'id':result.id})
+            db.session.commit()
+            return render_template("user/reset_password_complete.html")
+
+    return render_template("user/reset_password.html", error=error)
 
 
 @app.route('/user/reset_action', methods=['GET', 'POST'])
@@ -398,6 +429,7 @@ def user_add():
         else:
             user.organization = current_user.organization
             user.save()
+        send_new_user(user, request.form.get('lang'))
         bb_user.flash("User successfully added.", "success")
         return redirect(url_for("user_manage"))
 
@@ -406,9 +438,9 @@ def user_add():
     else:
         perms = []
 
-    return render_template("user/add_user_form.html", form=form, perms=perms, orgs=get_orgs(),
+    return render_template("user/add_user_form.html", form=form, perms=perms,
+                           langs=lang_picker, orgs=get_orgs(),
                            title=_("Add User"))
-
 
 def get_orgs():
     if not has_permission('user_admin'):

@@ -24,9 +24,12 @@
             {{ horizontal_field(form.username) }}
             {{ horizontal_field(form.email) }}
             <input type="hidden" name="primary_group" value="4"/>
-            {% if perms %}
             {% import 'macro/form.html' as form %}
+            <h4>{{ _('Email language') }}</h4>
+            {{ form.dropdown('lang', id='lang', value='', options=langs) }}
+            {% if perms %}
 
+            <h4>{{ _('Permissions') }}</h4>
             <h4>{{ _('Organisation') }}</h4>
             {{ form.dropdown('org', id='org', value='', options=orgs) }}
             <h4>{{ _('Permissions') }}</h4>
