@@ -320,10 +320,7 @@ def user_edit(user_id):
 
 
 def get_current_org(user):
-    result = db.session.execute('SELECT organization FROM users WHERE id=:id',
-                                {'id':user.id}).first()
-    print result[0]
-    return result[0]
+    return user.organization
 
 
 def update_user_org(user):
