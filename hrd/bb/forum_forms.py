@@ -87,9 +87,9 @@ class SearchPageForm(Form):
     search_query = StringField(_("Criteria"), validators=[
         DataRequired(), Length(min=3, max=50)])
 
-    search_types = SelectMultipleField(_("Content"), validators=[
-        DataRequired()], choices=[('post', _('Post')), ('topic', _('Topic')),
-                                  ('forum', _('Forum')), ('user', _('Users'))])
+#    search_types = SelectMultipleField(_("Content"), validators=[
+#        DataRequired()], choices=[('post', _('Post')), ('topic', _('Topic')),
+#                                  ('forum', _('Forum')), ('user', _('Users'))])
 
     def get_results(self):
         # Because the DB is not yet initialized when this form is loaded,
@@ -97,16 +97,16 @@ class SearchPageForm(Form):
         search_actions = {
             'post': Post.query.whoosh_search,
             'topic': Topic.query.whoosh_search,
-            'forum': Forum.query.whoosh_search,
-            'user': User.query.whoosh_search
+ #           'forum': Forum.query.whoosh_search,
+  #          'user': User.query.whoosh_search
         }
 
         query = self.search_query.data
-        types = self.search_types.data
+  #      types = self.search_types.data
         results = {}
 
         for search_type in search_actions.keys():
-            if search_type in types:
+   #         if search_type in types:
                 results[search_type] = search_actions[search_type](query)
 
         return results
