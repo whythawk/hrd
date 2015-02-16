@@ -276,7 +276,7 @@ def user_manage():
                                search_form=search_form)
 
     users = User.query. \
-        order_by(User.id.asc()).\
+        order_by(User.username.asc()).\
         paginate(page, app.bb.config['USERS_PER_PAGE'], False)
 
     return render_template("user/users.html", users=users,
