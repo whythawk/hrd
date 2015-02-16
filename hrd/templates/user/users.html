@@ -11,7 +11,7 @@
         {{ navlink('user_manage', _("Manage Users")) }}
         {#{ navlink('management.banned_users', 'Banned Users') }#}
 
-        {% if current_user|is_admin %}
+        {% if  has_perm(['user_manage', 'user_admin']) %}
             {{ navlink('user_add', _("Add User")) }}
         {% endif %}
     </ul>

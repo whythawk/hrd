@@ -67,7 +67,6 @@ def login():
             if user and user.check_password(password):
                 result = db.session.execute('SELECT ga_key FROM users WHERE id=:id',
                                             {'id':user.id}).first()
-                print result[0]
                 if result[0]:
                     session['ga'] = 'check'
                 else:
@@ -265,18 +264,17 @@ def user_change_email():
 
 @app.route("/user/manage", methods=['GET', 'POST'])
 def user_manage():
-    permission('user_manage')
+    permission(['user_manage', 'user_admin'])
     page = request.args.get("page", 1, type=int)
     search_form = forum_forms.UserSearchForm()
 
-    if search_form.validate():
-        users = search_form.get_results().\
-            paginate(page, app.bb.config['USERS_PER_PAGE'], False)
-        return render_template("user/users.html", users=users,
-                               search_form=search_form)
-
-    users = User.query. \
-        order_by(User.username.asc()).\
+    search = request.form.get('search_query')
+    users = User.query
+    if not has_permission('user_admin'):
+        users = users.filter_by(organization=current_user.organization)
+    if search:
+        users = users.filter(User.username.like(u'%%%s%%' % search))
+    users = users.order_by(User.username.asc()).\
         paginate(page, app.bb.config['USERS_PER_PAGE'], False)
 
     return render_template("user/users.html", users=users,
@@ -286,12 +284,12 @@ def user_manage():
 
 @app.route("/user/<int:user_id>/edit", methods=["GET", "POST"])
 def user_edit(user_id):
-    permission('user_manage')
+    permission(['user_manage', 'user_admin'])
     user = User.query.filter_by(id=user_id).first_or_404()
 
-#    if not can_edit_user(current_user):
-#        bb_user.flash("You are not allowed to edit this user.", "danger")
-#        return redirect(url_for("management.users"))
+    if not has_permission('user_admin'):
+        if user.organization != current_user.organization:
+            abort(403)
 
     secondary_group_query = Group.query.filter(
         db.not_(Group.id == user.primary_group_id),
@@ -306,13 +304,19 @@ def user_edit(user_id):
 
         user.save(groups=form.secondary_groups.data)
 
-        update_user_perms(user)
-        update_user_org(user)
+        if has_permission('user_admin'):
+            update_user_perms(user)
+            update_user_org(user)
+
 
         bb_user.flash("User successfully edited", "success")
         return redirect(url_for("user_edit", user_id=user.id))
 
-    perms = permission_list
+    if has_permission('user_admin'):
+        perms = permission_list
+    else:
+        perms = []
+
     user_perms = get_user_perms(user_id)
     return render_template("user/user_form.html", form=form, perms=perms,
                            orgs=get_orgs(), current_org=get_current_org(user),
@@ -331,9 +335,8 @@ def update_user_org(user):
             return
     if not org:
         org = None
-    db.session.execute('UPDATE users SET organization=:org WHERE id=:id',
-                       {'id':user.id, 'org': org})
-    db.session.commit()
+    user.organization = org
+    user.save()
 
 
 
@@ -373,8 +376,11 @@ def get_user_perms(id):
 
 @app.route("/user/<int:user_id>/delete")
 def user_delete(user_id):
-    permission('user_manage')
+    permission(['user_manage', 'user_admin'])
     user = User.query.filter_by(id=user_id).first_or_404()
+    if not has_permission('user_admin'):
+        if user.organization != current_user.organization:
+            abort(403)
     user.delete()
     bb_user.flash("User successfully deleted", "success")
     return redirect(url_for("user_manage"))
@@ -382,16 +388,24 @@ def user_delete(user_id):
 
 @app.route("/user/add", methods=["GET", "POST"])
 def user_add():
-    permission('user_manage')
+    permission(['user_manage', 'user_admin'])
     form = user_forms.AddUserForm()
     if form.validate_on_submit():
         user = form.save()
-        update_user_perms(user)
-        update_user_org(user)
+        if has_permission('user_admin'):
+            update_user_perms(user)
+            update_user_org(user)
+        else:
+            user.organization = current_user.organization
+            user.save()
         bb_user.flash("User successfully added.", "success")
         return redirect(url_for("user_manage"))
 
-    perms = permission_list
+    if has_permission('user_admin'):
+        perms = permission_list
+    else:
+        perms = []
+
     return render_template("user/add_user_form.html", form=form, perms=perms, orgs=get_orgs(),
                            title=_("Add User"))
 
