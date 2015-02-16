@@ -114,6 +114,8 @@ def send_new_user(user, lang):
 @app.route('/user/register', methods=['GET', 'POST'])
 def newuser_request_action():
     key = request.args.get('key')
+    if not key:
+        abort(403)
     result = db.session.execute('SELECT id, reset_date FROM users WHERE reset_code=:key',
                                 {'key': key}).first()
     if (not result) or (datetime.datetime.now() - result.reset_date).days > 5:
@@ -144,6 +146,8 @@ def newuser_request_action():
 @app.route('/user/reset_action', methods=['GET', 'POST'])
 def reset_request_action():
     key = request.args.get('key')
+    if not key:
+        abort(403)
     result = db.session.execute('SELECT id, reset_date FROM users WHERE reset_code=:key',
                                 {'key': key}).first()
     if (not result) or (datetime.datetime.now() - result.reset_date).days > 0:
@@ -185,6 +189,8 @@ def reset_request():
 @app.route('/user/ga_setup', methods=['GET', 'POST'])
 def ga_setup():
     user = current_user
+    if not user.is_authenticated():
+        abort(403)
     result = db.session.execute('SELECT ga_key FROM users WHERE id=:id',
                                 {'id':user.id}).first()
     if result[0]:
@@ -211,6 +217,8 @@ def ga_setup():
 @app.route('/user/ga_check', methods=['GET', 'POST'])
 def ga_check():
     user = current_user
+    if not user.is_authenticated():
+        abort(403)
     result = db.session.execute('SELECT ga_key FROM users WHERE id=:id',
                                 {'id':user.id}).first()
     if not result[0]:
