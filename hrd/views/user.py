@@ -90,7 +90,7 @@ def send_reset_email(user):
                        {'id':user.id, 'secret_key': secret_key})
     db.session.commit()
     link = default_url_for('reset_request_action', _external=True, key=secret_key, _scheme='https')
-    msg = _('A password reset has been requested please click on the link or paste it into your browser.  this link is valid for 24 hours.')
+    msg = _('A password reset has been requested. Please click on the link below or paste it into your browser. This link is valid for 24 hours.')
     msg = msg + '\n\n' + link
     sender = config.EMAIL
     subject = _('HRD password reset request')
@@ -104,7 +104,7 @@ def send_new_user(user, lang):
     db.session.commit()
     link = default_url_for('newuser_request_action', _external=True, key=secret_key, _scheme='https')
     with app.test_request_context(environ_overrides={'LANG': lang}):
-        msg = _('You have been envited to join the Human Rights Defenders.')
+        msg = _('You have been invited to join HRDRelocation.eu.')
         msg = msg + '\n\n' + link
         sender = config.EMAIL
         subject = _('HRD access')
