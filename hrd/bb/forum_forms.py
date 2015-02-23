@@ -70,7 +70,7 @@ class ReportForm(Form):
 
     def save(self, user, post):
         report = Report(**self.data)
-        return report.save(user, post)
+        return report.save(user=user, post=post)
 
 
 class UserSearchForm(Form):
