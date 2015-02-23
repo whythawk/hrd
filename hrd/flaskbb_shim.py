@@ -154,6 +154,39 @@ def forum_form_hack():
         new_cls = getattr(forum_forms, cls)
         setattr(flaskbb.forum.views, cls, new_cls)
 
+import flaskbb.forum.models as bb_f
+
+def delete_forum(self, users=None):
+    """Deletes forum. If a list with involved user objects is passed,
+    it will also update their post counts
+
+    :param users: A list with user objects
+    """
+    # Delete the entries for the forum in the ForumsRead and TopicsRead
+    # relation
+    bb_f.ForumsRead.query.filter_by(forum_id=self.id).delete()
+    bb_f.TopicsRead.query.filter_by(forum_id=self.id).delete()
+
+    # Delete the forum
+    bb_f.db.session.delete(self)
+    bb_f.db.session.commit()
+
+    # Update the users post count
+    if users:
+        users_list = []
+        for user in users:
+            user.post_count = bb_f.Post.query.filter_by(user_id=user.id).count()
+            users_list.append(user)
+        bb_f.db.session.add_all(users_list)
+        bb_f.db.session.commit()
+
+    return self
+
+bb_f.Forum.delete = delete_forum
+
+
+
+
 
 BARRED_VIEWS = [
 
