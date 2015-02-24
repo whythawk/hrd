@@ -162,6 +162,12 @@ def delete_forum(self, users=None):
 
     :param users: A list with user objects
     """
+    # delete reports
+    topics = bb_f.db.session.query(bb_f.Topic.id).filter_by(forum_id=self.id)
+    posts = bb_f.db.session.query(bb_f.Post.id).filter(bb_f.Post.topic_id.in_(topics))
+    reports = bb_f.db.session.query(bb_f.Report).filter(bb_f.Report.post_id.in_(posts)).all()
+    for report in reports:
+        report.delete()
     # Delete the entries for the forum in the ForumsRead and TopicsRead
     # relation
     bb_f.ForumsRead.query.filter_by(forum_id=self.id).delete()
