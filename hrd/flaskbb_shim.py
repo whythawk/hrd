@@ -184,6 +184,18 @@ def delete_forum(self, users=None):
 
 bb_f.Forum.delete = delete_forum
 
+_delete_topic = bb_f.Topic.delete
+
+def delete_topic(self, users=None):
+    # need to remove reported posts
+    posts = bb_f.db.session.query(bb_f.Post.id).filter_by(topic_id=self.id)
+    reports = bb_f.db.session.query(bb_f.Report).filter(bb_f.Report.post_id.in_(posts)).all()
+    for report in reports:
+        report.delete()
+    return _delete_topic(self, users=users)
+
+
+bb_f.Topic.delete = delete_topic
 
 
 
