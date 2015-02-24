@@ -36,7 +36,7 @@
           {% endif %}
           {% if has_perm('forum_admin') %}
             {% set my_content = my_content +
-            sub_menu_item(_('Forum'), url_for_fixed('/forum/admin/forums'), force_right=true)
+            sub_menu_item(_('Message board'), url_for_fixed('/forum/admin/forums'), force_right=true)
             %}
           {% endif %}
             {% set my_content = my_content + '</div>' %}

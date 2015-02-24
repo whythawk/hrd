@@ -11,7 +11,7 @@
     {% if current_user|is_admin %}
         {#{ navlink('management.settings', 'Settings') }#}
         {#{ navlink('management.groups', 'Groups', active=active_management_group_nav) }#}
-        {{ navlink('management.forums', 'Forums', active=active_management_forum_nav) }}
+        {{ navlink('management.forums', 'Message board', active=active_management_forum_nav) }}
         {#{ navlink('management.plugins', 'Plugins') }#}
         {{ navlink('management.unread_reports', 'Reports', active=active_management_report_nav) }}
     {% endif %}

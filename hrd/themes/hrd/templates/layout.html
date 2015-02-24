@@ -51,7 +51,7 @@
                             {{ emit_event("before-first-navigation-element") | safe }}
 
                             {# active_forum_nav is set in {forum, category, topic}.html and new_{topic, post}.html #}
-                            {{ topnav(endpoint='forum.index', name=_('Forum'), icon='fa fa-comment', active=active_forum_nav) }}
+                            {{ topnav(endpoint='forum.index', name=_('Message board'), icon='fa fa-comment', active=active_forum_nav) }}
                             {{ topnav(endpoint='forum.memberlist', name=_('Memberlist'), icon='fa fa-user') }}
                             {{ topnav(endpoint='forum.search', name=_('Search'), icon='fa fa-search') }}
 

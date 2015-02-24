@@ -5,7 +5,7 @@
     {% from theme('macros.html') import render_pagination, group_field, topic_pages %}
 
     <ul class="breadcrumb">
-        <li><a href="{{ url_for('forum.index') }}">{{ _('Forum') }}</a></li>
+        <li><a href="{{ url_for('forum.index') }}">{{ _('Message board') }}</a></li>
         <li class="active">{{ _('Search') }}</li>
     </ul>
 
@@ -170,12 +170,12 @@
     {% endif %}
 
     {% if result['forum'] %}
-    <h3>{{ _('Forums') }}</h3>
+    <h3>{{ _('Message board') }}</h3>
 
         <table class="table table-bordered">
             <thead class="categoryhead">
             <tr>
-                <th colspan="2"><strong>{{ _('Forum') }}</strong></th>
+                <th colspan="2"><strong>{{ _('Message board') }}</strong></th>
                 <th width="85" align="center" style="white-space: nowrap"><strong>{{ _('Topics') }}</strong></th>
                 <th width="85" align="center" style="white-space: nowrap"><strong>{{ _('Posts') }}</strong></th>
                 <th width="200" align="center" style="white-space: nowrap"><strong>{{ _('Last Post') }}</strong></th>

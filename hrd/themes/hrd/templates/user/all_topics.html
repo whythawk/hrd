@@ -3,7 +3,7 @@
 
 {% block content %}
 <ul class="breadcrumb">
-    <li><a href="{{ url_for('forum.index') }}">{{ _('Forum') }}</a></li>
+    <li><a href="{{ url_for('forum.index') }}">{{ _('Message board') }}</a></li>
     <li ><a href="{{ url_for('user.profile', username=user.username) }}">{{ user.username }}</a></li>
     <li class="active">{{ _('All Topics') }}</li>
 </ul>

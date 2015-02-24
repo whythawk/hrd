@@ -154,6 +154,25 @@ def forum_form_hack():
         new_cls = getattr(forum_forms, cls)
         setattr(flaskbb.forum.views, cls, new_cls)
 
+from wtforms import StringField
+from wtforms.validators import DataRequired
+from wtforms.ext.sqlalchemy.fields import QuerySelectField
+
+flaskbb.management.forms.ForumForm.title = StringField("Section Title", validators=[
+        DataRequired(message="Section title required")])
+
+flaskbb.management.forms.ForumForm.category = QuerySelectField(
+        "Message board",
+        query_factory=flaskbb.management.forms.selectable_categories,
+        allow_blank=False,
+        get_label="title",
+        description="The category that contains this forum."
+    )
+
+flaskbb.management.forms.CategoryForm.title = StringField("Message board title", validators=[
+        DataRequired("Message board title required")])
+
+
 import flaskbb.forum.models as bb_f
 
 def delete_forum(self, users=None):
