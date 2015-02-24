@@ -20,7 +20,7 @@
           '</div>' %}
         {{ menu_item(user, '#', force_right=true, content=my_content, class='logged-in', icon='user') }}
 
-        {{ menu_item(_('Message board'), url_for_fixed('/forum'), force_right=true) }}
+        {{ menu_item(_('Message board') + unread_topics(), url_for_fixed('/forum'), force_right=true) }}
       {% if show_extras %}
         {% if has_perm('content_manage') or has_perm('user_manage') or has_perm('translator') %}
         {% set my_content = '<div>' %}

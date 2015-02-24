@@ -1,5 +1,7 @@
 import os
 from importlib import import_module
+from datetime import datetime, timedelta
+
 
 from flask import request, abort
 from flask.ext.themes2 import Themes, render_theme_template
@@ -42,6 +44,45 @@ def set_translations(app):
         return request.environ['LANG']
     babel.localeselector(get_locale)
 
+
+def forum_is_unread(forum, forumsread, user):
+    """Checks if a forum is unread
+
+    :param forum: The forum that should be checked if it is unread
+
+    :param forumsread: The forumsread object for the forum
+
+    :param user: The user who should be checked if he has read the forum
+    """
+    # If the user is not signed in, every forum is marked as read
+    if not user.is_authenticated():
+        return False
+
+##    read_cutoff = datetime.utcnow() - timedelta(
+##        days=bb_config.get("TRACKER_LENGTH"))
+##
+##    # disable tracker if read_cutoff is set to 0
+##    if read_cutoff == 0:
+##        return False
+
+    # If there are no topics in the forum, mark it as read
+    if forum and forum.topic_count == 0:
+        return False
+
+    # If the user hasn't visited a topic in the forum - therefore,
+    # forumsread is None and we need to check if it is still unread
+    if forum and not forumsread:
+        return forum.last_post.date_created > read_cutoff
+    try:
+        # check if the forum has been cleared and if there is a new post
+        # since it have been cleared
+        if forum.last_post.date_created > forumsread.cleared:
+            if forum.last_post.date_created < forumsread.last_read:
+                return False
+    except TypeError:
+        pass
+    # else just check if the user has read the last post
+    return forum.last_post.date_created > forumsread.last_read
 
 def get_flaskbb(app, path, url_for):
     theme_hack(url_for)
@@ -95,6 +136,7 @@ def get_flaskbb(app, path, url_for):
         if ga:
             return ga
 
+    _flaskbb.jinja_env.filters['forum_is_unread'] = forum_is_unread
     return _flaskbb
 
 

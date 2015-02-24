@@ -2,7 +2,7 @@
 
 import re
 
-from flask import request, session
+from flask import request, session, Markup
 from babel.numbers import format_number as _format_number
 from babel import Locale
 from flask.ext.login import current_user
@@ -160,7 +160,28 @@ def cms_state_nice_name(state):
     return STATE_NICE_NAME[state]
 
 
+import flaskbb.forum.models as bb_f
+def unread_topics():
+    user = current_user
+   # fetch the unread posts in the forum
+    unread_count = bb_f.Topic.query.\
+        outerjoin(bb_f.TopicsRead,
+                  bb_f.db.and_(bb_f.TopicsRead.topic_id == bb_f.Topic.id,
+                          bb_f.TopicsRead.user_id == user.id)).\
+        outerjoin(bb_f.ForumsRead,
+                  bb_f.db.and_(bb_f.ForumsRead.forum_id == bb_f.Topic.forum_id,
+                          bb_f.ForumsRead.user_id == user.id)).\
+        filter( bb_f.ForumsRead.last_read < bb_f.Topic.last_updated).\
+       filter(
+               bb_f.db.or_(bb_f.TopicsRead.last_read == None,
+                      bb_f.TopicsRead.last_read < bb_f.Topic.last_updated
+                          )).count()
+    if unread_count:
+        return Markup(' <span class="badge">%s</span>' % unread_count)
+    return ''
+
 hrd.app.jinja_env.globals.update(
+    unread_topics=unread_topics,
     url_for_admin=hrd.url_for_admin,
     url_for=hrd.url_for,
     url_for_fixed=hrd.url_for_fixed,
