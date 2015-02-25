@@ -71,12 +71,13 @@ def forum_is_unread(forum, forumsread, user):
 
     # If the user hasn't visited a topic in the forum - therefore,
     # forumsread is None and we need to check if it is still unread
-#    if forum and not forumsread:
+    if forum and not forumsread:
+        return True
 #        return forum.last_post.date_created > read_cutoff
     try:
         # check if the forum has been cleared and if there is a new post
         # since it have been cleared
-        if forumsread and forum.last_post.date_created > forumsread.cleared:
+        if forum.last_post.date_created > forumsread.cleared:
             if forum.last_post.date_created < forumsread.last_read:
                 return False
     except TypeError:
