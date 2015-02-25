@@ -76,7 +76,7 @@ def forum_is_unread(forum, forumsread, user):
     try:
         # check if the forum has been cleared and if there is a new post
         # since it have been cleared
-        if forum.last_post.date_created > forumsread.cleared:
+        if forumsread and forum.last_post.date_created > forumsread.cleared:
             if forum.last_post.date_created < forumsread.last_read:
                 return False
     except TypeError:
