@@ -18,10 +18,12 @@ from hrd.models import User, UserPerms, Organisation
 from hrd import googauth
 from hrd import hrd_email
 
-from flaskbb.user.models import Group
+from flaskbb.user.models import Group, PrivateMessage
+from flaskbb.forum.models import Post, Forum
 
 from flask.ext.login import (current_user, login_user, login_required,
                              logout_user, login_fresh)
+
 
 
 @app.before_request
@@ -420,6 +422,18 @@ def user_delete(user_id):
     if not has_permission('user_admin'):
         if user.organization != current_user.organization:
             abort(403)
+
+    posts = Post.query.filter_by(user_id=user.id).all()
+    for post in posts:
+        forums = Forum.query.filter_by(last_post_id=post.id).all()
+        for forum in forums:
+            forum.last_post_id = None
+            forum.save()
+        post.delete()
+
+    PrivateMessage.query.filter_by(from_user_id=user.id).delete()
+    PrivateMessage.query.filter_by(to_user_id=user.id).delete()
+
     user.delete()
     bb_user.flash("User successfully deleted", "success")
     return redirect(url_for("user_manage"))
