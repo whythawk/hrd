@@ -29,6 +29,7 @@ app.secret_key = config.SECRET_KEY
 app.config['SQLALCHEMY_DATABASE_URI'] = config.DB_CONNECTION
 app.config['UPLOAD_FOLDER'] = os.path.join(DIR, config.UPLOAD_FOLDER)
 app.config['BABEL_DEFAULT_LOCALE'] = 'en'
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 if not os.path.isdir(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
