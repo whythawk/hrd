@@ -120,8 +120,11 @@ def newuser_request_action():
         abort(403)
     result = db.session.execute('SELECT id, reset_date FROM users WHERE reset_code=:key',
                                 {'key': key}).first()
-    if (not result) or (datetime.datetime.now() - result.reset_date).days > 5:
+    if (not result):
         abort(403)
+    if (datetime.datetime.now() - result.reset_date).days > 5:
+        return render_template("user/link_out_of_date.html",
+                              message=_('Your invite has expired, please request a new one'))
     # we are authorized
     error = ''
     if request.method == 'POST':
@@ -169,8 +172,11 @@ def reset_request_action():
         abort(403)
     result = db.session.execute('SELECT id, reset_date FROM users WHERE reset_code=:key',
                                 {'key': key}).first()
-    if (not result) or (datetime.datetime.now() - result.reset_date).days > 0:
+    if (not result):
         abort(403)
+    if (datetime.datetime.now() - result.reset_date).days > 0:
+        return render_template("user/link_out_of_date.html",
+                              message=_('This link has expired!'))
     # we are authorized
     error = ''
     if request.method == 'POST':
