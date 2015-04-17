@@ -144,6 +144,23 @@ def newuser_request_action():
 
     return render_template("user/reset_password.html", error=error, new_user=True)
 
+@app.route("/user/resend_invite/<user_id>", methods=['GET', 'POST'])
+def resend_invite(user_id):
+    permission(['user_manage', 'user_admin'])
+    resend = db.session.execute('SELECT reset_code, reset_date FROM users WHERE id=:id',
+                       {'id':user_id}).first()
+
+    if not bool(resend.reset_code or resend.reset_date):
+        abort(403)
+
+    user = User.query.filter_by(id=user_id).first()
+    if request.method == 'GET':
+        return render_template("user/resend_invite.html", langs=lang_picker)
+
+    send_new_user(user, request.form.get('lang'))
+    bb_user.flash(_("A fresh invite has been sent for this user."), "success")
+    return redirect(url_for('user_profile', username=user.username))
+
 
 @app.route('/user/reset_action', methods=['GET', 'POST'])
 def reset_request_action():
@@ -263,7 +280,12 @@ def qr_code():
 def user_profile(username):
     user = User.query.filter_by(username=username).first_or_404()
 
-    return render_template("user/profile.html", _user=user)
+    resend = db.session.execute('SELECT reset_code, reset_date FROM users WHERE id=:id',
+                       {'id':user.id}).first()
+
+    can_resend_invite = bool(resend.reset_code or resend.reset_date)
+    return render_template("user/profile.html", _user=user,
+                           can_resend_invite=can_resend_invite)
 
 
 @app.route('/user/profile', methods=['GET', 'POST'])

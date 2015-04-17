@@ -2,6 +2,7 @@
 
 
 {% block content %}
+{% include 'flashed_messages.html' %}
 <div class="col-md-3">
     <ul class="nav nav-pills nav-stacked">
       <li>
@@ -11,6 +12,11 @@
         <li>
           <a href={{ url_for('user_edit', user_id=_user.id) }}>{{ _("Edit User") }}</a>
         </li>
+        {% if can_resend_invite %}
+          <li>
+            <a href={{ url_for('resend_invite', user_id=_user.id) }}>{{ _("Resend Invite") }}</a>
+          </li>
+        {% endif %}
       {% endif %}
     </ul>
 </div><!--/.col-md-3 -->
