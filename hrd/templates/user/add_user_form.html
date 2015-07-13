@@ -22,6 +22,8 @@
         {{ form.hidden_tag() }}
         <legend class="">{{ title }}</legend>
             {{ horizontal_field(form.username) }}
+            {{ horizontal_field(form.realname) }}
+            {{ horizontal_field(form.position) }}
             {{ horizontal_field(form.email) }}
             <input type="hidden" name="primary_group" value="4"/>
             {% import 'macro/form.html' as form %}

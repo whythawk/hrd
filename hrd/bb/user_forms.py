@@ -154,6 +154,12 @@ class UserForm(Form):
         DataRequired(message=_("A E-Mail address is required.")),
         Email(message=_("This email is invalid"))])
 
+
+    realname = StringField(_("Name"), validators=[
+        DataRequired(message=_("A real name is required."))])
+
+    position = StringField(_("Position"), validators=[
+        DataRequired(message=_("A position is required."))])
 #    password = PasswordField(_("Password"), validators=[
  #       Optional()])
 
@@ -233,6 +239,12 @@ class AddUserForm(Form):
     email = StringField(_("E-Mail"), validators=[
         DataRequired(message=_("A E-Mail address is required.")),
         Email(message=_("This email is invalid"))])
+
+    realname = StringField(_("Name"), validators=[
+        DataRequired(message=_("A real name is required."))])
+
+    position = StringField(_("Position"), validators=[
+        DataRequired(message=_("A position is required."))])
 
 
     def validate_username(self, field):
