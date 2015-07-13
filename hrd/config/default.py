@@ -4,7 +4,10 @@
 # SECRET_KEY should be randomly generated
 SECRET_KEY = "SecretKeyForSessionSigning"
 
-DB_CONNECTION = 'sqlite:///db.sqlite'
+DB_CONNECTION = 'postgresql://hrd:pass@localhost/hrd'
+GA_ENABLED = False
+EMAIL = 'admin@example.com'
+EMAIL_ENABLED = False
 
 # relative to application
 UPLOAD_FOLDER = 'files'
