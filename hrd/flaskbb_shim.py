@@ -12,6 +12,7 @@ from werkzeug.wrappers import Response
 import flaskbb.forum.forms
 from flaskbb import create_app
 from flaskbb.configs.default import DefaultConfig as bb_config
+from flaskbb.utils.settings import flaskbb_config
 
 import flaskbb.user
 
@@ -45,6 +46,41 @@ def set_translations(app):
     babel.localeselector(get_locale)
 
 
+def topic_is_unread(topic, topicsread, user, forumsread=None):
+    """Checks if a topic is unread.
+    """
+    if not user.is_authenticated():
+        return False
+
+    read_cutoff = datetime.utcnow() - timedelta(
+        days=flaskbb_config["TRACKER_LENGTH"])
+
+    if  read_cutoff < user.date_joined:
+        read_cutoff = user.date_joined - timedelta(days=1)
+
+    # disable tracker if read_cutoff is set to 0
+    if read_cutoff == 0:
+        return False
+
+    # check read_cutoff
+    if topic.last_post.date_created < read_cutoff:
+        return False
+
+    # topicsread is none if the user has marked the forum as read
+    # or if he hasn't visited yet
+    if topicsread is None:
+        # user has cleared the forum sometime ago - check if there is a new post
+        if forumsread and forumsread.cleared is not None:
+            return forumsread.cleared < topic.last_post.date_created
+
+        # user hasn't read the topic yet, or there is a new post since the user
+        # has marked the forum as read
+        return True
+
+    # check if there is a new post since the user's last topic visit
+    return topicsread.last_read < topic.last_post.date_created
+
+
 def forum_is_unread(forum, forumsread, user):
     """Checks if a forum is unread
     :param forum: The forum that should be checked if it is unread
@@ -55,9 +91,11 @@ def forum_is_unread(forum, forumsread, user):
     if not user.is_authenticated():
         return False
 
-    from flaskbb.utils.settings import flaskbb_config
     read_cutoff = datetime.utcnow() - timedelta(
         days=flaskbb_config["TRACKER_LENGTH"])
+
+    if  read_cutoff < user.date_joined:
+        read_cutoff = user.date_joined - timedelta(days=1)
 
     # disable tracker if TRACKER_LENGTH is set to 0
     if flaskbb_config["TRACKER_LENGTH"] == 0:
@@ -137,6 +175,7 @@ def get_flaskbb(app, path, url_for):
             return ga
 
     _flaskbb.jinja_env.filters['forum_is_unread'] = forum_is_unread
+    _flaskbb.jinja_env.filters['topic_is_unread'] = topic_is_unread
     return _flaskbb
 
 

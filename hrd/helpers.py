@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import re
+from datetime import datetime, timedelta
 
 from flask import request, session, Markup
 from babel.numbers import format_number as _format_number
@@ -8,6 +9,8 @@ from babel import Locale
 from flask.ext.login import current_user
 
 import flaskbb.forum.models as bb_f
+from flaskbb.utils.settings import flaskbb_config
+
 
 import hrd
 import views.menu
@@ -169,9 +172,14 @@ def organization_name(value):
     return org.name
 
 
-
 def unread_topics():
     user = current_user
+    read_cutoff = datetime.utcnow() - timedelta(
+        days=flaskbb_config["TRACKER_LENGTH"])
+
+    if  read_cutoff < user.date_joined:
+        read_cutoff = user.date_joined - timedelta(days=1)
+
    # fetch the unread posts in the forum
     unread_count = bb_f.Topic.query.with_entities(bb_f.Topic.id).\
         outerjoin(bb_f.TopicsRead,
@@ -180,6 +188,7 @@ def unread_topics():
         outerjoin(bb_f.ForumsRead,
                   bb_f.db.and_(bb_f.ForumsRead.forum_id == bb_f.Topic.forum_id,
                           bb_f.ForumsRead.user_id == user.id)).\
+        filter(bb_f.Topic.last_updated > read_cutoff).\
         filter(bb_f.db.or_(bb_f.ForumsRead.cleared == None,
                            bb_f.ForumsRead.cleared < bb_f.Topic.last_updated)).\
        filter(
