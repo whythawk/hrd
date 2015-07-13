@@ -12,6 +12,7 @@ import flaskbb.forum.models as bb_f
 import hrd
 import views.menu
 import views.user
+import models
 
 
 # for fake translations
@@ -161,6 +162,12 @@ STATE_NICE_NAME = {
 def cms_state_nice_name(state):
     return STATE_NICE_NAME[state]
 
+def organization_name(value):
+    org = models.Organisation.query.filter_by(org_id=value).first()
+    if not org:
+        return _('None')
+    return org.name
+
 
 
 def unread_topics():
@@ -215,4 +222,5 @@ hrd.app.jinja_env.globals.update(
     none_to_empty_str=none_to_empty_str,
     format_number=format_number,
     locale_language_name=locale_language_name,
+    organization_name=organization_name,
 )

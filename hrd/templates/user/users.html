@@ -43,6 +43,7 @@
                 <th>{{ _('Posts') }}</th>
                 <th>{{ _('Date registered') }}</th>
                 <th>{{ _('Group') }}</th>
+                <th>{{ _('Organization') }}</th>
                 <th>{{ _('Manage') }}</th>
             </tr>
         </thead>
@@ -54,6 +55,7 @@
                     <td>{{ user.post_count }}</td>
                     <td>{{ user.date_joined|format_date('%b %d %Y') }}</td>
                     <td>{{ user.primary_group.name }}</td>
+                    <td>{{ organization_name(user.organization) }}</td>
                     <td>
                         {% if has_perm('user_manage') %}
                         <a href="{{ url_for('user_edit', user_id = user.id) }}">{{ _('Edit') }}</a>
