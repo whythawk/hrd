@@ -68,3 +68,14 @@ try:
     db.engine.execute(sql)
 except:
     pass
+
+sql = '''
+ALTER TABLE users
+    ADD realname VARCHAR(250),
+    ADD position VARCHAR(250);
+'''
+
+try:
+    db.engine.execute(sql)
+except:
+    pass
