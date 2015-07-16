@@ -94,6 +94,11 @@ class ChangeUserDetailsForm(Form):
         ("Male", _("Male")),
         ("Female", _("Female"))])
 
+    realname = StringField(_("Name"), validators=[
+        DataRequired(message=_("A real name is required."))])
+
+    position = StringField(_("Position"), validators=[
+        DataRequired(message=_("A position is required."))])
     location = StringField(_("Location"), validators=[
         Optional()])
 
