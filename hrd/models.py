@@ -171,4 +171,18 @@ class Translation(db.Model):
     def __repr__(self):
         return "<Translation %s %s>" % (self.id, self.lang)
 
+class News(db.Model):
+    id = db.Column(db.String(50), primary_key=True, default=make_uuid)
+    lang = db.Column(db.String(2), primary_key=True)
+    active = db.Column(db.Boolean(), default=True)
+    title = db.Column(db.String(250))
+    description = db.Column(db.Text())
+    last_updated = db.Column(db.Date())
+    file = db.Column(db.String(50))
+    filename = db.Column(db.String(250))
+    file_type = db.Column(db.String(250))
+    file_size = db.Column(db.Integer())
+    mime_type = db.Column(db.String(250))
+    mime_encoding = db.Column(db.String(250))
+
 db.create_all()

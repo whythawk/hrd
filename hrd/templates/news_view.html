@@ -1,0 +1,8 @@
+{% extends 'body_base.html' %}
+
+
+{% block name %}{{ news.title }}{% endblock %}
+
+{% block content %}
+  {% include '/news_content.html' with context %}
+{% endblock %}

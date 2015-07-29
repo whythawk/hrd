@@ -6,3 +6,4 @@ import hrd.views.resource
 import hrd.views.general
 import hrd.views.menu
 import hrd.views.translation
+import hrd.views.news

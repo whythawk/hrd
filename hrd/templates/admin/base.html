@@ -20,6 +20,7 @@
         {% endif %}
         {{ menu_item('Res. categories', url_for_admin('category_list', cat_type='res')) }}
         {{ menu_item('Menu Items', url_for_admin('menu_list')) }}
+        {{ menu_item('News Items', url_for_admin('news_list')) }}
         {% if has_perm('translator') %}
             {{ menu_item('Translations', url_for_admin('translation_list')) }}
         {% endif %}

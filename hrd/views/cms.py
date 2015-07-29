@@ -1,4 +1,5 @@
 import uuid
+import datetime
 import os.path
 
 from flask import (render_template, request, abort, redirect,
@@ -7,7 +8,7 @@ from flask import _request_ctx_stack
 
 from hrd import (app, db, url_for_admin, get_admin_lang, get_bool, config,
                  permission, permission_content, get_str, lang_codes)
-from hrd.models import Cms
+from hrd.models import Cms, News
 
 
 @app.route('/admin')
@@ -237,7 +238,19 @@ def show_page(**kw):
     if not bool(request.user) and page.private:
         abort(403)
 
-    return render_template('page.html', page=page)
+    if False and kw.get('url') == '/':
+        current_time = datetime.datetime.utcnow()
+        cutoff = current_time - datetime.timedelta(weeks=10)
+        news = News.query.filter_by(lang=lang)
+        news = news.filter_by(active=True)
+        news = news.filter(News.last_updated>cutoff)
+        news = news.order_by('last_updated desc')
+        news = news.limit(3)
+    else:
+        news = []
+
+
+    return render_template('page.html', page=page, news_items=news)
 
 
 @app.route('/admin/cms_preview/<id>')
