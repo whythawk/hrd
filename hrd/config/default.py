@@ -8,6 +8,7 @@ DB_CONNECTION = 'postgresql://hrd:pass@localhost/hrd'
 GA_ENABLED = False
 EMAIL = 'admin@example.com'
 EMAIL_ENABLED = False
+NEWS_ENABLED = False
 
 # relative to application
 UPLOAD_FOLDER = 'files'

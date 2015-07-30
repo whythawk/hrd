@@ -238,7 +238,7 @@ def show_page(**kw):
     if not bool(request.user) and page.private:
         abort(403)
 
-    if False and kw.get('url') == '/':
+    if config.NEWS_ENABLED and kw.get('url') == '/':
         current_time = datetime.datetime.utcnow()
         cutoff = current_time - datetime.timedelta(weeks=10)
         news = News.query.filter_by(lang=lang)

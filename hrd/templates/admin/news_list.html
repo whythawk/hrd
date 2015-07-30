@@ -7,6 +7,7 @@
  {{ form.translations_bar(status, show_all=true) }}
   <div class="alert new-page col-xs-12 alert-null">
 <h4>{{ 'Create a new news item' }}</h4>
+<a href="{{ url_for('news_page') }}">News Listing</a>
     {{ form.action('New news', url_for_admin('news_edit'), class='btn-primary btn-success pull-right', icon='plus') }}
         </div>
 

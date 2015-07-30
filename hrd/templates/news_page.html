@@ -5,7 +5,7 @@
 {% block content %}
 
 {% set news_links = true %}
-
+<h1>{{ _('News') }}</h1>
 <div class="no-of-records">{{ ngettext('{count} record', '{count} records', count).format(count=count) }}</div>
 <!-- Top pagination begins ============================= -->
 {% import '/macro/general.html' as general %}
