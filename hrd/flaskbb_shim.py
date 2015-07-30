@@ -108,6 +108,8 @@ def forum_is_unread(forum, forumsread, user):
     # check read_cutoff
     if forum.last_post.date_created < read_cutoff:
         return False
+    if forumsread is None:
+        return True
     try:
         # check if the forum has been cleared and if there is a new post
         # since it have been cleared
