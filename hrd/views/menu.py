@@ -120,6 +120,7 @@ def menu_edit(id):
             {'value': 'orgs', 'name': 'Special: Organisation search'},
             {'value': 'res', 'name': 'Special: Resources'},
             {'value': 'forum', 'name': 'Special: Message board'},
+            {'value': 'news', 'name': 'Special: News'},
         ]
 
         menu_items = db.session.query(Cms.url, Cms.title).filter_by(

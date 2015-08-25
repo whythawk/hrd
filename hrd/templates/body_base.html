@@ -33,6 +33,8 @@
           {% if not m.private or logged_in %}
             {% if m.item == 'orgs' %}
               {{ menu_item(m.title, url_for('org_search'), class='menu-highlight') }}
+            {% elif m.item == 'news' %}
+              {{ menu_item(m.title, url_for('news_page'), class='menu-highlight') }}
             {% elif m.item == 'res' %}
               {{ menu_item(m.title, url_for('resource_search'), class='menu-highlight') }}
             {% elif m.item == 'forum' %}
