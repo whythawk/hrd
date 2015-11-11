@@ -81,6 +81,16 @@ except:
     pass
 
 sql = '''
+ALTER TABLE users
+    ADD forum_digest BOOLEAN DEFAULT true
+'''
+
+try:
+    db.engine.execute(sql)
+except:
+    pass
+
+sql = '''
 ALTER TABLE category
     ADD consolidate BOOLEAN DEFAULT false
 '''

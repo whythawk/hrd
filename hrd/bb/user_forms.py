@@ -15,7 +15,7 @@ from flask.ext.babel import lazy_gettext as _
 from wtforms.ext.sqlalchemy.fields import (QuerySelectField,
                                            QuerySelectMultipleField)
 from wtforms import (StringField, PasswordField, DateField, TextAreaField,
-                     SelectField, ValidationError)
+                     SelectField, ValidationError, BooleanField)
 from wtforms.validators import (Length, DataRequired, Email, EqualTo, regexp,
                                 Optional, URL)
 
@@ -105,9 +105,8 @@ class ChangeUserDetailsForm(Form):
     website = StringField(_("Website"), validators=[
         Optional(), URL()])
 
-    avatar = StringField(_("Avatar"), validators=[
-        Optional(), URL()])
-
+    avatar = StringField(_("Avatar"), validators=[ Optional(), URL()])
+    forum_digest = BooleanField(_("Recieve forum digest"), validators=[ ])
     signature = TextAreaField(_("Forum Signature"), validators=[
         Optional()])
 
@@ -185,6 +184,7 @@ class UserForm(Form):
 
     avatar = StringField(_("Avatar"), validators=[
         Optional(), URL()])
+    forum_digest = BooleanField(_("Recieve forum digest"), validators=[ ], default=True)
 
     signature = TextAreaField(_("Forum Signature"), validators=[
         Optional(), Length(min=0, max=250)])
