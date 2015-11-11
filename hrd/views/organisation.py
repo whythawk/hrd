@@ -4,6 +4,7 @@ import uuid
 from flask import (render_template, request, abort, redirect,
                    send_from_directory)
 from flask import _request_ctx_stack
+from flask.ext.babel import _
 
 from hrd import (app, db, url_for_admin, get_admin_lang, get_bool, config,
                  permission, permission_content, get_str, lang_codes)
@@ -273,18 +274,46 @@ def org(id):
 
 def org_cat_codes(lang, id):
     codes = all_codes(lang, 'org')
+    limits = get_cat_limit_info()
     current = [
         c.code for c in OrgCodes.query.filter_by(org_id=id).all()
     ]
     out = []
     for cat in codes:
+        cat_id = cat['category_id']
         found = []
         for code in cat['codes']:
             if code['code_id'] in current and code['title']:
                 found.append(code['title'])
+        # show all for consolidated categories if all codes chosen
+        if cat_id in limits and len(found) == limits[cat_id]:
+            found = [_('All')]
         if found:
             out.append((cat['title'], ', '.join(found)))
     return out
+
+def get_cat_limit_info():
+
+    sql = '''
+        SELECT cat.category_id, count(c.code_id)
+        FROM category AS cat
+        JOIN code AS c
+        ON cat.category_id = c.category_id
+        WHERE cat.lang='en'
+        AND cat.active= true
+        AND cat.current= true
+        AND cat.consolidate= true
+        AND c.lang='en'
+        AND c.active= true
+        AND c.current= true
+        GROUP BY cat.category_id;
+    '''
+    result = db.engine.execute(sql)
+    limits = {}
+    for row in result:
+        limits[row[0]] = row[1]
+    return limits
+
 
 
 @app.route('/admin/org_preview/<id>')

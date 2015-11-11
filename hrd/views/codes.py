@@ -54,6 +54,7 @@ def category_edit(id, cat_type):
             locked = {
                 'active': get_bool('active'),
                 'order': get_int('order', 99),
+                'consolidate': get_bool('consolidate')
             }
             Category.query.filter_by(
                 category_id=category.category_id

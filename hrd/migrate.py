@@ -79,3 +79,13 @@ try:
     db.engine.execute(sql)
 except:
     pass
+
+sql = '''
+ALTER TABLE category
+    ADD consolidate BOOLEAN DEFAULT false
+'''
+
+try:
+    db.engine.execute(sql)
+except:
+    pass

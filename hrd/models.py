@@ -52,6 +52,7 @@ class Category(db.Model):
     cat_type = db.Column(db.String(10))
     current = db.Column(db.Boolean(), default=True)
     active = db.Column(db.Boolean(), default=False)
+    consolidate = db.Column(db.Boolean(), default=False)
     order = db.Column(db.Integer(), default=99)
 
     def __repr__(self):
