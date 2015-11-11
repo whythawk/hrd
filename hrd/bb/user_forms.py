@@ -26,6 +26,12 @@ from flaskbb.utils.widgets import SelectDateWidget
 
 from hrd import googauth
 
+# Import our config
+try:
+    import hrd.config.production as config
+except ImportError:
+    import hrd.config.default as config
+
 IMG_RE = r'^[^/\\]\.(?:jpg|gif|png)'
 
 is_image = regexp(IMG_RE,
@@ -36,6 +42,9 @@ is_username = regexp(USERNAME_RE,
                      message=("You can only use letters, numbers or dashes"))
 
 
+
+def lang_options():
+    return [(l[0], l[1]) for l in config.LANGUAGE_LIST]
 
 class GeneralSettingsForm(Form):
     # The choices for those fields will be generated in the user view
@@ -107,6 +116,7 @@ class ChangeUserDetailsForm(Form):
 
     avatar = StringField(_("Avatar"), validators=[ Optional(), URL()])
     forum_digest = BooleanField(_("Recieve forum digest"), validators=[ ])
+    prefered_lang = SelectField("prefered_lang", [Optional()], choices=lang_options())
     signature = TextAreaField(_("Forum Signature"), validators=[
         Optional()])
 
@@ -185,6 +195,7 @@ class UserForm(Form):
     avatar = StringField(_("Avatar"), validators=[
         Optional(), URL()])
     forum_digest = BooleanField(_("Recieve forum digest"), validators=[ ], default=True)
+    prefered_lang = SelectField("prefered_lang", [Optional()], choices=lang_options())
 
     signature = TextAreaField(_("Forum Signature"), validators=[
         Optional(), Length(min=0, max=250)])

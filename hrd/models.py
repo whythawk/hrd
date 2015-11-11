@@ -140,6 +140,7 @@ User.organization = db.Column(db.String(50))
 User.realname = db.Column(db.String(250))
 User.position = db.Column(db.String(250))
 User.forum_digest = db.Column(db.Boolean, default=True)
+User.prefered_lang = db.Column(db.String(10))
 #class User(db.Model):
 #    id = db.Column(db.String(50), primary_key=True, default=make_uuid)
 #    name = db.Column(db.String(250))

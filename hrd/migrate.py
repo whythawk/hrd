@@ -91,6 +91,16 @@ except:
     pass
 
 sql = '''
+ALTER TABLE users
+    ADD prefered_lang VARCHAR(10)
+'''
+
+try:
+    db.engine.execute(sql)
+except:
+    pass
+
+sql = '''
 ALTER TABLE category
     ADD consolidate BOOLEAN DEFAULT false
 '''
