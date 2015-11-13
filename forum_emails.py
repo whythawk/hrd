@@ -103,7 +103,7 @@ def create_email(new_posts, replies, lang, email):
         body.append('')
         body.append(_('New following posts have had replies'))
         body.append('')
-        for post in new_posts:
+        for post in replies:
             body.append(info[post])
             body.append('%s/forum/topic/%s\n' % (config.SITE_URL, post))
     body.append('-' * 78)
