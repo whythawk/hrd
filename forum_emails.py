@@ -143,5 +143,5 @@ if __name__ == '__main__':
         if config.FORUM_DIGEST_LIMITED and user[0] not in config.FORUM_DIGEST_LIMIT_LIST:
             continue
         lang = user[1] or 'en'
-        email = user[2]
+        email = user[4]
         get_posts(user[0], post_date, lang, email)

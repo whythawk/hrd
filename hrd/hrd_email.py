@@ -6,7 +6,7 @@ from hrd import config
 def send_email(recipient, subject, content, sender):
     msg = MIMEText(content, 'plain', 'utf-8')
     if hasattr(config, 'EMAIL_ENABLED') and not config.EMAIL_ENABLED:
-        print 'EMAIL:'
+        print 'EMAIL:', recipient
         print msg.as_string()
         return
     msg['Subject'] = subject
