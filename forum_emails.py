@@ -88,7 +88,7 @@ def create_email(new_posts, replies, lang, email):
     except:
         _ = gettext.gettext
 
-    if not (new_posts or replies):
+    if not (new_posts + replies):
         return
     info = get_topic_details(new_posts + replies)
     body = []
