@@ -14,7 +14,6 @@ from hrd import hrd_email, config
 
 
 engine = sa.create_engine(config.DB_CONNECTION)
-conn = engine.connect()
 
 
 def get_digest_users():
@@ -76,6 +75,7 @@ def get_posts(user_id, post_date, lang, email):
         new_posts.append(row[0])
     print 'new_posts:', new_posts
     create_email(new_posts, replies, lang, email)
+    conn.close()
 
 
 def create_email(new_posts, replies, lang, email):
