@@ -25,7 +25,9 @@ def get_digest_users():
     AND ga_enabled = true
     AND ga_key is not NULL
     '''
-    result = engine.execute(sql)
+    conn = engine.connect()
+    result = conn.execute(sql)
+    conn.close()
     return result
 
 
