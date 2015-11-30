@@ -123,7 +123,9 @@ def get_topic_details(ids):
         FROM topics
         WHERE id IN :posts
         ''')
-        result = engine.execute(sql, posts=tuple(ids))
+        conn = engine.connect()
+        result = conn.execute(sql, posts=tuple(ids))
+        conn.close()
         for row in result:
             results[row[0]] = row[1]
     return results
