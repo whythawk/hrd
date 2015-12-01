@@ -54,6 +54,7 @@
                             {{ topnav(endpoint='forum.index', name=_('Message board'), icon='fa fa-comment', active=active_forum_nav) }}
                             {{ topnav(endpoint='forum.memberlist', name=_('Memberlist'), icon='fa fa-user') }}
                             {{ topnav(endpoint='forum.search', name=_('Search'), icon='fa fa-search') }}
+                            {{ topnav(endpoint='forum.topictracker', name=_('Tracked topics'), icon='fa fa-book') }}
 
                             {{ emit_event("after-last-navigation-element") | safe }}
 
