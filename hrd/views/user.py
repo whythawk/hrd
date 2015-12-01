@@ -211,6 +211,24 @@ def reset_request():
         return render_template('user/reset_request_sent.html', error=error)
     return render_template('user/reset_request.html', error=error)
 
+
+@app.route("/user/reset_ga/<user_id>", methods=['GET', 'POST'])
+def reset_ga(user_id):
+    permission(['user_manage', 'user_admin'])
+
+    user = User.query.filter_by(id=user_id).first()
+    if not user:
+        abort(403)
+    if request.method == 'GET':
+        return render_template("user/reset_ga.html", username=user.username)
+
+    db.session.execute('UPDATE users set ga_key = null, ga_enabled = false WHERE id=:id',
+                                {'id':user.id})
+    db.session.commit()
+    bb_user.flash(_("User GA Code has been reset."), "success")
+    return redirect(url_for('user_profile', username=user.username))
+
+
 @app.route('/user/ga_setup', methods=['GET', 'POST'])
 def ga_setup():
     user = current_user
@@ -247,7 +265,10 @@ def ga_check():
     result = db.session.execute('SELECT ga_key FROM users WHERE id=:id',
                                 {'id':user.id}).first()
     if not result[0]:
-        abort(403)
+        logout_user()
+        session.clear()
+        return redirect(url_for('cms_page2'))
+
     if request.method == 'POST':
         if get_str('cancel'):
             return logout()

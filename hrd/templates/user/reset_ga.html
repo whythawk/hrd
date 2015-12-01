@@ -1,0 +1,16 @@
+{% extends 'body_base.html' %}
+
+{% block title %}{{ _('Reset GA Code') }}{% endblock %}
+
+
+{% block container_class %}content{% endblock %}
+
+{% block content %}
+        <h1>{{ _('Reset GA Code') }}<br /><br /></h1>
+
+            <p>{{ _('This will reset the GA code for this user')}}</p>
+            <p><b>{{ username }}</b></p>
+        <form method="POST">
+            <input class="but btn-primary" name="reset_ga" type="submit" value="{{ _('Reset') }}">
+        </form>
+{% endblock %}

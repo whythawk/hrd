@@ -12,6 +12,11 @@
         <li>
           <a href={{ url_for('user_edit', user_id=_user.id) }}>{{ _("Edit User") }}</a>
         </li>
+        {% if _user.ga_enabled %}
+        <li>
+          <a href={{ url_for('reset_ga', user_id=_user.id) }}>{{ _("Reset GA Code") }}</a>
+        </li>
+        {% endif %}
         {% if can_resend_invite %}
           <li>
             <a href={{ url_for('resend_invite', user_id=_user.id) }}>{{ _("Resend Invite") }}</a>
