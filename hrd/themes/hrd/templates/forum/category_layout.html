@@ -40,12 +40,11 @@
 
             {% if forum.locked %}
                 <span class="fa fa-lock" style="font-size: 2em"></span>
-            {% elif forum|forum_is_unread(forumsread, current_user) %}
+            {% elif unread_forums(forum.id) %}
                 <span class="fa fa-comments" style="font-size: 2em"></span>
             {% else %}
                 <span class="fa fa-comments-o" style="font-size: 2em"></span>
             {% endif %}
-
             </td>
 
             <td valign="top">

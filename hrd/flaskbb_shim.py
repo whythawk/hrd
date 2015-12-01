@@ -146,6 +146,7 @@ def get_flaskbb(app, path, url_for):
         'sub_menu_item',
         'has_perm',
         'user_logged_in',
+        'unread_forums',
     ]
 
     for helper in helpers:

@@ -171,6 +171,32 @@ def organization_name(value):
         return _('None')
     return org.name
 
+def unread_forums(forum_id):
+    user = current_user
+    read_cutoff = datetime.utcnow() - timedelta(
+        days=flaskbb_config["TRACKER_LENGTH"])
+
+    if  read_cutoff < user.date_joined:
+        read_cutoff = user.date_joined - timedelta(days=1)
+
+   # fetch the unread posts in the forum
+    unread_count = bb_f.Topic.query.with_entities(bb_f.Topic.id).\
+        outerjoin(bb_f.TopicsRead,
+                  bb_f.db.and_(bb_f.TopicsRead.topic_id == bb_f.Topic.id,
+                          bb_f.TopicsRead.user_id == user.id)).\
+        outerjoin(bb_f.ForumsRead,
+                  bb_f.db.and_(bb_f.ForumsRead.forum_id == bb_f.Topic.forum_id,
+                          bb_f.ForumsRead.user_id == user.id)).\
+        filter(bb_f.Topic.last_updated > read_cutoff).\
+        filter(bb_f.Topic.forum_id == forum_id).\
+        filter(bb_f.db.or_(bb_f.ForumsRead.cleared == None,
+                           bb_f.ForumsRead.cleared < bb_f.Topic.last_updated)).\
+       filter(
+               bb_f.db.or_(bb_f.TopicsRead.last_read == None,
+                      bb_f.TopicsRead.last_read < bb_f.Topic.last_updated
+                          )).count()
+    return unread_count
+
 
 def unread_topics():
     user = current_user
@@ -202,6 +228,7 @@ def unread_topics():
 
 hrd.app.jinja_env.globals.update(
     unread_topics=unread_topics,
+    unread_forums=unread_forums,
     url_for_admin=hrd.url_for_admin,
     url_for=hrd.url_for,
     url_for_fixed=hrd.url_for_fixed,
