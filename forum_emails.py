@@ -22,9 +22,12 @@ def get_digest_users():
     FROM users
     WHERE
     forum_digest = true
-    AND ga_enabled = true
-    AND ga_key is not NULL
     '''
+    if config.GA_ENABLED:
+        sql += '''
+        AND ga_enabled = true
+        AND ga_key is not NULL
+        '''
     conn = engine.connect()
     result = conn.execute(sql)
     conn.close()
@@ -43,16 +46,8 @@ def get_posts(user_id, post_date, lang, email):
       AND tr.user_id = :user_id
     WHERE p.date_created > :date
     AND (tr.last_read < p.date_created OR tr.last_read IS NULL)
-    AND p.topic_id NOT IN (
-
-    SELECT t.id
-    FROM topics AS t
-    LEFT OUTER JOIN forumsread AS fr
-    ON fr.forum_id = t.forum_id
-        AND fr.user_id = :user_id
-    WHERE t.date_created > :date
-    AND (fr.last_read < t.date_created OR fr.last_read IS NULL)
-
+    AND p.topic_id IN (
+     SELECT topic_id FROM topictracker WHERE user_id = :user_id
     )
     ''')
     result = conn.execute(sql, date=post_date, user_id=user_id)
@@ -96,14 +91,14 @@ def create_email(new_posts, replies, lang, email):
     body = []
     if new_posts:
         body.append('')
-        body.append(_('The following posts have been added in the HRD forum'))
+        body.append(_('The following topics have been added in the HRD forum'))
         body.append('')
         for post in new_posts:
             body.append(info[post])
             body.append('%s/forum/topic/%s\n' % (config.SITE_URL, post))
     if replies:
         body.append('')
-        body.append(_('New following posts have had replies'))
+        body.append(_('New following topics you are tracking have had replies'))
         body.append('')
         for post in replies:
             body.append(info[post])
