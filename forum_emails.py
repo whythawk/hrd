@@ -91,14 +91,14 @@ def create_email(new_posts, replies, lang, email):
     body = []
     if new_posts:
         body.append('')
-        body.append(_('The following topics have been added in the HRD forum'))
+        body.append(_('A new topic has been created.'))
         body.append('')
         for post in new_posts:
             body.append(info[post])
             body.append('%s/forum/topic/%s\n' % (config.SITE_URL, post))
     if replies:
         body.append('')
-        body.append(_('New following topics you are tracking have had replies'))
+        body.append(_('The following topics you are tracking have had replies.'))
         body.append('')
         for post in replies:
             body.append(info[post])
