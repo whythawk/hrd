@@ -10,7 +10,8 @@ import sqlalchemy as sa
 
 import gettext
 
-from hrd import hrd_email, config
+import hrd.hrd_email as hrd_email
+import hrd.config as config
 
 
 engine = sa.create_engine(config.DB_CONNECTION)
