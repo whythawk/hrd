@@ -64,7 +64,11 @@ def get_posts(user_id, post_date, lang, email):
     LEFT OUTER JOIN forumsread AS fr
     ON fr.forum_id = t.forum_id
         AND fr.user_id = :user_id
+    LEFT OUTER JOIN topicsread AS tr
+    ON t.id = tr.topic_id
+      AND tr.user_id = :user_id
     WHERE t.date_created > :date
+    AND (tr.last_read < t.date_created OR tr.last_read IS NULL)
     AND (fr.last_read < t.date_created OR fr.last_read IS NULL)
     ''')
     result = conn.execute(sql, date=post_date, user_id=user_id)
