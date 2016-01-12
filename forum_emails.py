@@ -26,7 +26,6 @@ def get_digest_users():
     '''
     if config.GA_ENABLED:
         sql += '''
-        AND ga_enabled = true
         AND ga_key is not NULL
         '''
     conn = engine.connect()
@@ -37,7 +36,6 @@ def get_digest_users():
 
 def get_posts(user_id, post_date, lang, email):
     conn = engine.connect()
-    print 'USER', user_id, lang
     # new posts
     sql = text('''
     SELECT DISTINCT p.topic_id
@@ -55,7 +53,6 @@ def get_posts(user_id, post_date, lang, email):
     replies = []
     for row in result:
         replies.append(row[0])
-    print 'replies:', replies
     # new topics
 
     sql = text('''
@@ -75,7 +72,11 @@ def get_posts(user_id, post_date, lang, email):
     new_posts = []
     for row in result:
         new_posts.append(row[0])
-    print 'new_posts:', new_posts
+
+    if new_posts or replies:
+        print 'USER', user_id, lang, email
+        print 'new_posts:', new_posts
+        print 'replies:', replies
     create_email(new_posts, replies, lang, email)
     conn.close()
 
