@@ -110,7 +110,7 @@ def create_email(new_posts, replies, lang, email):
             body.append(info[post])
             body.append('%s/forum/topic/%s\n' % (config.SITE_URL, post))
     body.append('-' * 78)
-    body.append(_('You have recieved this as you are a member of the EU Human Rights Defenders Relocation Platform.  To unsubscribe please log in and uncheck the forum digest checkbox in your profile.'))
+    body.append(_('You have received this as you are a member of the EU Human Rights Defenders Relocation Platform.  To unsubscribe please log in and uncheck the forum digest checkbox in your profile.'))
     msg = '\n'.join(body)
     subject = _('HRD daily digest')
     sender = config.EMAIL
