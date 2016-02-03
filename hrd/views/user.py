@@ -32,6 +32,12 @@ def before_request():
     request.permissions = []
     user = current_user
     if user.is_authenticated():
+        last_visit = session.get('time')
+        if not last_visit or (datetime.now() - last_visit).seconds > config.LOGOUT_SECONDS:
+            logout_user()
+            session.clear()
+            return redirect(url_for('cms_page2'))
+        session['time'] = datetime.now()
         ga = check_ga()
         if ga:
             return ga
@@ -74,6 +80,7 @@ def login():
                 else:
                     session['ga'] = 'setup'
                 login_user(user)
+                session['time'] = datetime.now()
                 return redirect(url_for('cms_page2'))
 
     return render_template('user/login.html', username=username)
