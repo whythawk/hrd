@@ -1,5 +1,5 @@
 import cStringIO
-import datetime
+from datetime import datetime
 
 import qrcode
 from passlib.hash import sha512_crypt as passlib
@@ -122,7 +122,7 @@ def newuser_request_action():
                                 {'key': key}).first()
     if (not result):
         abort(403)
-    if (datetime.datetime.now() - result.reset_date).days > 5:
+    if (datetime.now() - result.reset_date).days > 5:
         return render_template("user/link_out_of_date.html",
                               message=_('Your invite has expired, please request a new one'))
     # we are authorized
@@ -174,7 +174,7 @@ def reset_request_action():
                                 {'key': key}).first()
     if (not result):
         abort(403)
-    if (datetime.datetime.now() - result.reset_date).days > 0:
+    if (datetime.now() - result.reset_date).days > 0:
         return render_template("user/link_out_of_date.html",
                               message=_('This link has expired!'))
     # we are authorized
