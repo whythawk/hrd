@@ -1,532 +1,508 @@
-// out: ../../static/css/hrd_styles.css
+// out: ../EU Human Rights Defenders_files/hrd_styles.css
+
 /* HRD Custom Styles */
- 
+
+
 /* ===================================================================
 Import Bootstrap LESS and Site Specific LESS
 =================================================================== */
- 
-@import '/bootstrap/bootstrap.less'; /* Compiled in Codekit - referenced here as a Framework */
-@import 'responsive.less'; /* Load Responsive media queries  */
-@import '../less/variables.less'; /* Your site specific LESS variables - these override BS defaults  */
+
+@import '/bootstrap/bootstrap.less';
+
+/* Compiled in Codekit - referenced here as a Framework */
+
+@import 'responsive.less';
+
+/* Load Responsive media queries  */
+
+@import 'variables.less';
+
+/* Your site specific LESS variables - these override BS defaults  */
 
 //
 // Header - eg content and footer
 // --------------------------------------------------
-
 .header {
-    background-color: #fff;   
+  background-color: #fff;
 }
-
 
 //
 // Jumbotron heading
 // --------------------------------------------------
-
 .jumbotron {
- 
-    h1,
-    .h1 {
-      font-size: (@font-size-base * 2.6);
-    }
+  h1,
+  .h1 {
+    font-size: (@font-size-base * 2.6);
   }
+}
 
 //
 // Main structural block - border and background options
 // --------------------------------------------------
-
 .red-left-border {
-    border-left: 8px solid @brand-primary;
-    border-top: 1px solid  lighten(@brand-secondary, 40%);
+  border-left: 8px solid @brand-primary;
+  border-top: 1px solid lighten(@brand-secondary, 40%);
 }
 
 .blue-left-border {
-    border-left: 8px solid @brand-secondary;
-    border-top: 1px solid  lighten(@brand-secondary, 40%);
+  border-left: 8px solid @brand-secondary;
+  border-top: 1px solid lighten(@brand-secondary, 40%);
 }
 
 .grey-bottom-border {
-    border-bottom: 8px solid @gray-light2;
+  border-bottom: 8px solid @gray-light2;
 }
 
-.red-panel-bkg { 
-    background-color: @brand-primary;
-    color: #fff;
+.red-panel-bkg {
+  background-color: @brand-primary;
+  color: #fff;
 }
 
-.grey-panel-bkg { 
-    background-color: @gray-lighter;
+.grey-panel-bkg {
+  background-color: @gray-lighter;
 }
-
 
 //
 // Panels - eg content and footer
 // --------------------------------------------------
-
-
 .header {
-    padding-left: 0;
-    padding-right: 0;
-    margin-bottom: 25px;
-
-}
-
-.hrd_logo {
-    //margin-left: 30px;
-
+  padding-left: 0;
+  padding-right: 0;
+  margin-bottom: 25px;
 }
 
 .sitetitle {
-    margin-top: 40px 0 0 -40px;
-    font-weight: 500;
-    font-size: @font-size-h4;
+  margin: 40px 0 0 -40px;
+  font-weight: 500;
+  font-size: @font-size-h4;
 }
 
 .eu_logo img {
-        max-width: 100%;
-        height: auto;
-        float: right;
-    }
+  max-width: 100%;
+  height: auto;
+  float: right;
+}
 
-.container { 
-    padding-left: 0;
-    padding-right: 0;
+.container {
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .panel {
-    padding: @jumbotron-padding;
-    border: 0;
+  padding: @jumbotron-padding;
+  border: 0;
 }
 
 .footer .panel {
-    padding-bottom: 0;   
+  padding-bottom: 0;
 }
 
 .footer-menu > ul {
-    color: lighten(@brand-secondary, 40%);
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    text-indent: 0;    
+  color: lighten(@brand-secondary, 40%);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-indent: 0;
 }
 
-.footer-menu > ul  a {
-    color: lighten(@brand-secondary, 40%);
+.footer-menu > ul a {
+  color: lighten(@brand-secondary, 40%);
 }
 
-.footer-language-switch{
-    margin-bottom: 20px;
+.footer-language-switch {
+  margin-bottom: 20px;
 }
 
-.footer-language-switch li{
-    background-color: lighten(@brand-secondary, 70%);
-    padding: 3px 6px;
+.footer-language-switch li {
+  background-color: lighten(@brand-secondary, 70%);
+  padding: 3px 6px;
 }
 
-.footer-language-switch li.last{
-    border-right: none;
+.footer-language-switch li.last {
+  border-right: none;
 }
 
-.footer-language-switch li.active{
-    border-top: 4px solid @brand-secondary;
+.footer-language-switch li.active {
+  border-top: 4px solid @brand-secondary;
 }
 
-.footer-language-switch li:hover{
-    background-color: lighten(@brand-secondary, 40%);
+.footer-language-switch li:hover {
+  background-color: lighten(@brand-secondary, 40%);
 }
 
-.footer-language-switch li a:hover{
-    color: #fff;
+.footer-language-switch li a:hover {
+  color: #fff;
 }
 
 .footer-partners img {
-    max-width: 120px;
-    height: auto;
+  max-width: 120px;
+  height: auto;
 }
-
-
 
 //
 // Search page items
 // --------------------------------------------------
-
 .search-filter-col {
-    padding-right: 2px;
+  padding-right: 2px;
 }
 
 .column-label {
-    position: absolute;
-    margin-left: 0;
-    z-index: 2;
-    background-color: #fff;
-    padding: 5px;
-    color: @brand-secondary;
-    left: 0;
-    top: 0;
-    text-align: center;
+  position: absolute;
+  margin-left: 0;
+  z-index: 2;
+  background-color: #fff;
+  padding: 5px;
+  color: @brand-secondary;
+  left: 0;
+  top: 0;
+  text-align: center;
 }
 
-.search-filter-col h3, .search-filter-col a {
-    color: #fff;
+.search-filter-col h3,
+.search-filter-col a {
+  color: #fff;
 }
 
 .search-filter-col label {
-    display: block;
-    margin: 2px 0;
-    border-bottom: 1px dotted lighten(@brand-primary, 10%);
-    font-size: 12px;
-    position: relative;
+  display: block;
+  margin: 2px 0;
+  border-bottom: 1px dotted lighten(@brand-primary, 10%);
+  font-size: 12px;
+  position: relative;
 }
 
 .search-filter-item {
-   display: block;
-   margin: 0 0 0 30px;
+  display: block;
+  margin: 0 0 0 30px;
 }
 
 .search-filter-col input[type=checkbox] {
-    position: absolute;
-    top:-2px;
-    left: 0;
-    //margin: 0;
+  position: absolute;
+  top: -2px;
+  left: 0;
+  //margin: 0;
 }
 
 .search-filter-col label.last {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 .search-filter-col summary:focus {
-    outline: none;
+  outline: none;
 }
 
 .search-filter-col details {
-    display: block;
-    border-bottom: 1px solid #fff;
-    margin: 0 15px;
+  display: block;
+  border-bottom: 1px solid #fff;
+  margin: 0 15px;
 }
 
 .search-filter-col h3 {
-    margin-top: 40px;
+  margin-top: 40px;
 }
 
 .search-filter-title {
-    //outline: 1px #fff dotted;
-    font: @font-family-sans-serif;
-    font-size: @font-size-h4;
-    margin: 7px 0 10px 0;
-    cursor: pointer;
+  font: @font-family-sans-serif;
+  font-size: @font-size-h4;
+  margin: 7px 0 10px 0;
+  cursor: pointer;
 }
 
 .search-filter-col input[type='checkbox'] {
-    margin-right: 7px;
+  margin-right: 7px;
 }
 
 .search-filter-col input[type='submit'] {
-    background-color: #fff;
-    color: @brand-secondary;
-    border: none;
-    border-left: 8px solid @brand-secondary;
-    margin: 10px 20px 0 0;
-    font-size: @font-size-h4;
+  background-color: #fff;
+  color: @brand-secondary;
+  border: none;
+  border-left: 8px solid @brand-secondary;
+  margin: 10px 20px 0 0;
+  font-size: @font-size-h4;
 }
 
 .search-results-col h2 {
-    color: lighten(@brand-secondary, 40%);
+  color: lighten(@brand-secondary, 40%);
 }
 
 .search-result {
-    padding-bottom: 20px;
-    border-bottom: 1px solid @gray-light2;
+  padding-bottom: 20px;
+  border-bottom: 1px solid @gray-light2;
 }
 
 .search-result.last {
-    padding-bottom: 20px;
-    border-bottom: none;
+  padding-bottom: 20px;
+  border-bottom: none;
 }
 
 .no-of-records {
-    color: lighten(@brand-secondary, 40%);
+  color: lighten(@brand-secondary, 40%);
 }
 
 .view-detail {
-    border-left: 4px solid @brand-secondary;
-    padding: 0 5px 0 10px;
-    font-weight: 700;
+  border-left: 4px solid @brand-secondary;
+  padding: 0 5px 0 10px;
+  font-weight: 700;
 }
 
 .view-detail a {
-    color: @brand-secondary;
+  color: @brand-secondary;
 }
 
 .search-meta li a {
-    display: inline-block;
-    background-color: @gray-lighter;
-    padding: 1px 6px;
-    color: @gray-light;
-    margin-bottom: 4px
+  display: inline-block;
+  background-color: @gray-lighter;
+  padding: 1px 6px;
+  color: @gray-light;
+  margin-bottom: 4px
 }
 
 .pagination-top {
-    border-bottom: 2px solid @gray-light2;
-    margin-bottom: 20px;
+  border-bottom: 2px solid @gray-light2;
+  margin-bottom: 20px;
 }
 
 .pagination-bottom {
-    border-top: 2px solid @gray-light2;
-    margin-top: 20px;
+  border-top: 2px solid @gray-light2;
+  margin-top: 20px;
 }
 
-.pagination-top ul, .pagination-bottom ul {
-    margin-bottom: -3px;
-    margin-top: 0px;
+.pagination-top ul,
+.pagination-bottom ul {
+  margin-bottom: -3px;
+  margin-top: 0px;
 }
 
-.pagination-top li a, .pagination-bottom li a {
-    border: 0;
+.pagination-top li a,
+.pagination-bottom li a {
+  border: 0;
 }
 
 .pagination .active > a:hover {
-    background: @gray-lighter;
-    color: @brand-secondary;
+  background: @gray-lighter;
+  color: @brand-secondary;
 }
 
-.pagination-top li.active a, .pagination-bottom li.active a {
-    border: 0;
-    border-top: 4px solid @brand-primary;
-    background: none;
-    color: @brand-secondary;
-    top: -4px;
+.pagination-top li.active a,
+.pagination-bottom li.active a {
+  border: 0;
+  border-top: 4px solid @brand-primary;
+  background: none;
+  color: @brand-secondary;
+  top: -4px;
 }
 
 .org-logo-col {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 //
 // Log in page items
 // --------------------------------------------------
-
-
 .login-form .btn {
-    background-color: @brand-secondary;
-    color: #fff;
-    border: none;
-    border-left: 8px solid #fff;
-    font-weight: 700;
+  background-color: @brand-secondary;
+  color: #fff;
+  border: none;
+  border-left: 8px solid #fff;
+  font-weight: 700;
 }
 
 .login-form .btn:hover {
-    background-color: lighten(@brand-secondary, 20%);
+  background-color: lighten(@brand-secondary, 20%);
 }
-
 
 //
 // Custom padding 
 // --------------------------------------------------
-
 .hrd-padded-10 {
-    padding: 10px;
+  padding: 10px;
 }
 
 .hrd-padded-15 {
-    padding: 15px;
+  padding: 15px;
 }
 
 .hrd-padded-20 {
-    padding: 20px;
+  padding: 20px;
 }
-
 
 //
 // ADMIN pages forms and warnings 
 // --------------------------------------------------
-
 // Tabs
+.nav-tabs li a,
+.nav-tabs li.active a {
+  color: @brand-secondary;
+}
 
-.nav-tabs li a, .nav-tabs li.active a { 
-        color: @brand-secondary;
-    }
+.nav-tabs li a:hover,
+.nav-tabs li.active a:hover {
+  background-color: #fff;
+  color: @brand-primary;
+}
 
-.nav-tabs li a:hover, .nav-tabs li.active a:hover { 
-        background-color: #fff;
-        color: @brand-primary;
-    } 
-
-.nav-tabs  { 
-        margin-bottom: 20px;
-    }
+.nav-tabs {
+  margin-bottom: 20px;
+}
 
 .no-translation a {
-    color: @brand-primary !important;
+  color: @brand-primary !important;
 }
 
 .old-translation a {
-    color: @brand-info !important;
+  color: @brand-info !important;
 }
 
 // Organizations category editing list
-
 .org-cat-list > ul {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
 .org-cat-top-level {
-    list-style-type: none;
-    margin: 0 0 20px 0 !important;
+  list-style-type: none;
+  margin: 0 0 20px 0 !important;
 }
 
 .org-cat-top-level ul {
-    display: block; 
-    padding: 0;
+  display: block;
+  padding: 0;
 }
 
 .org-cat-top-level ul li {
-    list-style-type: none;
-    background: -5px 24px no-repeat url(/static/images/org-list-heirarchy.png );
-    padding: 0 0 0 17px;
-    border-bottom: 1px @gray-light2 solid;
+  list-style-type: none;
+  background: -5px 24px no-repeat url(/static/images/org-list-heirarchy.png );
+  padding: 0 0 0 17px;
+  border-bottom: 1px @gray-light2 solid;
 }
 
 .org-cat-top-level ul li:first-child {
-    border-top: 1px @gray-light2 solid;
-    margin-top: 10px;
+  border-top: 1px @gray-light2 solid;
+  margin-top: 10px;
 }
 
 .org-cat-top-level ul li:last-child {
-    background: -5px 24px  no-repeat url(/static/images/org-list-heirarchy-last.png );
-    border-bottom: none;
+  background: -5px 24px no-repeat url(/static/images/org-list-heirarchy-last.png );
+  border-bottom: none;
 }
 
 .org-cat-alert {
-    padding: 7px 7px 7px 14px;
-    form {
-        margin-bottom: 0px;
-    }
+  padding: 7px 7px 7px 14px;
+  form {
+    margin-bottom: 0px;
+  }
 }
 
 //
 // New null alert class
 // --------------------------------------------------
-
 .alert-null {
-    background-color: @gray-lighter;
-    border-color: darken(@gray-lighter, 5%)
+  background-color: @gray-lighter;
+  border-color: darken(@gray-lighter, 5%)
 }
 
 .label-null {
-    background-color: none;
-    border: 1px solid @gray-light;
-    color: @gray-light;
+  background-color: none;
+  border: 1px solid @gray-light;
+  color: @gray-light;
 }
 
 // Edit pages list elements
-
 .page-list-url {
-    right: 0;
+  right: 0;
 }
 
-h4 .label, h5 .label {
-    font-size: 60%;
+h4 .label,
+h5 .label {
+  font-size: 60%;
 }
 
 // Edit page elements
-
 .btn-save {
-    padding: 7px 50px;
+  padding: 7px 50px;
 }
 
 .show-uploaded-img {
-    max-width: 400px;
-    height: auto;
+  max-width: 400px;
+  height: auto;
 }
 
 .display-en {
-    padding: 16px 12px;
-    //box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-    border: 1px dotted @gray-light2;
+  padding: 16px 12px;
+  //box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  border: 1px dotted @gray-light2;
 }
 
 label.bold-checkbox-label {
-    font-weight: 700;
+  font-weight: 700;
 }
-
 
 // Category edit page elements
-
 .org-choose-list {
-    margin-bottom: 10px;
-    border-bottom: 1px @gray-light2 solid;
-    label {
-        font-size: 12px;
-    }
-    input input[type=checkbox] {
-        top: -2px;
-    }
+  margin-bottom: 10px;
+  border-bottom: 1px @gray-light2 solid;
+  label {
+    font-size: 12px;
+  }
+  input input[type=checkbox] {
+    top: -2px;
+  }
 }
 
- // Org edit page category chooser for XS - devices
-
-    .org-choose-list {
-        summary { 
-            width: 100%; 
-            display: block;
-            height: 40px;
-        }
-        summary:focus { 
-            outline: none;
-            cursor: pointer;
-        }
-        .checkbox {
-        width: 100%;
-        //outline: 1px dotted red;
-        padding: 4px 0 2px 15px;
-        margin: 0;
-        position: relative;
-        float: left;
-        border-top: 1px dotted @gray-light2;
-        }
-    }
+// Org edit page category chooser for XS - devices
+.org-choose-list {
+  summary {
+    width: 100%;
+    display: block;
+    height: 40px;
+  }
+  summary:focus {
+    outline: none;
+    cursor: pointer;
+  }
+  .checkbox {
+    width: 100%;
+    //outline: 1px dotted red;
+    padding: 4px 0 2px 15px;
+    margin: 0;
+    position: relative;
+    float: left;
+    border-top: 1px dotted @gray-light2;
+  }
+}
 
 //
 // ADMIN pages coloring 
 // --------------------------------------------------
-
 // Adjustments for admin pages
-body.admin{
-    background-color: darken(@body-bg, 40%);
-    
-    // Menu adjustments
-    
-    .navbar-nav > li.active > a {
-        border-color: @gray-darker;   
-    }
-    
-    .nav-mega {
-        border-top: 2px solid @gray-darker;
-    }
-
-    .nav-mega li a:hover, .nav-mega li.active a:hover { 
-        background-color: @gray-lighter;
-        color: @gray-dark;
-    }
-    
-    .nav-mega li div {
-	    background-color: @gray-lighter;
-    }
-    
-    .nav-mega li div a{
-        color: @gray-dark !important;
-    }
-    
-    .nav-mega li div a:hover {
-        background-color: darken(@gray-lighter, 10%);
-    }
-    
-    .admin-title h3 {
-        display: inline-block;
-        float: right;
-        padding-right: 20px;
-    }
-
+body.admin {
+  background-color: darken(@body-bg, 40%);
+  // Menu adjustments
+  .navbar-nav > li.active > a {
+    border-color: @gray-darker;
+  }
+  .nav-mega {
+    border-top: 2px solid @gray-darker;
+  }
+  .nav-mega li a:hover,
+  .nav-mega li.active a:hover {
+    background-color: @gray-lighter;
+    color: @gray-dark;
+  }
+  .nav-mega li div {
+    background-color: @gray-lighter;
+  }
+  .nav-mega li div a {
+    color: @gray-dark !important;
+  }
+  .nav-mega li div a:hover {
+    background-color: darken(@gray-lighter, 10%);
+  }
+  .admin-title h3 {
+    display: inline-block;
+    float: right;
+    padding-right: 20px;
+  }
 }
 
 //
@@ -534,352 +510,319 @@ body.admin{
 // --------------------------------------------------
 
 /* Reset */
-    .nav-mega,
-    .nav-mega a,
-    .nav-mega ul,
-    .nav-mega li,
-    .nav-mega div,
-    .nav-mega form,
-    .nav-mega input {
-        margin: 0;
-        padding: 0;
-        border: none;
-        outline: none;
-    }
 
-    .nav-mega a { text-decoration: none; }
-
-    .nav-mega li { list-style: none; }
-
-
-
-//
-// Responsive menu
-// --------------------------------------------------
-
-// SM specific menu styling reverse breakpoint
-@media (max-width: 768px) { 
-    
-.sitetitle {
-        margin: 40px 0 0 -60px;
-        padding: 0 50px 0 0;
-    }
-    
-    .navbar-header {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 43px;
-    }
-    
-    button.navbar-toggle {
-        margin-top: -5px;
-        display: block; 
-        width: 40px;
-        height: 40px;
-        padding: 0;
-        margin: 0;
-        background: url(/static/images/menu_toggle_40px.png) -2px -2px ;
-    }
-    
-    .header {
-        height: 175px;
-    }
-        
-    .nav-mega {
-        float: right;
-        margin-right: 15px;
-        //z-index: 10;
-        display: block;float: right;
-        width: 50%;
-        font-size: @font-size-base;
-        background-color: @brand-info;
-        border-top: none;
-    }
-    
- .navbar-default .navbar-nav { 
-     li > a {color: #fff;}
-     li > a:hover {color: darken(#fff, 10%);}
-     li.active > a {color: darken(#fff, 10%);}
-     li.active > a:hover {color: darken(#fff, 20%);}
-    }
-    
-    .nav-mega a:hover {
-        background-color: darken(@brand-info, 20%) !important;
-        color: darken(#fff, 20%);
-    }
-
-    .nav-mega li a {
-        position: relative;
-        display: block;
-        height: 45px;
-        padding: 0 12px;
-        line-height: 45px;
-        overflow: visible;
-        background-color: @brand-info;
-        border-top: none;
-        border-bottom: 1px dotted darken(@brand-info, 20%);
-        color: #fff;
-    }
-    
-    .nav-mega li.active a {
-        background-color: @brand-info !important;
-    }
-    
-    .nav-mega li.active a:hover {
-        background-color: darken(@brand-info, 20%)!important;
-    }
-
-    .nav-mega .nav-column  a {
-        padding: 0 0 0 20px !important;
-        margin: 0;
-        padding: 0px;
-        color: lighten(@brand-info, 20%);
-        height: 30px;
-        line-height: 30px;
-        padding: 0 7px;
-    }
-
-    .nav-mega .nav-column a:hover {
-        color: #fff !important;;
-    } 
+.nav-mega,
+.nav-mega a,
+.nav-mega ul,
+.nav-mega li,
+.nav-mega div,
+.nav-mega form,
+.nav-mega input {
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
 }
 
+.nav-mega a {
+  text-decoration: none;
+}
+
+.nav-mega li {
+  list-style: none;
+}
 
 //
-// RESPONSIVE 
+// Responsive header and menu
 // --------------------------------------------------
+// SM specific menu styling reverse breakpoint
+@media (max-width: 767px) {
+  .hrd_logo {
+    padding: 0 0 0 20px;
+  }
+  .sitetitle {
+    margin: 0 0 0 20px;
+    padding: 0;
+    display: block;
+  }
+  .navbar-header {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 43px;
+  }
+  button.navbar-toggle {
+    margin-top: -5px;
+    display: block;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    margin: 0;
+    background: url(/static/images/menu_toggle_40px.png) -2px -2px;
+  }
+  .header {
+    height: auto;
+  }
+  .nav-mega {
+    //float: right;
+    padding: 0;
+    margin: 0 0 0 20px;
+    display: block;
+    width: 90%;
+    font-size: @font-size-base;
+    background-color: @brand-info;
+    border-top: none;
+  }
+  .navbar-default .navbar-nav {
+    li > a {
+      color: #fff;
+    }
+    li > a:hover {
+      color: darken(#fff, 10%);
+    }
+    li.active > a {
+      color: darken(#fff, 10%);
+    }
+    li.active > a:hover {
+      color: darken(#fff, 20%);
+    }
+  }
+  .nav-mega a:hover {
+    background-color: darken(@brand-info, 20%) !important;
+    color: darken(#fff, 20%);
+  }
+  .nav-mega li a {
+    position: relative;
+    display: block;
+    height: 45px;
+    padding: 0 12px;
+    line-height: 45px;
+    overflow: visible;
+    background-color: @brand-info;
+    border-top: none;
+    border-bottom: 1px dotted darken(@brand-info, 20%);
+    color: #fff;
+  }
+  .nav-mega li.active a {
+    background-color: @brand-info !important;
+  }
+  .nav-mega li.active a:hover {
+    background-color: darken(@brand-info, 20%)!important;
+  }
+  .nav-mega .nav-column a {
+    padding: 0 0 0 20px !important;
+    margin: 0;
+    padding: 0px;
+    color: lighten(@brand-info, 20%);
+    height: 30px;
+    line-height: 30px;
+    padding: 0 7px;
+  }
+  .nav-mega .nav-column a:hover {
+    color: #fff !important;
+    ;
+  }
+}
 
+// --------------------------------------------------
 // Pre SM breakpoint
 @media (min-width: 500px) {
-   // Org edit page category chooser for SM - devices
-    .org-choose-list {
-        .checkbox {
-            width: 50%;
-        }
-   }
+  // Org edit page category chooser for SM - devices
+  .org-choose-list {
+    .checkbox {
+      width: 50%;
+    }
+  }
 }
 
 // SM breakpoint
 @media (min-width: 768px) {
-
-    //
-    // Nav mega menu with reduced padding
-    // --------------------------------------------------
-
-    .header {
-        height: 233px;
+  //
+  // Nav mega menu with reduced padding
+  // --------------------------------------------------
+  .header {
+    height: 233px;
+  }
+  .sitetitle {
+    margin: 40px 0 0 -60px;
+    padding: 0 50px 0 0;
+  }
+  .admin-title h3 {
+    padding: 20px 30px 0 0;
+    font-size: @font-size-h3;
+    font-weight: 500;
+    display: inline-block;
+    float: right;
+    color: @gray-light;
+  }
+  /* Menu Container */
+  .nav-mega {
+    display: inline-block;
+    position: relative;
+    cursor: default;
+    z-index: 500;
+    width: 95%;
+    top: 50%;
+    border-left: none;
+    border-top: 2px solid @brand-secondary;
+    font-size: @font-size-small;
+    left: 0px;
+  }
+  /* Menu List */
+  .nav-mega > li {
+    display: block;
+    float: left;
+  }
+  /* Menu Links */
+  .nav-mega > li > a {
+    position: relative;
+    display: block;
+    z-index: 510;
+    height: 50px;
+    padding: 0 10px;
+    line-height: 50px;
+    overflow: visible;
+    background-color: #fff;
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    transition: all .3s ease;
+  }
+  .nav-mega > li.active > a {
+    height: 58px;
+    color: @brand-secondary;
+  }
+  .nav-mega li a:hover {
+    background-color: @brand-info;
+    color: #fff;
+  }
+  .nav-mega > li > a:hover,
+  .nav-mega > li.active > a:hover {
+    background-color: @brand-info;
+    color: @brand-secondary;
+  }
+  /* Menu Dropdown */
+  .nav-mega > li > div {
+    position: absolute;
+    display: block;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background-color: @brand-info;
+    padding: @padding-large-vertical;
+    opacity: 1;
+    visibility: hidden;
+    overflow: hidden;
+    -webkit-transition: all .3s ease .15s;
+    -moz-transition: all .3s ease .15s;
+    -o-transition: all .3s ease .15s;
+    -ms-transition: all .3s ease .15s;
+    transition: all .3s ease .15s;
+  }
+  .nav-mega > li:hover > div {
+    opacity: 1;
+    visibility: visible;
+    overflow: visible;
+  }
+  .nav-mega .nav-column {
+    position: relative;
+    display: inline-block;
+    width: 20%;
+  }
+  .nav-mega .nav-column a {
+    margin: 0 auto;
+    display: block;
+    padding: 6px;
+    color: #fff;
+    text-align: center;
+    font-weight: 700;
+  }
+  .nav-mega .nav-column a:hover {
+    background: none;
+  }
+  .nav-mega .nav-column:hover {
+    color: #fff;
+    background-color: lighten(@brand-info, 5%);
+  }
+  /* Menu Content Styles */
+  .nav-mega .nav-mega-column {
+    float: left;
+    width: 20%;
+    padding: 2.5%;
+  }
+  .nav-mega .nav-mega-column h3 {
+    margin: 20px 0 10px 0;
+    line-height: 18px;
+  }
+  .nav-mega .nav-mega-column h3.orange {
+    color: #a6a6a6;
+  }
+  .nav-mega .nav-mega-column li a {
+    display: block;
+    line-height: 26px;
+  }
+  .nav-mega .nav-mega-column li a:hover {
+    color: #fff;
+  }
+  //
+  // Menu and button - border options
+  // --------------------------------------------------
+  .navbar-nav > li.active {}
+  .navbar-nav > li.active > a {
+    border-left: none;
+    border-top: 8px solid @brand-secondary;
+    top: -8px;
+  }
+  .navbar-nav > li.active > a:hover {
+    color: @brand-secondary;
+  }
+  .btn-secondary {
+    background-color: @brand-secondary;
+    color: #fff;
+  }
+  .btn-secondary:hover {
+    background-color: darken(@brand-secondary, 10%);
+    color: #fff;
+  }
+  // Org edit page category chooser for MD - devices
+  .org-choose-list {
+    .checkbox {
+      width: 33.3333%;
     }
-    
-    .sitetitle {
-        margin: 40px 0 0 -60px;
-        padding: 0 50px 0 0;
-    }
-    
-   .admin-title h3 {
-        padding: 20px 30px 0 0;
-        font-size: @font-size-h3;
-        font-weight: 500;
-        display: inline-block;
-        float: right;
-        color: @gray-light;
-    } 
-
-    /* Menu Container */
-    .nav-mega {
-        display: inline-block;
-        position: relative;
-        cursor: default;
-        z-index: 500;
-        width: 95%;
-        top: 50%;
-        border-left: none;
-        border-top: 2px solid @brand-secondary;
-        font-size: @font-size-small;
-        left: 0px;
-    }
-
-    /* Menu List */
-    .nav-mega > li {
-        display: block;
-        float: left;
-    }
-
-    /* Menu Links */
-    .nav-mega > li > a {
-        position: relative;
-        display: block;
-        z-index: 510;
-        height: 50px;
-        padding: 0 10px;
-        line-height: 50px;
-        overflow: visible;
-        background-color: #fff;
-        -webkit-transition: all .3s ease;
-        -moz-transition: all .3s ease;
-        -o-transition: all .3s ease;
-        -ms-transition: all .3s ease;
-        transition: all .3s ease;
-    }
-
-    .nav-mega > li.active > a {
-        height: 58px;
-        color: @brand-secondary; 
-    }
-
-    .nav-mega li a:hover{ 
-        background-color: @brand-info; 
-        color: #fff; 
-    }
-
-    .nav-mega > li > a:hover, .nav-mega > li.active > a:hover { 
-        background-color: @brand-info; 
-        color: @brand-secondary; 
-    }
-
-    /* Menu Dropdown */
-    .nav-mega > li > div {
-        position: absolute;
-        display: block;
-        top: 50px;
-        left: 0;
-        width: 100%;
-        height: 50px;
-        background-color: @brand-info;
-        padding: @padding-large-vertical;
-
-        opacity: 1;
-        visibility: hidden;
-        overflow: hidden;
-
-        -webkit-transition: all .3s ease .15s;
-        -moz-transition: all .3s ease .15s;
-        -o-transition: all .3s ease .15s;
-        -ms-transition: all .3s ease .15s;
-        transition: all .3s ease .15s;
-    }
-
-    .nav-mega > li:hover > div {
-        opacity: 1;
-        visibility: visible;
-        overflow: visible;
-    }
-
-    .nav-mega .nav-column {
-        position: relative;
-        display: inline-block;
-        width: 20%;
-    }
-
-    .nav-mega .nav-column a {
-        margin: 0 auto;
-        display: block; 
-        padding: 6px;
-        color: #fff;
-        text-align: center;
-        font-weight: 700;
-    }
-
-    .nav-mega .nav-column a:hover {
-        background: none;
-    }
-
-    .nav-mega .nav-column:hover {
-        color: #fff;
-        background-color: lighten(@brand-info, 5%);
-        
-    }
-
-    /* Menu Content Styles */
-    .nav-mega .nav-mega-column {
-        float: left;
-        width: 20%;
-        padding: 2.5%;
-    }
-
-    .nav-mega .nav-mega-column h3 {
-        margin: 20px 0 10px 0;
-        line-height: 18px;
-    }
-
-    .nav-mega .nav-mega-column h3.orange { color: #a6a6a6; }
-
-    .nav-mega .nav-mega-column li a {
-        display: block;
-        line-height: 26px;
-    }
-
-    .nav-mega .nav-mega-column li a:hover { color: #fff; }
-    
-    //
-    // Menu and button - border options
-    // --------------------------------------------------
-
-    .navbar-nav > li.active{
-    }
-
-    .navbar-nav > li.active > a {
-        border-left: none;
-        border-top: 8px solid @brand-secondary;
-        top: -8px;
-    }
-
-    .navbar-nav > li.active > a:hover {
-        color: @brand-secondary;
-    }
-
-    .btn-secondary {
-        background-color: @brand-secondary;
-        color: #fff;
-    }
-    
-    .btn-secondary:hover {
-        background-color: darken(@brand-secondary, 10%);
-        color: #fff;
-    }
-    
-    // Org edit page category chooser for MD - devices
-     .org-choose-list {
-        .checkbox {
-            width: 33.3333%;
-        }
-   }
+  }
 }
 
 // MD breakpoint
 @media (min-width: 992px) {
-    .sitetitle {
-        margin-top: 35px;
-        margin-left: -20px;
-        font-size: @font-size-h3;
-        padding-right: 50px;
-    }
-    
-    .admin-title h3 {
-        padding: 30px 50px 0 0;
-        font-size: @font-size-h2;
-    }
-
-    /* Menu Container */
-    .nav-mega {
-        font-size: @font-size-base;
-        width: 100%;
-    }
-
-    .nav-mega {
-        left: 0;
-    }
-    
-     // Org edit page category chooser for MD - devices
-
-    .org-choose-list .checkbox {
-        width: 25%;
-    }
+  .sitetitle {
+    margin-top: 35px;
+    margin-left: -20px;
+    font-size: @font-size-h3;
+    padding-right: 50px;
+  }
+  .admin-title h3 {
+    padding: 30px 50px 0 0;
+    font-size: @font-size-h2;
+  }
+  /* Menu Container */
+  .nav-mega {
+    font-size: @font-size-base;
+    width: 100%;
+  }
+  .nav-mega {
+    left: 0;
+  }
+  // Org edit page category chooser for MD - devices
+  .org-choose-list .checkbox {
+    width: 25%;
+  }
 }
 
 // LG breakpoint
 @media (min-width: 1200px) {
-    .nav-mega {
-        left: 0;
-    }    
+  .nav-mega {
+    left: 0;
+  }
 }
