@@ -21,13 +21,13 @@
     <legend>{{ _('Manage Users') }}</legend>
 
     <div class="pull-left" style="padding-bottom: 10px">
-        {{ render_pagination(users, url_for('user_manage')) }}
+        {{ render_pagination(users, url_for('user_manage', search_query=request.args.get('search_query'))) }}
     </div><!-- /.col-pull-left -->
     <div class="pull-right" style="padding-bottom: 10px">
-        <form role="form" method="post">
+        <form role="form" method="get">
             <div class="input-group">
-                {{ search_form.hidden_tag() }}
                 {{ group_field(search_form.search_query) }}
+                <input type="hidden" name="page" value="1" />
                 <span class="input-group-btn">
                     <button class="btn btn-primary" type="submit">{{ _('Search') }}</button>
                 </span>

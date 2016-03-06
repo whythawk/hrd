@@ -363,9 +363,8 @@ def user_change_email():
 def user_manage():
     permission(['user_manage', 'user_admin'])
     page = request.args.get("page", 1, type=int)
-    search_form = forum_forms.UserSearchForm()
-
-    search = request.form.get('search_query')
+    search = request.args.get('search_query')
+    search_form = forum_forms.UserSearchForm(search_query=search)
     users = User.query
     if not has_permission('user_admin'):
         users = users.filter_by(organization=current_user.organization)

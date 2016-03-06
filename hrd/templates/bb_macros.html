@@ -178,7 +178,11 @@
     {%- for page in page_obj.iter_pages() %}
         {% if page %}
             {% if page != page_obj.page %}
+            {% if '?' in url %}
+                <li><a href="{{ url }}&page={{ page }}">{{ page }}</a></li>
+                {% else %}
                 <li><a href="{{ url }}?page={{ page }}">{{ page }}</a></li>
+                {% endif %}
             {% else %}
                 <li class="active"><a href="#">{{ page }}</a></li>
             {% endif %}
