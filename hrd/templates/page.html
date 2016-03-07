@@ -8,4 +8,12 @@
 
 {% block content %}
   {% include '/cms_content.html' with context %}
+  {% if news_items %}
+  <h3>{{ _('Latest News') }}</h3>
+    {% for news in news_items %}
+      {% set news_summary = true %}
+      {% set news_links = true %}
+      {% include '/news_content.html' with context %}
+    {% endfor %}
+  {% endif %}
 {% endblock %}

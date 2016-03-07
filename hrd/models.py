@@ -52,6 +52,7 @@ class Category(db.Model):
     cat_type = db.Column(db.String(10))
     current = db.Column(db.Boolean(), default=True)
     active = db.Column(db.Boolean(), default=False)
+    consolidate = db.Column(db.Boolean(), default=False)
     order = db.Column(db.Integer(), default=99)
 
     def __repr__(self):
@@ -105,36 +106,87 @@ class OrgCodes(db.Model):
         return "<OrgCode %s %s>" % (self.org_id, self.code)
 
 
-class User(db.Model):
+class Resource(db.Model):
     id = db.Column(db.String(50), primary_key=True, default=make_uuid)
-    name = db.Column(db.String(250))
-    password = db.Column(db.String(250))
+    resource_id = db.Column(db.String(50), default=make_uuid)
+    lang = db.Column(db.String(2), primary_key=True)
+    status = db.Column(db.String(10))
+    current = db.Column(db.Boolean(), default=True)
     active = db.Column(db.Boolean(), default=True)
+    private = db.Column(db.Boolean(), default=True)
+    name = db.Column(db.String(250))
+    description = db.Column(db.Text())
+    published = db.Column(db.Boolean(), default=False)
+    url = db.Column(db.String(1024))
+    file = db.Column(db.String(50))
+    filename = db.Column(db.String(250))
+    file_type = db.Column(db.String(250))
+    file_size = db.Column(db.Integer())
+    mime_type = db.Column(db.String(250))
+    mime_encoding = db.Column(db.String(250))
+
+class ResourceCodes(db.Model):
+    resource_id = db.Column(db.String(50), primary_key=True)
+    code = db.Column(db.String(50), primary_key=True)
 
     def __repr__(self):
-        return "<User %s>" % self.name
+        return "<ResourseCode %s %s>" % (self.resource_id, self.code)
+
+
+from flaskbb.user.models import User, Guest
+
+
+User.organization = db.Column(db.String(50))
+User.realname = db.Column(db.String(250))
+User.position = db.Column(db.String(250))
+User.forum_digest = db.Column(db.Boolean, default=True)
+User.prefered_lang = db.Column(db.String(10))
+User.ga_enabled = db.Column(db.String(250), default=False)
+#class User(db.Model):
+#    id = db.Column(db.String(50), primary_key=True, default=make_uuid)
+#    name = db.Column(db.String(250))
+#    password = db.Column(db.String(250))
+#    active = db.Column(db.Boolean(), default=True)
+
 
 
 class UserPerms(db.Model):
-    user_id = db.Column(db.String(50), primary_key=True)
+    user_id = db.Column(db.Integer, primary_key=True)
     permission = db.Column(db.String(50), primary_key=True)
 
     def __repr__(self):
-        return "<UserPerm %s %s>" % (self.user_id, self.permission)
+        return "<UserPermBB %s %s>" % (self.user_id, self.permission)
 
 
 class Translation(db.Model):
-    id = db.Column(db.String(250), primary_key=True)
-    plural = db.Column(db.String(250), primary_key=True)
-    lang = db.Column(db.String(2), primary_key=True)
+    id = db.Column(db.Integer(), primary_key=True)
+    string = db.Column(db.String(250))
+    plural = db.Column(db.String(250))
+    lang = db.Column(db.String(2))
     active = db.Column(db.Boolean(), default=True)
     plural = db.Column(db.String(250))
+    trans0 = db.Column(db.String(250))
     trans1 = db.Column(db.String(250))
     trans2 = db.Column(db.String(250))
     trans3 = db.Column(db.String(250))
     trans4 = db.Column(db.String(250))
+    trans5 = db.Column(db.String(250))
 
     def __repr__(self):
         return "<Translation %s %s>" % (self.id, self.lang)
+
+class News(db.Model):
+    id = db.Column(db.String(50), primary_key=True, default=make_uuid)
+    lang = db.Column(db.String(2), primary_key=True)
+    active = db.Column(db.Boolean(), default=True)
+    title = db.Column(db.String(250))
+    description = db.Column(db.Text())
+    last_updated = db.Column(db.Date())
+    file = db.Column(db.String(50))
+    filename = db.Column(db.String(250))
+    file_type = db.Column(db.String(250))
+    file_size = db.Column(db.Integer())
+    mime_type = db.Column(db.String(250))
+    mime_encoding = db.Column(db.String(250))
 
 db.create_all()

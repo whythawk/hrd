@@ -1,0 +1,33 @@
+{% if news_summary %}
+  <h3>
+{% else %}
+  <h1>
+{% endif %}
+  {% if news_links %}
+  <a href="{{ url_for('news_view', id=news.id) }}" >
+    {% endif %}
+    {{ news.title }}
+    {% if news_links %}
+  </a>
+  {% endif %}
+{% if news_summary %}
+  </h3>
+{% else %}
+  </h1>
+{% endif %}
+<p>{{ news.last_updated }}</br>
+{% if news_summary %}
+  {% set desc = news.description|truncate %}
+{% else %}
+  {% set desc = news.description %}
+{% endif %}
+<span style="white-space: pre-line">{{ desc }}</span>
+</p>
+<div class="panel col-xs-12">
+  {% if news.file %}
+  <div class="col-md-3 pull-right">
+    <a class="view-download-btn" href="{{ url_for('news_file', id=news.id, type='preview') }}" download="{{ news.filename }}">{{ _('Download') }}</a>
+  </div>
+  {% endif %}
+</div>
+

@@ -1,0 +1,44 @@
+
+{%- macro menu_item(text, href, force_right=false, content='', class='', icon='') %}
+  <li{{ menu_class(href, force_right, class)|safe }}>
+  <a href="{{ href }}">
+    {% if icon %}<span class="glyphicon glyphicon-{{ icon }}"></span>{% endif %}
+    {{ text }}{% if content %}<span class="caret"></span>{% endif %}</a>
+  {{ content|safe }}</li>
+{%- endmacro -%}
+{%- macro user_menu(show_extras=true) %}
+      {% set user = current_user %}
+      {% if user %}
+        {% set my_content = '<div>' +
+          sub_menu_item(_('Log out'), url_for_fixed('/user/logout'), force_right=true) +
+          sub_menu_item(_('My account'), url_for_fixed('/user/profile'), force_right=true) +
+          '</div>' %}
+        {{ menu_item(user.username, '#', force_right=true, content=my_content, class='logged-in', icon='user') }}
+
+      {% if show_extras %}
+        {% if has_perm('content_manage') or has_perm('user_manage') %}
+        {% set my_content = '<div>' %}
+          {% if has_perm('content_manage') %}
+            {% set my_content = my_content +
+            sub_menu_item(_('Content'), url_for_fixed('/admin'), force_right=true)
+            %}
+          {% endif %}
+          {% if has_perm('user_manage') %}
+            {% set my_content = my_content +
+            sub_menu_item(_('Users'), url_for_fixed('/user/manage'), force_right=true)
+            %}
+          {% endif %}
+          {% if has_perm('forum_admin') %}
+            {% set my_content = my_content +
+            sub_menu_item(_('Message board'), url_for_fixed('/forum/admin/forums'), force_right=true)
+            %}
+          {% endif %}
+            {% set my_content = my_content + '</div>' %}
+            {{ menu_item(_('Admin'), '#', force_right=true, content=my_content) }}
+        {% endif %}
+        {% endif %}
+      {% else %}
+        {{ menu_item(_('Log in'), url_for_fixed('/login'), force_right=true) }}
+      {% endif %}
+                </ul>
+{%- endmacro -%}

@@ -1,0 +1,18 @@
+{% extends 'admin/base.html' %}
+
+{% import '/macro/form.html' as form %}
+
+{% block name %}{{ news.title }}{% endblock %}
+
+{% block content %}
+ {#{ form.translations_bar(translations) }#}
+      <div class="well col-xs-12" lang="en" dir="ltr">
+          <h3 class="preview-title">News preview</h3>
+          <a href="{{ url_for_admin('news_list') }}">News list</a>
+      <div class="pull-right">
+          {{ form.action('Edit', url_for_admin('news_edit', id=news.id), icon='pencil') }}
+      </div>
+      </div>
+
+  {% include '/news_content.html' with context %}
+{% endblock %}

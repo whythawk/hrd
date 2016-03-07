@@ -4,7 +4,11 @@
 # SECRET_KEY should be randomly generated
 SECRET_KEY = "SecretKeyForSessionSigning"
 
-DB_CONNECTION = 'sqlite:///db.sqlite'
+DB_CONNECTION = 'postgresql://hrd:pass@localhost/hrd'
+GA_ENABLED = False
+EMAIL = 'admin@example.com'
+EMAIL_ENABLED = False
+NEWS_ENABLED = False
 
 # relative to application
 UPLOAD_FOLDER = 'files'
@@ -12,9 +16,9 @@ UPLOAD_FOLDER = 'files'
 PERMISSIONS = [
     ('sys_admin', 'System administrator'),
     ('content_manage', 'Content managment'),
-    ('translator', 'Content translation'),
-    ('user_admin', 'User administrator'),
-    ('user_manage', 'User management'),
+  #  ('translator', 'Content translation'),
+  #  ('user_admin', 'User administrator'),
+  #  ('user_manage', 'User management'),
 ]
 
 ALLOWED_IMAGE_TYPES = ['.gif', '.png', '.jpeg', '.jpg']

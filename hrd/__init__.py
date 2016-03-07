@@ -2,9 +2,13 @@
 import os.path
 import urllib
 
-from flask import Flask, request, abort
+from flask import Flask, request, abort, session, redirect
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.babel import Babel
+
+from werkzeug.wsgi import DispatcherMiddleware
+
+from flaskbb_shim import get_flaskbb
 
 # Import our config
 try:
@@ -16,6 +20,8 @@ except ImportError:
 language_list = config.LANGUAGE_LIST
 DIR = os.path.dirname(os.path.realpath(__file__))
 
+GA_SETUP_URL = '/user/ga_setup'
+GA_CHECK_URL = '/user/ga_check'
 
 app = Flask(__name__)
 app.debug = config.DEBUG
@@ -23,6 +29,7 @@ app.secret_key = config.SECRET_KEY
 app.config['SQLALCHEMY_DATABASE_URI'] = config.DB_CONNECTION
 app.config['UPLOAD_FOLDER'] = os.path.join(DIR, config.UPLOAD_FOLDER)
 app.config['BABEL_DEFAULT_LOCALE'] = 'en'
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 if not os.path.isdir(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
@@ -47,6 +54,13 @@ def truncate(s, length=255, killwords=False, end='...'):
 app.jinja_env.filters.update({'truncate': truncate})
 
 
+# Capitalize the language names for consistency/client desires
+_language_list = []
+for code, name, dir_, active in language_list:
+    _language_list.append(( code, name.title(), dir_, active))
+language_list = _language_list
+
+
 lang_dir = {}
 for code, name, dir_, active in language_list:
     lang_dir[code] = dir_
@@ -61,21 +75,42 @@ lang_codes = []
 for code, name, dir_, active in language_list:
     lang_codes.append(code)
 
+lang_picker = []
+for code, name, dir_, active in language_list:
+    lang_picker.append({'value': code, 'name': name})
 
 permission_list = config.PERMISSIONS
 
 
 def permission(permission):
-    if permission not in request.permissions:
+    if isinstance(permission, basestring):
+        permission = [permission]
+    if not set(permission) & set(request.permissions):
         if 'sys_admin' not in request.permissions:
             abort(403)
+
+def has_permission(permission):
+    if isinstance(permission, basestring):
+        permission = [permission]
+    if not set(permission) & set(request.permissions):
+        if 'sys_admin' not in request.permissions:
+            return False
+    return True
 
 
 def permission_content(lang):
     if lang == 'en':
         permission('content_manage')
     else:
-        permission('translation')
+        permission('translator')
+
+def content_trans(lang):
+    if 'sys_admin' in request.permissions:
+        return True
+    if lang == 'en':
+        return 'content_manage' in request.permissions
+    return 'translator' in request.permissions or 'content_manage' in request.permissions
+
 
 
 def lang_list():
@@ -94,6 +129,9 @@ def current_admin_lang():
     return lang_name[get_admin_lang()]
 
 
+def current_admin_lang_dir():
+    return lang_dir[get_admin_lang()]
+
 def lang_html():
     lang = request.environ['LANG']
     return 'lang="%s" dir="%s"' % (lang, lang_dir[lang])
@@ -101,7 +139,7 @@ def lang_html():
 
 def lang_html_body():
     lang = request.environ['LANG']
-    return 'class="%s"' % lang_dir[lang]
+    return lang_dir[lang]
 
 def lang_pick(lang):
     current_url = request.environ['CURRENT_URL']
@@ -150,6 +188,28 @@ def get_int(field, default):
     except ValueError:
         value = default
     return value
+
+
+def check_ga():
+    if not config.GA_ENABLED:
+        return
+    ga = session.get('ga')
+    if ga == 'authorized':
+        return
+    # prevent circular redirects
+    current_url = request.environ['CURRENT_URL']
+    if current_url.startswith('/static/') or current_url.startswith('/user/qr.svg?') or current_url == '/user/logout':
+        return
+    lang = request.environ['LANG']
+    if ga == 'setup':
+        if current_url == GA_SETUP_URL:
+            return
+        return redirect('/%s%s' % (lang, GA_SETUP_URL))
+    if ga == 'check':
+        if current_url == GA_CHECK_URL:
+            return
+        return redirect('/%s%s' % (lang, GA_CHECK_URL))
+
 
 import migrate
 import helpers
@@ -206,5 +266,31 @@ class I18nMiddleware(object):
                 environ['CURRENT_URL'] = path_info
         return self.app(environ, start_response)
 
+flaskbb = get_flaskbb(app, __path__[0], url_for)
+flaskbb.jinja_env.globals['url_for'] = url_for
+flaskbb.jinja_env.globals['url_for_fixed'] = url_for_fixed
+
+filters = [
+    'format_date',
+    'can_edit_user',
+    'can_ban_user',
+    'is_admin',
+
+    'time_since',
+    'is_online',
+    'markup',
+]
+
+for f in filters:
+    app.jinja_env.filters[f] = flaskbb.jinja_env.filters[f]
+
+app.extensions['cache'] = flaskbb.extensions['cache']
+
+app.login_manager = flaskbb.login_manager
+app.bb = flaskbb
+
+app = DispatcherMiddleware(app, {
+    '/forum': flaskbb
+})
 
 app = I18nMiddleware(app)

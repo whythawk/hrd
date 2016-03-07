@@ -1,0 +1,18 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}News{% endblock %}
+
+{% block content %}
+<h1>Edit: News<br /><br /></h1>
+<form method="POST" role="form" enctype="multipart/form-data">
+    {{ form.save(label='Save ') }}
+    {{ form.errors(errors) }}
+    {{ form.input('title', label='Title', value=news.title, trans=trans) }}
+    {{ form.textarea('description', label='Description', value=news.description, trans=trans, rows=10) }}
+    {{ form.dropdown('lang', label='Language', value=news.lang, options=options) }}
+    {{ form.file_upload('file', label='File',value=news.file, filename=news.filename, link=url_for('resource_file', id=news.resource_id, type='live') + '?' + none_to_empty_str(news.file)) }}
+
+    {{ form.checkbox('active', label='Active', value=news.active, label_class='bold-checkbox-label') }}
+    {{ form.save(label='Save') }}
+</form>
+{% endblock %}

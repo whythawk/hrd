@@ -2,7 +2,7 @@
 
 {% import '/macro/form.html' as form %}
 
-{% block body_class %} class="admin"{% endblock %}
+{% block body_class %}admin{% endblock %}
 
 {% block eu_logo %}
     <div class="hidden-xs col-sm-3 admin-title pull-right">
@@ -14,12 +14,19 @@
     <ul class="navbar-nav nav-mega">
         {{ menu_item('Pages', url_for_admin('cms_list')) }}
         {{ menu_item('Organisations', url_for_admin('org_list')) }}
-        {{ menu_item('Organisation categories', url_for_admin('category_list', cat_type='org')) }}
-        {{ menu_item('Resource categories', url_for_admin('category_list', cat_type='res')) }}
+        {{ menu_item('Org. categories', url_for_admin('category_list', cat_type='org')) }}
+        {% if has_perm('content_manage') %}
+            {{ menu_item('Resources', url_for_admin('resource_list')) }}
+        {% endif %}
+        {{ menu_item('Res. categories', url_for_admin('category_list', cat_type='res')) }}
         {{ menu_item('Menu Items', url_for_admin('menu_list')) }}
+        {{ menu_item('News Items', url_for_admin('news_list')) }}
+        {% if has_perm('translator') %}
+            {{ menu_item('Translations', url_for_admin('translation_list')) }}
+        {% endif %}
 
     {% block user_bar %}
-        {{ user_menu(show_extras=false) }}
+        {{ user_menu(show_extras=true) }}
     {% endblock %}
 
     </ul>

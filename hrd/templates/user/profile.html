@@ -1,0 +1,109 @@
+{% extends 'body_base.html' %}
+
+
+{% block content %}
+{% include 'flashed_messages.html' %}
+<div class="col-md-3">
+    <ul class="nav nav-pills nav-stacked">
+      <li>
+        <a href={{ url_for('user_manage') }}>{{ _("Manage Users") }}</a>
+      </li>
+      {% if has_perm('user_manage') %}
+        <li>
+          <a href={{ url_for('user_edit', user_id=_user.id) }}>{{ _("Edit User") }}</a>
+        </li>
+        {% if _user.ga_enabled %}
+        <li>
+          <a href={{ url_for('reset_ga', user_id=_user.id) }}>{{ _("Reset GA Code") }}</a>
+        </li>
+        {% endif %}
+        {% if can_resend_invite %}
+          <li>
+            <a href={{ url_for('resend_invite', user_id=_user.id) }}>{{ _("Resend Invite") }}</a>
+          </li>
+        {% endif %}
+      {% endif %}
+    </ul>
+</div><!--/.col-md-3 -->
+<div class="col-md-9">
+<table class="table table-bordered">
+    <thead>
+      <th>{{ _user.username }}</th>
+      <th>Info</th>
+      <th>User Stats</th>
+    </thead>
+    <tbody>
+        <tr>
+
+          <td width="200px">
+            <table class="table table-borderless">
+              <tbody>
+                {% if _user.avatar %}
+                <tr><td><img src="{{ _user.avatar }}" alt="Avatar" height="100" width="100"> </td></tr>
+                {% endif %}
+                {% if _user|is_online %}
+                <tr><td><span class="label label-success">Online</span></td></tr>
+                {% else %}
+                <tr><td><span class="label label-default">Offline</span></td></tr>
+                {% endif %}
+                {#  <tr><td><a href="{{ url_for_fixed('/forum/user/' + _user.username + '/topics') }}">All Topics</a></td></tr>
+                <tr><td><a href="{{ url_for('_user.view_all_posts', username=_user.username) }}">All Posts</a></td></tr> #}
+              </tbody>
+            </table>
+          </td>
+
+          <td>
+            {% if _user.notes %}
+                {% autoescape false %}
+                {{ _user.notes|markup }}
+                {% endautoescape %}
+            {% else %}
+                User has not added any notes about themselves.
+            {% endif %}
+          </td>
+
+          <td width="250px">
+            <table class="table table-borderless">
+              <tbody>
+                {#   <tr>
+                  <td align="right">Group:</td>
+                  <td>{{ _user.primary_group.name }}</td>
+                </tr>  #}
+                <tr>
+                  <td align="right">Created:</td>
+                  <td>{{ _user.date_joined|format_date('%b %d %Y') }}</td>
+                </tr>
+                <tr>
+                  <td align="right">Posts:</td>
+                  <td>{{ _user.post_count }} ({{ _user.posts_per_day }} per day)</td>
+                </tr>
+                <tr>
+                  <td align="right">Last seen:</td>
+                  <td>{%- if _user.lastseen -%} {{ _user.lastseen|time_since }} {%- else -%} Never seen {%- endif -%}</td>
+                </tr>
+                <tr>
+                  <td align="right">Last post:</td>
+                  <td>{%- if _user.last_post -%}
+                      <a href="{#{ _user.last_post.url }#}">{{ _user.last_post.date_created|time_since }}</a>
+                      {%- else -%}
+                        Never
+                      {%- endif -%}
+                  </td>
+                </tr>
+                <tr>
+                  <td align="right">Location:</td>
+                  <td>{%- if _user.location -%} {{ _user.location }} {%- else -%} No Info {%- endif -%}</td>
+                </tr>
+                {#   <tr>
+                  <td align="right">Birthday:</td>
+                  <td>{% if _user.birthday %} {{ _user.birthday|format_date('%b %d %Y') }} {% else %} No Info {% endif %} {% if _user.gender %} ({{ _user.gender }}) {% endif %}</td>
+                </tr> #}
+              </tbody>
+            </table>
+          </td>
+
+        </tr>
+    </tbody>
+</table>
+</div>
+{% endblock %}

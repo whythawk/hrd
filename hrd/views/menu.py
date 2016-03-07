@@ -1,8 +1,4 @@
-import uuid
-import os.path
-
-from flask import (render_template, request, abort, redirect,
-                   send_from_directory)
+from flask import (render_template, request, abort, redirect)
 
 from hrd import (app, db, url_for_admin, get_admin_lang, get_bool, get_int,
                  permission, permission_content, get_str, lang_codes)
@@ -13,7 +9,7 @@ from hrd.models import MenuItem, Cms
 def menu_list():
     set_menu()
     lang = get_admin_lang()
-    permission_content(lang)
+    permission(['content_manage', 'translator'])
     menu_items = MenuItem.query.filter_by(lang=lang, parent_menu_id=None)
     menu_items = menu_items.order_by('"order"', 'title')
     if lang == 'en':
@@ -61,6 +57,7 @@ def list_status():
 @app.route('/admin/menu_new', methods=['POST'])
 @app.route('/admin/menu_new/<id>', methods=['POST'])
 def menu_new(id=None):
+    permission('content_manage')
     lang = 'en'
     menu_item = MenuItem(lang=lang)
     menu_item.active = False
@@ -84,6 +81,7 @@ def menu_delete(id):
 def menu_edit(id):
     set_menu()
     lang = get_admin_lang()
+    permission_content(lang)
     menu_item = MenuItem.query.filter_by(menu_id=id, lang=lang).first()
     if not menu_item and lang != 'en':
         menu_item = MenuItem.query.filter_by(menu_id=id, lang='en').first()
@@ -121,6 +119,8 @@ def menu_edit(id):
         options = [
             {'value': 'orgs', 'name': 'Special: Organisation search'},
             {'value': 'res', 'name': 'Special: Resources'},
+            {'value': 'forum', 'name': 'Special: Message board'},
+            {'value': 'news', 'name': 'Special: News'},
         ]
 
         menu_items = db.session.query(Cms.url, Cms.title).filter_by(
@@ -138,6 +138,7 @@ def menu_edit(id):
 
 def reedit(menu_item):
     lang = get_admin_lang()
+    permission_content(lang)
     new_menu_item = MenuItem(
         lang=lang,
         menu_id=menu_item.menu_id,

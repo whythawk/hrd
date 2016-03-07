@@ -1,0 +1,24 @@
+{% extends 'body_base.html' %}
+
+{% block title %}News{% endblock %}
+
+{% block content %}
+
+{% set news_links = true %}
+<h1>{{ _('News') }}</h1>
+<div class="no-of-records">{{ ngettext('{count} record', '{count} records', count).format(count=count) }}</div>
+<!-- Top pagination begins ============================= -->
+{% import '/macro/general.html' as general %}
+{{ general.pager(pages, page, 'pagination-top') }}
+
+{% for news in news_items %}
+
+{% include '/news_content.html' with context %}
+
+
+{% endfor %}
+
+
+{{ general.pager(pages, page, 'pagination-bottom') }}
+
+{% endblock %}

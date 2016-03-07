@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+import uuid
 import os
 import re
 import sys
 
+from sqlalchemy.sql import text
 import sqlalchemy as sa
 
 from babel.messages import extract
@@ -17,7 +19,7 @@ try:
 except ImportError:
     import config.default as config
 
-engine = sa.create_engine(config.DB_CONNECTION, echo=False)
+engine = sa.create_engine(config.DB_CONNECTION)
 conn = engine.connect()
 
 DIR = os.path.dirname(os.path.realpath(__file__))
@@ -25,23 +27,26 @@ DIR = os.path.dirname(os.path.realpath(__file__))
 
 def get_translations(quiet=True):
     ''' Extract translations put in db and create mo file'''
-    sql = "UPDATE translation SET active=0 WHERE lang='en';"
+    sql = "UPDATE translation SET active='0' WHERE lang='en';"
     engine.execute(sql)
 
     method_map = [
         ('**/templates/**.html', 'jinja2'),
-        ('**/themes/**.html', 'jinja2'),
         ('**.py', 'python')
     ]
+    options_map = {
+        '**/themes/hrd/**.html': {'extensions':'jinja2.ext.autoescape'}
+    }
 
     if not quiet:
         print 'Extracting translations'
 
-    extracted = extract.extract_from_dir('.', method_map=method_map)
+    extracted = extract.extract_from_dir('.', method_map=method_map,options_map = options_map)
 
     DIR = os.path.dirname(os.path.realpath(__file__))
 
     catalog = Catalog(project='hrd')
+
 
     for filename, lineno, message, comments, context in extracted:
         filepath = os.path.normpath(os.path.join(DIR, filename))
@@ -55,25 +60,26 @@ def get_translations(quiet=True):
         else:
             values = (message, '')
 
+
         sql = """
             SELECT active FROM translation
             WHERE
-            lang = 'en' and id=? and plural=?;
+            lang = 'en' and "string" = %s and plural = %s;
         """
 
         result = conn.execute(sql, values).first()
         if result is None:
             sql = """
-                INSERT INTO translation (id, plural, lang, active)
-                VALUES (?, ?, 'en', 1);
+                INSERT INTO translation (string, plural, lang, active)
+                VALUES (%s, %s, 'en', '1');
             """
             conn.execute(sql, values)
         elif result[0] == 0:
             sql = """
                 UPDATE translation
-                SET active = 1
+                SET active = '1'
                 WHERE
-                lang = 'en' and id=? and plural=?;
+                lang = 'en' and string=%s and plural=%s;
             """
             conn.execute(sql, values)
 
@@ -119,24 +125,25 @@ def mangle(value):
 
 
 def create_fake_trans(lang):
-    sql = "DELETE FROM translation WHERE lang = ?"
+    sql = "DELETE FROM translation WHERE lang = %s"
     result = conn.execute(sql, lang)
 
+
     sql = """
-        SELECT DISTINCT id, plural FROM translation
-        WHERE lang = 'en' and active=1;
+        SELECT DISTINCT string, plural FROM translation
+        WHERE lang = 'en' and active='1';
     """
 
     result = conn.execute(sql)
     values = []
     for row in result:
         values.append(
-            (row.id, row.plural, lang, mangle(row.id), mangle(row.plural))
+            (row.string, row.plural, lang, mangle(row.string), mangle(row.plural))
         )
 
     sql = """
-        INSERT INTO translation (id, plural, lang, active, trans1, trans2)
-        VALUES (?, ?, ?, 1, ?, ?);
+        INSERT INTO translation (string, plural, lang, active, trans0, trans1)
+        VALUES (%s, %s, %s, '1', %s, %s);
     """
     for value in values:
         conn.execute(sql, value)
@@ -145,7 +152,7 @@ def create_fake_trans(lang):
 def create_i18n_files(lang, quiet=True):
     sql = """
         SELECT * FROM translation
-        WHERE lang = ? and active=1;
+        WHERE lang = %s and active='1';
     """
 
     result = conn.execute(sql, lang)
@@ -154,12 +161,14 @@ def create_i18n_files(lang, quiet=True):
 
     for row in result:
         if row.plural:
-            key = (row.id, row.plural)
+            key = (row.string, row.plural)
             values = [
+                row.trans0,
                 row.trans1,
                 row.trans2,
                 row.trans3,
                 row.trans4,
+                row.trans5,
             ]
             value = []
             for v in values:
@@ -171,8 +180,8 @@ def create_i18n_files(lang, quiet=True):
                 value = tuple(value)
 
         else:
-            key = row.id
-            value = row.trans1
+            key = row.string
+            value = row.trans0
         catalog.add(key, value)
 
     path = os.path.join(DIR, 'translations', lang, 'LC_MESSAGES')
@@ -197,6 +206,59 @@ def create_i18n_files(lang, quiet=True):
     finally:
         outfile.close()
 
+def update_categories_countries():
+    sql = """
+        CREATE TABLE IF NOT EXISTS cat_translations (
+            id1 character varying(50),
+            id2 character varying(50)
+        )
+    """
+
+    result = conn.execute(sql)
+
+    countries_id = '27c406c7-951f-482d-bbd8-3229c7f9c74b'
+    relocation_id = 'bc99b20d-be07-4379-93a6-b2fcd7cdb3db'
+
+    sql = text("DELETE FROM code WHERE category_id = :id")
+    result = conn.execute(sql, id=relocation_id)
+
+    sql = text("SELECT * FROM code WHERE category_id = :id")
+    result = conn.execute(sql, id=countries_id)
+
+    for row in result:
+        print row['title']
+
+        sql = text("SELECT id2 FROM cat_translations WHERE id1 = :id")
+        ct = conn.execute(sql, id=row['code_id'])
+        new_id = None
+        for ct_row in ct:
+            new_id = ct_row['id2']
+        if not new_id:
+            new_id = str(uuid.uuid4())
+            sql = text("INSERT INTO cat_translations (id1, id2) VALUES (:id1, :id2)")
+            ct = conn.execute(sql, id1=row['code_id'], id2=new_id)
+        sql = text("""
+            INSERT INTO code (
+                id, code_id, category_id, title, description, lang, status, current, active, public, "order"
+            ) VALUES (
+                :id, :code_id, :category_id, :title, :description, :lang, :status, :current, :active, :public, :order
+            )""")
+        ct = conn.execute(
+            sql,
+            id=str(uuid.uuid4()),
+            code_id=new_id,
+            category_id=relocation_id,
+            title=row['title'],
+            description=row['description'],
+            lang=row['lang'],
+            status=row['status'],
+            current=row['current'],
+            active=row['active'],
+            public=row['public'],
+            order=row['order']
+         )
+
+
 
 def create_all_i18n_files(quiet=True):
     locales = [lang[0] for lang in config.LANGUAGE_LIST]
@@ -208,8 +270,11 @@ def create_all_i18n_files(quiet=True):
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
-        get_translations(quiet=False)
         create_all_i18n_files(quiet=False)
     else:
+        if sys.argv[1] == 'extract' and len(sys.argv) == 2:
+            get_translations(quiet=False)
         if sys.argv[1] == 'mangle' and len(sys.argv) == 3:
             create_fake_trans(sys.argv[2])
+        if sys.argv[1] == 'category_fix' and len(sys.argv) == 2:
+            update_categories_countries()

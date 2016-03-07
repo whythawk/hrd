@@ -1,7 +1,5 @@
 {% extends 'body_base.html' %}
 
-{% import '/macro/form.html' as form %}
-
 {% block title %}{{ _('Login') }}{% endblock %}
 
 
@@ -23,6 +21,9 @@
             <button type="submit" class="btn btn-primary pull-right" value="">
                 {{ _('Log in') }}
             </button>
+            <div class="form-group">
+                <a href="{{ url_for('reset_request') }}" style="color:#163F92">{{ _('Forgot password') }}</a>
+            </div>
             </form>
         </div>
 {% endblock %}

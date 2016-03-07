@@ -16,13 +16,33 @@
       {% if user %}
         {% set my_content = '<div>' +
           sub_menu_item(_('Log out'), url_for('logout'), force_right=true) +
+          sub_menu_item(_('My account'), url_for('user_my_profile'), force_right=true) +
           '</div>' %}
         {{ menu_item(user, '#', force_right=true, content=my_content, class='logged-in', icon='user') }}
 
+        {#
+        {{ menu_item(_('Message board') + unread_topics(), url_for_fixed('/forum'), force_right=true) }}
+        #}
       {% if show_extras %}
-        {{ menu_item(_('Message board'), url_for_fixed('/forum'), force_right=true) }}
-        {% if has_perm('translator') %}
-            {{ menu_item(_('Admin'), url_for('admin'), force_right=true) }}
+        {% if has_perm('content_manage') or has_perm('user_manage') or has_perm('translator') %}
+        {% set my_content = '<div>' %}
+          {% if has_perm('content_manage') or has_perm('translator') %}
+            {% set my_content = my_content +
+            sub_menu_item(_('Content'), url_for('admin'), force_right=true)
+            %}
+          {% endif %}
+          {% if has_perm('user_manage') %}
+            {% set my_content = my_content +
+            sub_menu_item(_('Users'), url_for('user_manage'), force_right=true)
+            %}
+          {% endif %}
+          {% if has_perm('forum_admin') %}
+            {% set my_content = my_content +
+            sub_menu_item(_('Message board'), url_for_fixed('/forum/admin/forums'), force_right=true)
+            %}
+          {% endif %}
+            {% set my_content = my_content + '</div>' %}
+            {{ menu_item(_('Admin'), '#', force_right=true, content=my_content) }}
         {% endif %}
         {% endif %}
       {% else %}
@@ -43,7 +63,8 @@
     <title>{{ _('EU Human Rights Defenders') }}</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="/static/css/hrd_styles.css" rel="stylesheet">
+    <link href="/static/css/hrd_styles.css?ver=1" rel="stylesheet">
+        <link rel="stylesheet" href="/forum/_themes/hrd/css/flaskbb.css">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <!--[if IE 10]>
@@ -61,7 +82,7 @@
     <script src="/static/js/details-shim.js"></script>
   </head>
 
-  <body {{ lang_html_body()|safe }} {% block body_class %}{% endblock %}>
+  <body class="{{ lang_html_body() }} {% block body_class %}{% endblock %}">
       {% block page %}
 
       {% endblock %}

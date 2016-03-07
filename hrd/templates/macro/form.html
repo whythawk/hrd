@@ -30,7 +30,7 @@
 
 {%- macro input(name, id='', label='', value='', placeholder='', trans='') %}
 {% call form_control(name=name, label=label, trans=trans) -%}
-    <input id="{{ id or name }}" class="form-control" type="text" name="{{ name }}" value="{{ value|sn }}" placeholder="{{ placeholder }}" />
+<input dir="{{ get_admin_lang_dir() }}" id="{{ id or name }}" class="form-control" type="text" name="{{ name }}" value="{{ value|sn }}" placeholder="{{ placeholder }}" />
 {%- endcall %}
 {%- endmacro %}
 
@@ -63,7 +63,7 @@
 
 {%- macro textarea(name, id='', label='', value='', placeholder='', trans='', rows=5) %}
 {% call form_control(name=name, label=label, trans=trans) -%}
-<textarea id="{{ id or name }}" class="form-control" name="{{ name }}" placeholder="{{ placeholder }}" rows="{{ rows }}">{{ value|sn }}</textarea>
+<textarea id="{{ id or name }}" dir="{{ get_admin_lang_dir() }}" class="form-control" name="{{ name }}" placeholder="{{ placeholder }}" rows="{{ rows }}">{{ value|sn }}</textarea>
 {%- endcall %}
 {%- endmacro %}
 
@@ -79,7 +79,7 @@
 {% endmacro %}
 
 
-{% macro file_upload(name, id='', label='',value='', thumbnail='', info='') %}
+{% macro file_upload(name, id='', label='',value='', thumbnail='', info='', filename='', link='') %}
 {% call form_control(name='logo', label='', trans=trans) -%}
     <div class="col-xs-12 col-sm-6">
         <div class="form-group">
@@ -93,7 +93,15 @@
     <div class="col-xs-12 col-sm-6">
         <label>Current
         </label>
+        {% if thumbnail %}
         <img src="{{ thumbnail }}" class="img-responsive show-uploaded-img" alt="">
+        {% endif %}
+        {% if link %}
+        <p>
+        <span>{{ filename }}</span><br/>
+      <a href="{{ link }}" download="{{ filename }}">{{ _('Download') }}</a>
+      </p>
+        {% endif %}
         <div class="checkbox">
             <label class="bold-checkbox-label">
               <input type="checkbox" name="{{ name }}_remove" value="True">
@@ -179,11 +187,13 @@
 
 
 
-{% macro translations_bar(trans={}) %}
-  {% if has_perm('translator') %}
+{% macro translations_bar(trans={}, exclude=[], show_all=false) %}
+  {% if has_perm('content_manage') or has_perm('translator') %}
     <div class="col-xs-12 col-md-12 clearfix">
       <ul id="" class="nav nav-tabs nav-justified" data-tabs="" role="tablist">
     {% for code, lang, dir, active in lang_list() %}
+    {% if show_all or (code == 'en' and has_perm('content_manage')) or (code != 'en' and has_perm('translator')) %}
+    {% if code not in exclude %}
       {% set state = get_trans_state(trans[code]) %}
       {% set active = (get_admin_lang() == code) %}
       <li class="{% if active %}active {% endif %}{{ state }}">
@@ -197,6 +207,8 @@
           {% endif %}
           <span lang="{{ code }}" dir="{{ dir }}">{{ lang }}</span></a>
         </li>
+      {% endif %}
+      {% endif %}
       {% endfor %}
       </ul>
     </div>

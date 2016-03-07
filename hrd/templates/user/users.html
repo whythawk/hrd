@@ -1,0 +1,95 @@
+{% set page_title = "Users" %}
+{% set active_management_user_nav=True %}
+
+{% extends 'body_base.html' %}
+{% block content %}
+                    {% include 'flashed_messages.html' %}
+{% from 'bb_macros.html' import render_pagination2, render_field, group_field, navlink with context %}
+
+<div class="col-md-3">
+    <ul class="nav nav-pills nav-stacked">
+        {{ navlink('user_manage', _("Manage Users")) }}
+        {#{ navlink('management.banned_users', 'Banned Users') }#}
+
+        {% if  has_perm(['user_manage', 'user_admin']) %}
+            {{ navlink('user_add', _("Add User")) }}
+        {% endif %}
+    </ul>
+</div><!--/.col-md-3 -->
+
+<div class="col-md-9">
+    <legend>{{ _('Manage Users') }}</legend>
+
+    <div class="pull-left" style="padding-bottom: 10px">
+        {{ render_pagination2(users, url_for('user_manage', search_query=request.args.get('search_query'), order=request.args.get('order'))) }}
+    </div><!-- /.col-pull-left -->
+    <div class="pull-right" style="padding-bottom: 10px">
+        <form role="form" method="get">
+            <div class="input-group">
+                {{ group_field(search_form.search_query) }}
+                <input type="hidden" name="page" value="1" />
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit">{{ _('Search') }}</button>
+                </span>
+            </div>
+        </form>
+    </div>
+
+{% macro link(order, title) %}
+    {% if order == request.args.order %}
+    {% set order = order + '_desc' %}
+    {% endif %}
+    <th><a href="{{ url_for('user_manage', search_query=request.args.search_query, order=order) }}">
+            {{ title }}
+    </a></th>
+{% endmacro %}
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>#</th>
+                {{ link('username', _('Username')) }}
+                {{ link('posts', _('Posts')) }}
+                {{ link('registered', _('Date registered')) }}
+                {{ link('group', _('Type')) }}
+                {{ link('email', _('Email')) }}
+                {{ link('organization', _('Organization')) }}
+                <th>{{ _('Manage') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users.useritems %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td><a href="{{ url_for('user_profile', username=user.username) }}">{{ user.username }}</a></td>
+                    <td>{{ user.post_count }}</td>
+                    <td>{{ user.date_joined|format_date('%b %d %Y') }}</td>
+                    <td>{{ user.group_name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.org_name }}</td>
+                    <td>
+                        {% if has_perm('user_manage') %}
+                        <a href="{{ url_for('user_edit', user_id = user.id) }}">{{ _('Edit') }}</a>
+                        {% endif %}
+
+                        {#    {% if current_user|can_ban_user and not user.permissions['banned'] %}
+                        | <a href="{{ url_for('management.ban_user', user_id = user.id) }}">{{ _('Ban') }}</a>
+                        {% endif %}  #}
+
+
+                        {% if has_perm('user_manage') %}
+                        | <a href="{{ url_for('user_delete', user_id = user.id) }}" 
+                            onclick="return confirm('Are you sure you want to delete this user?\n\nThis action cannot be undone')">{{ _('Delete') }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">
+                        {{ _('No users found matching your search query') }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

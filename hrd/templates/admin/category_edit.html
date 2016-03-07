@@ -12,6 +12,7 @@
         {% if not trans %}
             {{ form.input('order', label='Order', value=category.order) }}
             {{ form.checkbox('active', label='Active', value=category.active, label_class='bold-checkbox-label') }}
+            {{ form.checkbox('consolidate', label='Consolidate codes when all selected', value=category.consolidate, label_class='bold-checkbox-label') }}
         {% endif %}
     {{ form.save(label='Save') }}
   </form>

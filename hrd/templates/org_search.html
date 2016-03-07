@@ -46,6 +46,17 @@
                 {% import '/macro/general.html' as general %}
                 {{ general.pager(pages, page, 'pagination-top') }}
                 <!-- /Top pagination ends ============================= -->
+                {% if not orgs %}
+
+<div class="well col-xs-12">
+   <h1>
+     <span class="glyphicon glyphicon-search"></span>
+     {{ _('No results') }}
+     <br /><br />
+     <small>{{ _('Adjust your search to be less specific.') }}</small>
+    </h1>
+</div>
+                {% else %}
                 {% for org in orgs %}
                 <!-- Search result row begins ============================= -->
                 <article class="search-result{% if loop.index == 1 %} first{% elif loop.index == loop.length %} last{% endif %}">
@@ -54,26 +65,14 @@
                         <p class="search-result-body">{{ org.description|truncate(500) }}</p>
 
                     </div>
-                    {#
-                    <div class="col-xs-6 col-sm-6 col-md-3">
-                        <!-- Search logo --><a href="{{ url_for('org', id=org.org_id) }}" title="Logo" class="logo"><img src="/static/images/logo.png" alt="Logo" /></a>
-                    </div>
-                    <div class="col-xs-12 col-sm-12 col-md-8 pull-right">
-                        <!-- Search meta tags begins ============================= -->
-                        <ul class="search-meta list-inline">
-                            {% for code in codes %}
-                            <li><small><a>{{ code }}</a></small></li>
-                            {% endfor %}
-                        </ul>
-                        <!-- /Search meta tags ends ============================= -->
-                    </div>
-                    #}
+
                     <span class="clearfix borda"></span>
-                    <div class="col-md-5 view-detail pull-right"><a href="{{ url_for('org', id=org.org_id) }}" title="View detail">{{ _("Go to organisation's page") }}</a></div>
+                    <div class="col-md-5 pull-right"><a class="view-download-btn" href="{{ url_for('org', id=org.org_id) }}" title="View detail">{{ _("Go to organisation's page") }}</a></div>
                     <span class="clearfix borda"></span>
                 </article>
                 <!-- /Search result row ends ============================= -->
                 {% endfor %}
+                {% endif %}
                 <!-- Bottom pagination begins ============================= -->
                 {{ general.pager(pages, page, 'pagination-bottom') }}
                 <!-- /Bottom pagination ends ============================= -->

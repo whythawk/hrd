@@ -8,7 +8,7 @@
             <a href="{{ url_for('cms_page2') }}"><img width="auto" height="130" src="/static/images/hrd_logo_163x130_Alt_RedBlue.png" alt=""></a>
         </div>
         <div class="col-xs-7 col-sm-6 col-md-6">
-            <h3 class="sitetitle">{{ _('Global Platform for the Temporary Relocation of Human Rights Defenders') }}<br />
+            <h3 class="sitetitle">{{ _('EU Human Rights Defenders Relocation Platform') }}<br />
                 {#    <small class="sitesubtitle">{{ _('Support organizations’ program') }}</small> #}
             </h3>
         </div>
@@ -32,9 +32,15 @@
           {% set logged_in = get_user_id() %}
           {% if not m.private or logged_in %}
             {% if m.item == 'orgs' %}
-              {{ menu_item(m.title, url_for('org_search')) }}
+              {{ menu_item(m.title, url_for('org_search'), class='menu-highlight') }}
+            {% elif m.item == 'news' %}
+              {{ menu_item(m.title, url_for('news_page'), class='menu-highlight') }}
             {% elif m.item == 'res' %}
-              {{ menu_item(m.title, '#') }}
+              {{ menu_item(m.title, url_for('resource_search'), class='menu-highlight') }}
+            {% elif m.item == 'forum' %}
+                {% if user %}
+                {{ menu_item(_('Message board') + unread_topics(), url_for_fixed('/forum'), class='menu-highlight') }}
+                {% endif %}
             {% elif m.item == '/' %}
               {{ menu_item(m.title, url_for('cms_page2')) }}
             {% else %}

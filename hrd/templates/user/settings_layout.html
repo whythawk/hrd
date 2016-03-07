@@ -1,0 +1,31 @@
+{% extends "body_base.html" %}
+{#% extends "layout.html" %#}
+{% block content %}
+                    {% include 'flashed_messages.html' %}
+{%- from 'user/macros.html' import navlink with context -%}
+
+{#
+<ul class="breadcrumb">
+    <li><a href="{{ url_for('forum.index') }}">Forum</a></li>
+    <li><a href="{{ current_user.url }}">{{ current_user.username }}</a></li>
+    <li class="active">Settings</li>
+</ul>
+
+#}
+<div class="row">
+    <div class="col-sm-3">
+        <div class="sidebar">
+            <ul class="nav sidenav">
+                <li class="nav-header">{{ _('Account Settings') }}</li>
+                {{ navlink('user_my_profile', _('Change User Details')) }}
+                {{ navlink('user_change_email', _('Change E-Mail Address')) }}
+                {{ navlink('user_change_password', _('Change Password')) }}
+            </ul>
+        </div> <!--/.sidebar -->
+    </div><!--/.col-sm-3 -->
+    <div class="col-sm-9">
+        {% block settings_content %}{% endblock %}
+    </div><!--/.col-sm-9 -->
+</div><!--/row-->
+{% endblock %}
+

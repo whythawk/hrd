@@ -5,6 +5,9 @@
 {% block content %}
 
  {{ form.translations_bar(status) }}
+ {% if not content_trans(lang) %}
+ <h3>Select a language</h3>
+ {% else %}
   {# cat listing #}
  <div class="alert col-xs-12 org-cat-list">
 {# new cat #}
@@ -98,4 +101,5 @@
     {% endfor %}
   </div>
 {#  {{ form.code_list(all) }} #}
+{% endif %}
 {% endblock %}

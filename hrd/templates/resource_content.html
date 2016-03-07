@@ -1,0 +1,81 @@
+<h1>{{ resource.name }}<br /><br /></h1>
+
+<div class="row">
+    <!-- Organization logo block begins ============================= -->
+    <div class="col-xs-12 col-sm-6 col-md-4">
+      {#   <div class="resource-logo-col blue-left-border hrd-padded-20">
+            {% if resource.image %}
+            <img src="{{ url_for('resource_logo', id=resource.resource_id, type='preview') }}?{{ resource.image}}" class="img-responsive" alt="Logo" />
+            {% else %}
+            {% endif %}
+          </div>  #}
+        <!-- /Organization logo block ends ============================= -->
+        <!-- Organization contacts column begins ============================= -->
+        <div class="contact-details-col blue-left-border grey-panel-bkg hrd-padded-20">
+            <h3 class=""><a href="#" title="">{{ _('Resource info') }}</a></h3>
+            <p class=""><strong>{{ _('Language') }}</strong><br />
+            {{ locale_language_name(resource.lang) }}
+                </p>
+        </div>
+        </br>
+        {% if resource.url %}
+        <div class="contact-details-col blue-left-border grey-panel-bkg hrd-padded-20">
+            <h3 class=""><a href="#" title="">{{ _('Online info') }}</a></h3>
+            <p class=""><strong>{{ _('Web resource') }}</strong><br />
+            <a href="{{ resource.url }}" target="_blank" style="word-wrap: break-word;">{{ resource.url }}</a>
+                </p>
+        </div>
+        </br>
+        {% endif %}
+        {% if resource.file %}
+        <div class="contact-details-col blue-left-border grey-panel-bkg hrd-padded-20">
+            <h3 class=""><a href="#" title="">{{ _('File info') }}</a></h3>
+            <p class=""><strong>{{ _('File name') }}</strong><br />
+                {{ resource.filename }}
+                </p>
+            <p class=""><strong>{{ _('Size in bytes') }}</strong><br />
+                {{ format_number(resource.file_size) }}
+                </p>
+            <p class=""><strong>{{ _('File type') }}</strong><br />
+                {{ resource.file_type }}
+                </p>
+            <p class=""><strong>{{ _('Mime-type') }}</strong><br />
+                {{ resource.mime_type }}
+                </p>
+            <p class=""><strong>{{ _('Mime-encoding') }}</strong><br />
+                {{ resource.mime_encoding }}
+                </p>
+        </div>
+        {% endif %}
+        <!-- /Organization contacts column ends ============================= -->
+    </div>
+    <!-- Organization description column begins ============================= -->
+    <div class="resource-description-col col-xs-12 col-sm-6 col-md-4">
+        <h2>{{ _('Description') }}<br /><br /></h2>
+        <span style="white-space: pre-line">{{ resource.description }}</span>
+    </div>
+    <!-- /Organization description column ends ============================= -->
+    <!-- Organization detail column begins ============================= -->
+    <div class="resource-detail-col col-xs-12 col-sm-6 col-md-4">
+      {% if cat_codes %}
+        <h2>{{ _('Detail') }}<br /><br /></h2>
+        {% for cat, codes in cat_codes %}
+          <p><strong>{{ cat }}</strong><br />
+          {{ codes }}</p>
+        {% endfor %}
+        {% endif %}
+    </div>
+    <div class="panel col-xs-12">
+        {% if resource.file %}
+          <div class="col-md-3 pull-right">
+    <a class="view-download-btn" href="{{ url_for('resource_file', id=resource.resource_id, type='preview') }}?{{ resource.file}}" download="{{ resource.filename }}">{{ _('Download') }}</a>
+          </div>
+        {% endif %}
+        {% if resource.url %}
+          <div class="col-md-3 pull-right">
+            <a class="view-download-btn" href="{{ resource.url }}" target="_blank" style="word-wrap: break-word;">{{ _('Visit resource') }}</a>
+          </div>
+        {% endif %}
+    </div>
+    <!-- /Organization detail column ends ============================= -->
+</div> <!-- /row -->

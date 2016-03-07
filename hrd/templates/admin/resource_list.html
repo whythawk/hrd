@@ -1,0 +1,46 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Organisations{% endblock %}
+
+{% block content %}
+          {{ form.info_bar('resources are shown under the language they are in.') }}
+ {{ form.translations_bar(status, show_all=true) }}
+  <div class="alert new-page col-xs-12 alert-null">
+<h4>{{ 'Create a new resource' }}</h4>
+    {{ form.action('New resource', url_for_admin('resource_new'), class='btn-primary btn-success pull-right', icon='plus') }}
+        </div>
+
+  {% for resource in resources %}
+
+    <div class="alert col-xs-12 alert-{% if resource.status != 'publish' %}warning{% else %}null{% endif %}">
+        <h4>
+          {{ resource.name }}
+          <span class="label label-default">{{ cms_state_nice_name(resource.status) }}</span>
+          {% if not resource.active %}<span class="label label-null">Inactive</span>{% endif %}
+          {% if resource.private %}<span class="label label-null">Private</span>{% endif %}
+        </h4>
+
+        {{ form.action_link('Edit', url_for_admin('resource_edit', id=resource.resource_id), icon='pencil') }}
+        {{ form.action_link('Preview', url_for_admin('resource_preview', id=resource.resource_id), icon='eye-open') }}
+      {% if resource.published %}
+        {{ form.action_link('Live content', url_for_admin('resource', id=resource.resource_id), icon='flash', class='btn-secondary') }}
+      {% endif %}
+      {% if lang =='en' %}
+        {{ form.action('Delete', url_for('resource_delete', id=resource.resource_id), class='btn-danger pull-right', onsubmit='return confirm("Are you sure you want to delete this resource?\\n\\nThis action cannot be undone")', icon='remove') }}
+      {% endif %}
+
+    </div>
+
+  {% endfor %}
+
+
+
+{% for resource in missing %}
+<div class="alert col-xs-12 alert-danger">
+    <h4>{{ resource.name|truncate(75) }}
+        <span class="label label-null">Missing</span>
+    </h4>
+    {{ form.action('Create', url_for_admin('resource_edit', id=resource.resource_id), class='btn-success', icon='plus') }}
+</div>
+{% endfor %}
+{% endblock %}
