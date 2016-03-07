@@ -2,6 +2,7 @@ import cStringIO
 from datetime import datetime
 
 import qrcode
+from sqlalchemy import text
 from passlib.hash import sha512_crypt as passlib
 from flask import render_template, request, session, redirect, send_file, abort
 from werkzeug.wrappers import Response
@@ -365,14 +366,45 @@ def user_manage():
     page = request.args.get("page", 1, type=int)
     search = request.args.get('search_query')
     search_form = forum_forms.UserSearchForm(search_query=search)
-    users = User.query
-    if not has_permission('user_admin'):
-        users = users.filter_by(organization=current_user.organization)
-    if search:
-        users = users.filter(User.username.like(u'%%%s%%' % search))
-    users = users.order_by(User.username.asc()).\
-        paginate(page, app.bb.config['USERS_PER_PAGE'], False)
+    order = request.args.get('order')
+    desc = False
+    if order and order.endswith('_desc'):
+        desc = True
+        order = order[:-5]
+    orders = {
+        'username': 'username',
+        'registered': 'date_joined',
+        'posts': 'post_count',
+        'group': 'g.name',
+        'organization': 'o.name',
+        'email': 'u.email',
 
+    }
+    order = orders.get(order, orders['username'])
+    sql = "SELECT DISTINCT u.email, u.id, username, date_joined, post_count, g.name group_name, o.name org_name FROM users u LEFT OUTER JOIN organisation o ON o.org_id=u.organization and o.lang='en' join groups g ON u.primary_group_id = g.id"
+    where = ''
+    params = {}
+    if not has_permission('user_admin'):
+        where += ' organization=' + current_user.organization
+    if search:
+        where += ' username like :search '
+        params['search'] = u'%%%s%%' % search
+    if where:
+        sql += ' WHERE ' + where
+    sql += " ORDER BY %s " % (order)
+    if desc:
+        sql += 'DESC'
+    sql = text(sql)
+    result = db.session.execute(sql, params)
+    data = []
+    for row in result:
+        data.append(dict(row))
+    pp = app.bb.config['USERS_PER_PAGE']
+    users = {'pages': range((len(data)/pp) + 2),
+             'page': page,
+             'useritems': data[pp * (page-1):][:pp]
+             }
+    print users['useritems']
     return render_template("user/users.html", users=users,
                            search_form=search_form)
 

@@ -4,7 +4,7 @@
 {% extends 'body_base.html' %}
 {% block content %}
                     {% include 'flashed_messages.html' %}
-{% from 'bb_macros.html' import render_pagination, render_field, group_field, navlink with context %}
+{% from 'bb_macros.html' import render_pagination2, render_field, group_field, navlink with context %}
 
 <div class="col-md-3">
     <ul class="nav nav-pills nav-stacked">
@@ -21,7 +21,7 @@
     <legend>{{ _('Manage Users') }}</legend>
 
     <div class="pull-left" style="padding-bottom: 10px">
-        {{ render_pagination(users, url_for('user_manage', search_query=request.args.get('search_query'))) }}
+        {{ render_pagination2(users, url_for('user_manage', search_query=request.args.get('search_query'), order=request.args.get('order'))) }}
     </div><!-- /.col-pull-left -->
     <div class="pull-right" style="padding-bottom: 10px">
         <form role="form" method="get">
@@ -35,27 +35,37 @@
         </form>
     </div>
 
+{% macro link(order, title) %}
+    {% if order == request.args.order %}
+    {% set order = order + '_desc' %}
+    {% endif %}
+    <th><a href="{{ url_for('user_manage', search_query=request.args.search_query, order=order) }}">
+            {{ title }}
+    </a></th>
+{% endmacro %}
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th>#</th>
-                <th>{{ _('Username') }}</th>
-                <th>{{ _('Posts') }}</th>
-                <th>{{ _('Date registered') }}</th>
-                <th>{{ _('Group') }}</th>
-                <th>{{ _('Organization') }}</th>
+                {{ link('username', _('Username')) }}
+                {{ link('posts', _('Posts')) }}
+                {{ link('registered', _('Date registered')) }}
+                {{ link('group', _('Type')) }}
+                {{ link('email', _('Email')) }}
+                {{ link('organization', _('Organization')) }}
                 <th>{{ _('Manage') }}</th>
             </tr>
         </thead>
         <tbody>
-            {% for user in users.items %}
+            {% for user in users.useritems %}
                 <tr>
                     <td>{{ user.id }}</td>
                     <td><a href="{{ url_for('user_profile', username=user.username) }}">{{ user.username }}</a></td>
                     <td>{{ user.post_count }}</td>
                     <td>{{ user.date_joined|format_date('%b %d %Y') }}</td>
-                    <td>{{ user.primary_group.name }}</td>
-                    <td>{{ organization_name(user.organization) }}</td>
+                    <td>{{ user.group_name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.org_name }}</td>
                     <td>
                         {% if has_perm('user_manage') %}
                         <a href="{{ url_for('user_edit', user_id = user.id) }}">{{ _('Edit') }}</a>
