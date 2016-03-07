@@ -94,8 +94,8 @@ def search_subset(set1, set2):
 
 def menu_class(href, force_right, css_class):
     cls = []
-    if force_right:
-        cls.append('navbar-right')
+    # if force_right:
+        # cls.append('navbar-right')
     if href !='#' and href[3:] == request.environ.get(
         'MENU_PATH', request.environ['PATH_INFO']
     ):
